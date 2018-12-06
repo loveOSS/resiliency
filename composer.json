@@ -1,0 +1,33 @@
+{
+    "name": "prestashop/circuit-breaker",
+    "description": "A circuit breaker implementation for PHP",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.6",
+        "symfony/workflow": "^3.4"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.12",
+        "phpunit/phpunit": "~5.7",
+        "mockery/mockery": "^1.2",
+        "symfony/phpunit-bridge": "^3.4",
+        "phpstan/phpstan": "^0.10.6"
+    },
+    "authors": [
+        {
+            "name": "Mickaël Andrieu",
+            "email": "mickael.andrieu@prestashop.com"
+        }
+    ],
+    "autoload": {
+		"psr-4": {
+			"PrestaShop\\CircuitBreaker\\": "src/"
+		}
+    },
+    "autoload-dev": {
+		"psr-4": {
+			"Tests\\PrestaShop\\CircuitBreaker\\": "tests/"
+		}
+	}
+}
