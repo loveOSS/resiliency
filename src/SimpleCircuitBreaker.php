@@ -49,9 +49,9 @@ final class SimpleCircuitBreaker implements CircuitBreaker
     /**
      * {@inheritdoc}
      */
-    public function getFailures()
+    public function getPlaces()
     {
-        return $this->currentPlace->getFailures();
+        return $this->places;
     }
 
     /**
@@ -59,7 +59,8 @@ final class SimpleCircuitBreaker implements CircuitBreaker
      */
     public function call($service)
     {
-        // implement the right workflow with machine state.
+        // implement the right workflow with a machine state.
+        // see schema.
         try {
             return $this->currentPlace->run($service);
         } catch (UnavailableService $exception) {

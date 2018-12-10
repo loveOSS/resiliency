@@ -17,6 +17,7 @@ interface CircuitBreaker
     /**
      * @var Place[] The Circuit Breaker available places.
      */
+    public function getPlaces();
 
     /**
      * The function that execute the service.
