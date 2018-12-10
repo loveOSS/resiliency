@@ -1,36 +1,26 @@
 <?php
 
-namespace PrestaShop\Contracts\CircuitBreaker;
+namespace PrestaShop\CircuitBreaker\Contracts;
 
 interface CircuitBreaker
 {
     /**
-     * @var string the service name.
+     * @var string The service name.
      */
     public function getService();
 
     /**
-     * @var string the circuit breaker state.
+     * @var string The circuit breaker state.
      */
     public function getState();
 
     /**
-     * @var int the number of failures.
+     * @var Place[] The Circuit Breaker available places.
      */
-    public function getFailures();
-
-    /**
-     * @var int the allowed number of trials.
-     */
-    public function getTreshold();
-
-    /**
-     * @var int the allowed timeout.
-     */
-    public function getTimeout();
 
     /**
      * The function that execute the service.
+     * @var string $service function to call
      */
-    public function run();
+    public function call($service);
 }
