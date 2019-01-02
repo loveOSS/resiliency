@@ -1,0 +1,38 @@
+language: php
+
+notifications:
+  email:
+    on_success: never
+
+php:
+  - 5.6
+  - 7.2
+  - nightly
+
+matrix:
+  fast_finish: true
+  allow_failures:
+    - php: nightly
+  include:
+    - php: 7.2
+      env: dependencies=lowest
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+before_script:
+  - composer install -n
+  - if [ "$dependencies" = "lowest" ]; then composer update --prefer-lowest --prefer-stable -n; fi;
+
+script:
+  - composer test
+
+jobs:
+  include:
+    - stage: PHP CS Fixer
+      script:
+        - ./vendor/bin/php-cs-fixer fix --config=.php_cs -v --dry-run --using-cache=no --path-mode=intersection `git diff --name-only --diff-filter=ACMRTUXB $TRAVIS_COMMIT_RANGE`
+    - stage: PHPStan Code quality
+      script:
+        - composer phpstan

@@ -2,19 +2,10 @@
 
 namespace PrestaShop\CircuitBreaker\Places;
 
-use PrestaShop\CircuitBreaker\Contracts\Place;
 use PrestaShop\CircuitBreaker\States;
 
-final class OpenPlace implements Place
+final class OpenPlace extends AbstractPlace
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function run($service)
-    {
-        // TBD
-    }
-
     /**
      * {@inheritdoc}
      */

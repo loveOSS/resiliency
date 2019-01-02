@@ -6,8 +6,9 @@ interface Storage
 {
     /**
      * Save the CircuitBreaker State.
-     * @var string $service the service name.
-     * @var string $state the Circuit Breaker state.
+     *
+     * @var string the service name
+     * @var string $state the Circuit Breaker state
      *
      * @return bool
      */
@@ -16,7 +17,7 @@ interface Storage
     /**
      * Retrieve the CircuitBreaker State.
      *
-     * @var string $service the service name.
+     * @var string the service name
      */
     public function getState($service);
 }

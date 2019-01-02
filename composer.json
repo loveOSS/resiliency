@@ -15,6 +15,7 @@
     ],
     "require": {
         "php": ">=5.6",
+        "guzzlehttp/guzzle": "^6.3",
         "symfony/workflow": "^3.4"
     },
     "require-dev": {
@@ -29,6 +30,11 @@
 		"psr-4": {
 			"PrestaShop\\CircuitBreaker\\": "src/"
 		}
+    },
+    "scripts": {
+        "phpstan": "@php ./vendor/bin/phpstan analyse src tests -l 7",
+        "cs-fix": "@php ./vendor/bin/php-cs-fixer fix",
+        "test": "@php ./vendor/bin/phpunit"
     },
     "autoload-dev": {
 		"psr-4": {

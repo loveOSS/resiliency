@@ -2,19 +2,10 @@
 
 namespace PrestaShop\CircuitBreaker\Places;
 
-use PrestaShop\CircuitBreaker\Contracts\Place;
 use PrestaShop\CircuitBreaker\States;
 
-final class ClosedPlace implements Place
+final class ClosedPlace extends AbstractPlace
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function run(callable $callable)
-    {
-        // TBD
-    }
-
     /**
      * {@inheritdoc}
      */
