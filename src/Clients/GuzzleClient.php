@@ -16,7 +16,7 @@ class GuzzleClient implements Client
     /**
      * {@inheritdoc}
      */
-    public function request($resource, $options)
+    public function request($resource, array $options)
     {
         try {
             $client = new OriginalGuzzleClient();
