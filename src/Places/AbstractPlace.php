@@ -45,4 +45,16 @@ abstract class AbstractPlace implements Place
     {
         return $this->treshold;
     }
+
+    /**
+     * Helper: create a Place from an array
+     *
+     * @var array the failures, timeout and treshold
+     *
+     * @return self
+     */
+    public static function fromArray(array $settings)
+    {
+        return new static($settings[0], $settings[1], $settings[2]);
+    }
 }

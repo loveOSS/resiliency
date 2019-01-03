@@ -16,13 +16,29 @@ composer install prestashop/circuit-breaker
 
 ## Use
 
-```php
-use PrestaShop\CircuitBreaker\SimpleCircuitBreaker;
+You can use the factory to create a simple circuit breaker.
 
-$circuitBreaker = new SimpleCircuitBreaker(
-    new OpenPlace(0, 0, 10),
-    new HalfOpenPlace(0, 0.2, 0),
-    new ClosedPlace(2, 0.1, 2)
+By default, you need to define 3 parameters for each "state/place" of
+the circuit breaker:
+
+* the **failures**: define how much times we try to access the service;
+* the **timeout**: define how much time we wait before consider the service unreachable;
+* the **treshold**: define how much time we wait before trying to access again the service;
+
+The **fallback** callback will be used if the distant service is unreachable when the Circuit Breaker is Open (means "is used"). 
+
+> You'd better return the same type of response expected from your distant call.
+
+```php
+use PrestaShop\CircuitBreaker\SimpleCircuitBreakerFactory;
+
+$circuitBreakerFactory = new SimpleCircuitBreakerFactory();
+$circuitBreaker = $circuitBreakerFactory->create(
+    [
+        'closed' => [2, 0.1, 0],
+        'open' => [0, 0, 10],
+        'half_open' => [1, 0.2, 0],
+    ]
 );
 
 $fallbackResponse = function () {
