@@ -45,7 +45,7 @@ $fallbackResponse = function () {
     return '{}';
 };
 
-$circuitBreaker->call('https://api.domain.com', $fallback);
+$circuitBreaker->call('https://api.domain.com', $fallbackResponse);
 ```
 
 ## Tests
