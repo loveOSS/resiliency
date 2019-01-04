@@ -2,6 +2,11 @@
 
 namespace PrestaShop\CircuitBreaker\Contracts;
 
+/**
+ * A circuit breaker can be in 3 places:
+ * closed, half open or open. Each place have its
+ * own properties and behaviors.
+ */
 interface Place
 {
     /**
