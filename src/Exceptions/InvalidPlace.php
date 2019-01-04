@@ -9,14 +9,14 @@ final class InvalidPlace extends Exception
     /**
      * @param mixed $failures the failures
      * @param mixed $timeout the timeout
-     * @param mixed $treshold the treshold
+     * @param mixed $threshold the threshold
      */
-    public static function invalidSettings($failures, $timeout, $treshold)
+    public static function invalidSettings($failures, $timeout, $threshold)
     {
         $exceptionMessage = 'Invalid settings for Place' . PHP_EOL;
         $exceptionMessage .= self::formatError('failures', $failures);
         $exceptionMessage .= self::formatError('timeout', $timeout);
-        $exceptionMessage .= self::formatError('treshold', $treshold);
+        $exceptionMessage .= self::formatError('threshold', $threshold);
 
         return new self($exceptionMessage);
     }
