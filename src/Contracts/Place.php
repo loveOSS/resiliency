@@ -24,7 +24,7 @@ interface Place
     /**
      * @var int the allowed number of trials
      */
-    public function getTreshold();
+    public function getThreshold();
 
     /**
      * @var int the allowed timeout

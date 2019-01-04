@@ -9,14 +9,14 @@ abstract class AbstractPlace implements Place
 {
     private $failures;
     private $timeout;
-    private $treshold;
+    private $threshold;
 
-    public function __construct($failures, $timeout, $treshold)
+    public function __construct($failures, $timeout, $threshold)
     {
-        if ($this->validate($failures, $timeout, $treshold)) {
+        if ($this->validate($failures, $timeout, $threshold)) {
             $this->failures = $failures;
             $this->timeout = $timeout;
-            $this->treshold = $treshold;
+            $this->threshold = $threshold;
         }
     }
 
@@ -44,9 +44,9 @@ abstract class AbstractPlace implements Place
     /**
      * {@inheritdoc}
      */
-    public function getTreshold()
+    public function getThreshold()
     {
-        return $this->treshold;
+        return $this->threshold;
     }
 
     /**
@@ -54,13 +54,13 @@ abstract class AbstractPlace implements Place
      *
      * @param int $failures the failures should be a positive integer
      * @param int $timeout the timeout should be a positive integer
-     * @param int $treshold the treshold should be a positive integer
+     * @param int $threshold the threshold should be a positive integer
      *
      * @throws InvalidPlace
      *
      * @return bool true if valid
      */
-    private function validate($failures, $timeout, $treshold)
+    private function validate($failures, $timeout, $threshold)
     {
         $isPositiveInteger = function ($value) {
             return is_numeric($value) && $value >= 0;
@@ -69,11 +69,11 @@ abstract class AbstractPlace implements Place
         if (
             $isPositiveInteger($failures) &&
             $isPositiveInteger($timeout) &&
-            $isPositiveInteger($treshold)
+            $isPositiveInteger($threshold)
             ) {
             return true;
         }
-        throw InvalidPlace::invalidSettings($failures, $timeout, $treshold);
+        throw InvalidPlace::invalidSettings($failures, $timeout, $threshold);
     }
 
     /**

@@ -23,7 +23,7 @@ the circuit breaker:
 
 * the **failures**: define how much times we try to access the service;
 * the **timeout**: define how much time we wait before consider the service unreachable;
-* the **treshold**: define how much time we wait before trying to access again the service;
+* the **threshold**: define how much time we wait before trying to access again the service;
 
 The **fallback** callback will be used if the distant service is unreachable when the Circuit Breaker is Open (means "is used"). 
 

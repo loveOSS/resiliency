@@ -53,7 +53,7 @@ final class SimpleCircuitBreaker implements CircuitBreaker
 
         try {
             if ($this->isOpened()) {
-                // @todo: once the treshold is reached
+                // @todo: once the threshold is reached
                 // $this->moveToState(States::HALF_OPEN_STATE);
                 return call_user_func($fallback);
             }
