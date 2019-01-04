@@ -2,11 +2,11 @@
 
 namespace Tests\PrestaShop\CircuitBreaker\Places;
 
+use PrestaShop\CircuitBreaker\Exceptions\InvalidPlace;
 use PrestaShop\CircuitBreaker\Places\ClosedPlace;
 use PrestaShop\CircuitBreaker\States;
-use PHPUnit\Framework\TestCase;
 
-class ClosedPlaceTest extends TestCase
+class ClosedPlaceTest extends PlaceTestCase
 {
     /**
      * @dataProvider getFixtures
@@ -20,19 +20,20 @@ class ClosedPlaceTest extends TestCase
         $this->assertSame($treshold, $closedPlace->getTreshold());
     }
 
+    /**
+     * @dataProvider getInvalidFixtures
+     */
+    public function testCreationWithInvalidValues($failures, $timeout, $treshold)
+    {
+        $this->expectException(InvalidPlace::class);
+
+        $closedPlace = new ClosedPlace($failures, $timeout, $treshold);
+    }
+
     public function testState()
     {
         $closedPlace = new ClosedPlace(1, 1, 1);
 
         $this->assertSame(States::CLOSED_STATE, $closedPlace->getState());
-    }
-
-    public function getFixtures()
-    {
-        return [
-            [0, 0, 0],
-            [1, 100, 0],
-            [-1, null, false], // @todo: should throw an error
-        ];
     }
 }
