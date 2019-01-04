@@ -2,22 +2,28 @@
 
 namespace PrestaShop\CircuitBreaker\Contracts;
 
+/**
+ * Store the transaction between the Circuit Breaker
+ * and the tiers service.
+ */
 interface Storage
 {
     /**
-     * Save the CircuitBreaker State.
+     * Save the CircuitBreaker transaction.
      *
-     * @var string the service name
-     * @var string $state the Circuit Breaker state
+     * @var string The service name
+     * @var Transaction $transaction the transaction
      *
      * @return bool
      */
-    public function saveState($service, $state);
+    public function saveTransaction($service, Transaction $transaction);
 
     /**
-     * Retrieve the CircuitBreaker State.
+     * Retrieve the CircuitBreaker transaction.
      *
      * @var string the service name
+     *
+     * @return Transaction
      */
-    public function getState($service);
+    public function getTransaction($service);
 }

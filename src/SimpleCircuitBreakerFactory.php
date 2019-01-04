@@ -2,16 +2,16 @@
 
 namespace PrestaShop\CircuitBreaker;
 
-use PrestaShop\CircuitBreaker\Contracts\CircuitBreakerFactory;
 use PrestaShop\CircuitBreaker\Places\HalfOpenPlace;
 use PrestaShop\CircuitBreaker\Places\ClosedPlace;
+use PrestaShop\CircuitBreaker\Contracts\Factory;
 use PrestaShop\CircuitBreaker\Places\OpenPlace;
 
 /**
  * Main implementation of Circuit Breaker Factory
  * Used to create a SimpleCircuitBreaker instance.
  */
-final class SimpleCircuitBreakerFactory implements CircuitBreakerFactory
+final class SimpleCircuitBreakerFactory implements Factory
 {
     public function create(array $settings)
     {

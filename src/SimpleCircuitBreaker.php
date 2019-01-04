@@ -13,11 +13,6 @@ use PrestaShop\CircuitBreaker\Contracts\Place;
 final class SimpleCircuitBreaker implements CircuitBreaker
 {
     /**
-     * @var string the service name
-     */
-    private $service;
-
-    /**
      * @var Place the current Circuit Breaker place
      */
     private $currentPlace;
@@ -43,25 +38,9 @@ final class SimpleCircuitBreaker implements CircuitBreaker
     /**
      * {@inheritdoc}
      */
-    public function getService()
-    {
-        return $this->service;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getState()
     {
         return $this->currentPlace->getState();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPlaces()
-    {
-        return $this->places;
     }
 
     /**
@@ -99,17 +78,17 @@ final class SimpleCircuitBreaker implements CircuitBreaker
         }
     }
 
-    private function isOpened()
+    public function isOpened()
     {
         return $this->currentPlace->getState() === States::OPEN_STATE;
     }
 
-    private function isHalfOpened()
+    public function isHalfOpened()
     {
         return $this->currentPlace->getState() === States::HALF_OPEN_STATE;
     }
 
-    private function isClosed()
+    public function isClosed()
     {
         return $this->currentPlace->getState() === States::CLOSED_STATE;
     }

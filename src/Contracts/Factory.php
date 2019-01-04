@@ -5,7 +5,7 @@ namespace PrestaShop\CircuitBreaker\Contracts;
 /**
  * Ease the creation of the Circuit Breaker.
  */
-interface CircuitBreakerFactory
+interface Factory
 {
     /**
      * @var array the settings for the Places
