@@ -14,7 +14,7 @@ class SimpleCircuitBreakerTest extends TestCase
     public function testWorkInProgress()
     {
         $circuitBreaker = new SimpleCircuitBreaker(
-            new OpenPlace(0, 0, 2), // threshold 2s
+            new OpenPlace(0, 0, 1), // threshold 1s
             new HalfOpenPlace(0, 0.2, 0), // timeout 0.2s to test the service
             new ClosedPlace(2, 0.2, 0) // 2 failures allowed, 0.2s timeout
         );
