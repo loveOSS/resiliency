@@ -98,7 +98,7 @@ final class SimpleTransaction implements Transaction
     /**
      * Helper to create a transaction from the Place.
      *
-     * @var Place the Circuit Breaker place
+     * @var Place $place the Circuit Breaker place
      * @var string $service the service URI
      *
      * @return self
