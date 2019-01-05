@@ -35,7 +35,7 @@ final class InvalidPlace extends Exception
 
         $hasStringValue = in_array($type, ['integer', 'float', 'string']);
         $errorMessage = sprintf(
-            'Excepted %s to be positive integer, got %s',
+            'Excepted %s to be positive value, got %s',
             $parameter,
             $type
         );

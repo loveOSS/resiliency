@@ -14,24 +14,24 @@ class SimpleCircuitBreakerTest extends TestCase
     public function testWorkInProgress()
     {
         $circuitBreaker = new SimpleCircuitBreaker(
-            new OpenPlace(0, 0, 10),
-            new HalfOpenPlace(0, 0.2, 0),
-            new ClosedPlace(2, 0.1, 2)
+            new OpenPlace(0, 0, 2), // threshold 2s
+            new HalfOpenPlace(0, 0.2, 0), // timeout 0.2s to test the service
+            new ClosedPlace(2, 0.2, 0) // 2 failures allowed, 0.2s timeout
         );
 
         $fallback = function () {
             return '{}';
         };
-        // use case
+        // First, the circuit breaker is closed
         $this->assertSame(States::CLOSED_STATE, $circuitBreaker->getState());
-        $this->assertNull($circuitBreaker->call('https://github.com/_abc_123_404', $fallback));
+        $this->assertNull($circuitBreaker->call('https://httpbin.org/get/foo', $fallback));
+
+        // now it's OPEN, we receive a fallback response
         $this->assertSame(States::OPEN_STATE, $circuitBreaker->getState());
-
-        // wait for 2 secondes => State should become Half Open
+        $this->assertSame('{}', $circuitBreaker->call('https://httpbin.org/get/foo', $fallback));
+        // wait for 2 secondes => State should become Half Open on next call
         sleep(2);
-        $this->assertSame('{}', $circuitBreaker->call('https://github.com/', $fallback));
-
-        $this->markTestIncomplete('This feature has not been implemented yet.');
+        $this->assertSame('{}', $circuitBreaker->call('https://httpbin.org/get/foo', $fallback));
         $this->assertSame(States::HALF_OPEN_STATE, $circuitBreaker->getState());
     }
 }

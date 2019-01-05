@@ -2,10 +2,15 @@
 
 namespace PrestaShop\CircuitBreaker;
 
+use PrestaShop\CircuitBreaker\Transaction\SimpleTransaction;
 use PrestaShop\CircuitBreaker\Exceptions\UnavailableService;
 use PrestaShop\CircuitBreaker\Contracts\CircuitBreaker;
+use PrestaShop\CircuitBreaker\Contracts\Transaction;
 use PrestaShop\CircuitBreaker\Clients\GuzzleClient;
+use PrestaShop\CircuitBreaker\Storage\SimpleArray;
+use PrestaShop\CircuitBreaker\Contracts\Storage;
 use PrestaShop\CircuitBreaker\Contracts\Place;
+use DateTime;
 
 /**
  * Main implementation of Circuit Breaker.
@@ -23,16 +28,31 @@ final class SimpleCircuitBreaker implements CircuitBreaker
     private $places = [];
 
     /**
+     * @var Transaction the Circuit Breaker transaction
+     */
+    private $transaction;
+
+    /**
+     * @var Storage the Circuit Breaker storage
+     */
+    private $storage;
+
+    /**
      * Constructor
      */
-    public function __construct(Place $openPlace, Place $halfOpenPlace, Place $closedPlace)
-    {
+    public function __construct(
+        Place $openPlace,
+        Place $halfOpenPlace,
+        Place $closedPlace
+        ) {
         $this->currentPlace = $closedPlace;
         $this->places = [
             States::CLOSED_STATE => $closedPlace,
             States::HALF_OPEN_STATE => $halfOpenPlace,
             States::OPEN_STATE => $openPlace,
         ];
+
+        $this->storage = new SimpleArray();
     }
 
     /**
@@ -48,54 +68,96 @@ final class SimpleCircuitBreaker implements CircuitBreaker
      */
     public function call($service, callable $fallback)
     {
+        $this->initTransaction($service);
         // implement the right workflow with a machine state.
         // see schema.
 
         try {
             if ($this->isOpened()) {
-                // @todo: once the threshold is reached
-                // $this->moveToState(States::HALF_OPEN_STATE);
+                if ($this->canAccessService()) {
+                    $this->moveStateTo(States::HALF_OPEN_STATE, $service);
+                }
+
                 return call_user_func($fallback);
             }
 
-            return $this->tryExecute($service);
+            $response = $this->tryExecute($service);
+            $this->moveStateTo(States::CLOSED_STATE, $service);
 
-            if ($this->isHalfOpened()) {
-                $this->currentPlace = $this->places[States::CLOSED_STATE];
-            }
+            $this->transaction->resetFailures();
+            $this->transaction->resetThresholdDateTime($this->currentPlace->getThreshold());
+            $this->storage->saveTransaction($service, $this->transaction);
+
+            return $response;
         } catch (UnavailableService $exception) {
-            if ($this->isHalfOpened()) {
-                $this->moveStateTo(States::OPEN_STATE);
+            $this->transaction->incrementFailures();
+            $this->storage->saveTransaction($service, $this->transaction);
+
+            if ($this->isClosed() && !$this->isAllowedToRetry()) {
+                $this->moveStateTo(States::OPEN_STATE, $service);
             }
 
-            // @todo: increment failures++ and save
-            if ($this->isClosed()) {
-                $this->moveStateTo(States::OPEN_STATE);
-                // storage for waiting before retry
-
-                $this->call($service, $fallback);
-            }
+            $this->call($service, $fallback);
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function isOpened()
     {
         return $this->currentPlace->getState() === States::OPEN_STATE;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function isHalfOpened()
     {
         return $this->currentPlace->getState() === States::HALF_OPEN_STATE;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function isClosed()
     {
         return $this->currentPlace->getState() === States::CLOSED_STATE;
     }
 
-    private function moveStateTo($state)
+    private function moveStateTo($state, $service)
     {
         $this->currentPlace = $this->places[$state];
+        $this->transaction = SimpleTransaction::createFromPlace(
+            $this->currentPlace,
+            $service
+        );
+
+        $this->storage->saveTransaction($service, $this->transaction);
+    }
+
+    private function initTransaction($service)
+    {
+        if ($this->storage->hasTransaction($service)) {
+            $this->transaction = $this->storage->getTransaction($service);
+        } else {
+            $this->transaction = SimpleTransaction::createFromPlace(
+                $this->currentPlace,
+                $service
+            );
+
+            $this->storage->saveTransaction($service, $this->transaction);
+        }
+    }
+
+    private function isAllowedToRetry()
+    {
+        return $this->transaction->getFailures() < $this->currentPlace->getFailures();
+    }
+
+    private function canAccessService()
+    {
+        return $this->transaction->getThresholdDateTime() < new DateTime();
     }
 
     /**
@@ -107,10 +169,10 @@ final class SimpleCircuitBreaker implements CircuitBreaker
         $response = $client->request(
             $service,
             [
-            'method' => 'GET',
-            'http_errors' => true,
-            'connect_timeout' => $this->currentPlace->getTimeout(),
-            'timeout' => $this->currentPlace->getTimeout(),
+                'method' => 'GET',
+                'http_errors' => true,
+                'connect_timeout' => $this->currentPlace->getTimeout(),
+                'timeout' => $this->currentPlace->getTimeout(),
             ]
         );
 
