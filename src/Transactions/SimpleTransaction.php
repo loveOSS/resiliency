@@ -1,9 +1,11 @@
 <?php
 
-namespace PrestaShop\CircuitBreaker\Transaction;
+namespace PrestaShop\CircuitBreaker\Transactions;
 
+use PrestaShop\CircuitBreaker\Exceptions\InvalidTransaction;
 use PrestaShop\CircuitBreaker\Contracts\Transaction;
 use PrestaShop\CircuitBreaker\Contracts\Place;
+use PrestaShop\CircuitBreaker\Utils\Assert;
 use DateTime;
 
 /**
@@ -27,12 +29,14 @@ final class SimpleTransaction implements Transaction
     private $state;
 
     /**
-     * @var int
+     * @var DateTime the Transaction threshold datetime
      */
     private $thresholdDateTime;
 
     public function __construct($service, $failures, $state, $threshold)
     {
+        $this->validate($service, $failures, $state, $threshold);
+
         $this->service = $service;
         $this->failures = $failures;
         $this->state = $state;
@@ -82,8 +86,11 @@ final class SimpleTransaction implements Transaction
     /**
      * {@inheritdoc}
      */
-    public function resetThresholdDateTime($thresholdDateTime)
+    public function resetThresholdDateTime($threshold)
     {
+        $thresholdDateTime = new DateTime();
+        $thresholdDateTime->modify("+$threshold second");
+
         $this->thresholdDateTime = $thresholdDateTime;
     }
 
@@ -105,15 +112,39 @@ final class SimpleTransaction implements Transaction
      */
     public static function createFromPlace(Place $place, $service)
     {
-        $thresholdDateTime = new DateTime();
         $threshold = $place->getThreshold();
-        $thresholdDateTime->modify("+$threshold second");
 
         return new self(
             $service,
             0,
             $place->getState(),
-            $thresholdDateTime
+            $threshold
         );
+    }
+
+    /**
+     * Ensure the transaction is valid (PHP5 is permissive)
+     *
+     * @param string $service the service URI
+     * @param int $failures the failures should be a positive value
+     * @param string $state the Circuit Breaker state
+     * @param int $threshold the threshold should be a positive value
+     *
+     * @throws InvalidTransaction
+     *
+     * @return bool true if valid
+     */
+    private function validate($service, $failures, $state, $threshold)
+    {
+        if (
+            Assert::isURI($service) &&
+            Assert::isPositiveValue($failures) &&
+            Assert::isString($state) &&
+            Assert::isPositiveValue($threshold)
+            ) {
+            return true;
+        }
+
+        throw InvalidTransaction::invalidParameters($service, $failures, $state, $threshold);
     }
 }

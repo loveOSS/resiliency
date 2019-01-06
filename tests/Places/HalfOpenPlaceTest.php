@@ -11,7 +11,7 @@ class HalfOpenPlaceTest extends PlaceTestCase
     /**
      * @dataProvider getFixtures
      */
-    public function testCreation($failures, $timeout, $threshold)
+    public function testCreationWith($failures, $timeout, $threshold)
     {
         $closedPlace = new HalfOpenPlace($failures, $timeout, $threshold);
 
@@ -30,7 +30,7 @@ class HalfOpenPlaceTest extends PlaceTestCase
         $closedPlace = new HalfOpenPlace($failures, $timeout, $threshold);
     }
 
-    public function testState()
+    public function testGetExpectedState()
     {
         $closedPlace = new HalfOpenPlace(1, 1, 1);
 

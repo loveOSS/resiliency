@@ -14,9 +14,9 @@ final class InvalidPlace extends Exception
     public static function invalidSettings($failures, $timeout, $threshold)
     {
         $exceptionMessage = 'Invalid settings for Place' . PHP_EOL;
-        $exceptionMessage .= self::formatError('failures', $failures);
-        $exceptionMessage .= self::formatError('timeout', $timeout);
-        $exceptionMessage .= self::formatError('threshold', $threshold);
+        $exceptionMessage .= self::formatError('failures', $failures, 'integer');
+        $exceptionMessage .= self::formatError('timeout', $timeout, 'float');
+        $exceptionMessage .= self::formatError('threshold', $threshold, 'integer');
 
         return new self($exceptionMessage);
     }
@@ -26,17 +26,19 @@ final class InvalidPlace extends Exception
      *
      * @param string $parameter the parameter to evaluate
      * @param mixed $value the value to format
+     * @param string $expectedType the expected type
      *
      * @return string
      */
-    private static function formatError($parameter, $value)
+    private static function formatError($parameter, $value, $expectedType)
     {
         $type = gettype($value);
 
         $hasStringValue = in_array($type, ['integer', 'float', 'string']);
         $errorMessage = sprintf(
-            'Excepted %s to be positive value, got %s',
+            'Excepted %s to be %s, got %s',
             $parameter,
+            $expectedType,
             $type
         );
 
