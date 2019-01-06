@@ -2,6 +2,8 @@
 
 namespace PrestaShop\CircuitBreaker\Contracts;
 
+use PrestaShop\CircuitBreaker\Exceptions\TransactionNotFound;
+
 /**
  * Store the transaction between the Circuit Breaker
  * and the tiers service.
@@ -23,7 +25,18 @@ interface Storage
      *
      * @var string the service name
      *
+     * @throws TransactionNotFound
+     *
      * @return Transaction
      */
     public function getTransaction($service);
+
+    /**
+     * Checks if the transaction exists.
+     *
+     * @var string the service name
+     *
+     * @return bool
+     */
+    public function hasTransaction($service);
 }

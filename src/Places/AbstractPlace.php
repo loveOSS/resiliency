@@ -52,9 +52,9 @@ abstract class AbstractPlace implements Place
     /**
      * Ensure the place is valid (PHP5 is permissive)
      *
-     * @param int $failures the failures should be a positive integer
-     * @param int $timeout the timeout should be a positive integer
-     * @param int $threshold the threshold should be a positive integer
+     * @param int $failures the failures should be a positive value
+     * @param int $timeout the timeout should be a positive value
+     * @param int $threshold the threshold should be a positive value
      *
      * @throws InvalidPlace
      *
@@ -62,14 +62,14 @@ abstract class AbstractPlace implements Place
      */
     private function validate($failures, $timeout, $threshold)
     {
-        $isPositiveInteger = function ($value) {
+        $isPositiveValue = function ($value) {
             return is_numeric($value) && $value >= 0;
         };
 
         if (
-            $isPositiveInteger($failures) &&
-            $isPositiveInteger($timeout) &&
-            $isPositiveInteger($threshold)
+            $isPositiveValue($failures) &&
+            $isPositiveValue($timeout) &&
+            $isPositiveValue($threshold)
             ) {
             return true;
         }

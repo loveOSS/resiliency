@@ -29,7 +29,7 @@ interface Transaction
      * @var DateTime the time when the circuit breaker move
      *               from open to half open state
      */
-    public function getTresholdDateTime();
+    public function getThresholdDateTime();
 
     /**
      * @var bool reset the number of failures to 0
@@ -37,16 +37,18 @@ interface Transaction
     public function resetFailures();
 
     /**
-     * Reset the treshold happens when service is called successfully.
+     * Reset the threshold happens when service is called successfully.
      *
-     * @var bool reset the treshold date time
+     * @var DateTime the threshold datetime
+     *
+     * @return bool
      */
-    public function resetTresholdDateTime(DateTime $date);
+    public function resetThresholdDateTime($threshold);
 
     /**
      * Everytime the service call fails, increment the number of failures.
      *
-     * @var bool
+     * @return bool
      */
     public function incrementFailures();
 }
