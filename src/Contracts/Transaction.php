@@ -39,7 +39,7 @@ interface Transaction
     /**
      * Reset the threshold happens when service is called successfully.
      *
-     * @var DateTime the threshold datetime
+     * @var int the threshold
      *
      * @return bool
      */

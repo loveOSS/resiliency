@@ -31,7 +31,7 @@
 		}
     },
     "scripts": {
-        "phpstan": "@php ./vendor/bin/phpstan analyse src tests -l 7",
+        "phpstan": "@php ./vendor/bin/phpstan analyse src tests -l 7 -c extension.neon",
         "cs-fix": "@php ./vendor/bin/php-cs-fixer fix",
         "test": "@php ./vendor/bin/phpunit"
     },

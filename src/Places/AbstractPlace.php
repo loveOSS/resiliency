@@ -2,8 +2,9 @@
 
 namespace PrestaShop\CircuitBreaker\Places;
 
-use PrestaShop\CircuitBreaker\Contracts\Place;
 use PrestaShop\CircuitBreaker\Exceptions\InvalidPlace;
+use PrestaShop\CircuitBreaker\Contracts\Place;
+use PrestaShop\CircuitBreaker\Utils\Assert;
 
 abstract class AbstractPlace implements Place
 {
@@ -62,17 +63,14 @@ abstract class AbstractPlace implements Place
      */
     private function validate($failures, $timeout, $threshold)
     {
-        $isPositiveValue = function ($value) {
-            return is_numeric($value) && $value >= 0;
-        };
-
         if (
-            $isPositiveValue($failures) &&
-            $isPositiveValue($timeout) &&
-            $isPositiveValue($threshold)
+            Assert::isPositiveValue($failures) &&
+            Assert::isPositiveValue($timeout) &&
+            Assert::isPositiveValue($threshold)
             ) {
             return true;
         }
+
         throw InvalidPlace::invalidSettings($failures, $timeout, $threshold);
     }
 

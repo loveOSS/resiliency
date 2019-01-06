@@ -2,12 +2,12 @@
 
 namespace PrestaShop\CircuitBreaker;
 
-use PrestaShop\CircuitBreaker\Transaction\SimpleTransaction;
+use PrestaShop\CircuitBreaker\Transactions\SimpleTransaction;
 use PrestaShop\CircuitBreaker\Exceptions\UnavailableService;
 use PrestaShop\CircuitBreaker\Contracts\CircuitBreaker;
 use PrestaShop\CircuitBreaker\Contracts\Transaction;
 use PrestaShop\CircuitBreaker\Clients\GuzzleClient;
-use PrestaShop\CircuitBreaker\Storage\SimpleArray;
+use PrestaShop\CircuitBreaker\Storages\SimpleArray;
 use PrestaShop\CircuitBreaker\Contracts\Storage;
 use PrestaShop\CircuitBreaker\Contracts\Place;
 use DateTime;
