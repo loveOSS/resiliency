@@ -32,13 +32,6 @@ interface Storage
     public function getTransaction($service);
 
     /**
-     * Retrieve all the CircuitBreaker transactions.
-     *
-     * @return TransactionCollection
-     */
-    public function getTransactions();
-
-    /**
      * Checks if the transaction exists.
      *
      * @var string the service name

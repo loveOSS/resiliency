@@ -2,9 +2,10 @@
 
 namespace Tests\PrestaShop\CircuitBreaker\Storages;
 
+use PrestaShop\CircuitBreaker\Exceptions\TransactionNotFound;
 use PrestaShop\CircuitBreaker\Contracts\Transaction;
 use PrestaShop\CircuitBreaker\Storages\SymfonyCache;
-use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\Cache\Simple\FilesystemCache;
 use PHPUnit\Framework\TestCase;
 
 class SymfonyCacheTest extends TestCase
@@ -19,7 +20,7 @@ class SymfonyCacheTest extends TestCase
         $namespace = 'ps__circuit_breaker';
 
         $symfonyCache = new SymfonyCache(
-            new FilesystemAdapter($namespace),
+            new FilesystemCache($namespace),
             $namespace
         );
 
@@ -37,8 +38,6 @@ class SymfonyCacheTest extends TestCase
         );
 
         $this->assertTrue($operation);
-
-        $this->assertCount(1, $this->symfonyCache->getTransactions());
     }
 
     /**
@@ -68,14 +67,52 @@ class SymfonyCacheTest extends TestCase
     }
 
     /**
+     * @depends testCreation
+     * @depends testGetTransaction
+     * @depends testHasTransaction
+     */
+    public function testGetNotFoundTransactionThrowsAnException()
+    {
+        $this->expectException(TransactionNotFound::class);
+
+        $this->symfonyCache->getTransaction('http://test.com');
+    }
+
+    /**
+     * @depends testSaveTransaction
+     * @depends testGetTransaction
+     */
+    public function testClear()
+    {
+        $translationStub = $this->createMock(Transaction::class);
+        $this->symfonyCache->saveTransaction('http://a.com', $translationStub);
+        $this->symfonyCache->saveTransaction('http://b.com', $translationStub);
+
+        // We have stored 2 transactions
+        $this->assertTrue($this->symfonyCache->clear());
+        $this->expectException(TransactionNotFound::class);
+
+        $this->symfonyCache->getTransaction('http://a.com');
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
         $namespace = 'ps__circuit_breaker';
         $this->symfonyCache = new SymfonyCache(
-            new FilesystemAdapter($namespace),
+            new FilesystemCache($namespace, 20),
             $namespace
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function tearDown()
+    {
+        $filesystemAdapter = new FilesystemCache('ps__circuit_breaker', 20);
+        $filesystemAdapter->clear();
     }
 }

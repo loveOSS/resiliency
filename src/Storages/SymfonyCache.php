@@ -2,11 +2,10 @@
 
 namespace PrestaShop\CircuitBreaker\Storages;
 
-use PrestaShop\CircuitBreaker\Contracts\Storage;
-use PrestaShop\CircuitBreaker\Contracts\Transaction;
-use Symfony\Component\Cache\Adapter\AbstractAdapter;
 use PrestaShop\CircuitBreaker\Exceptions\TransactionNotFound;
-use PrestaShop\CircuitBreaker\Transactions\SimpleCollection;
+use Symfony\Component\Cache\Simple\AbstractCache;
+use PrestaShop\CircuitBreaker\Contracts\Transaction;
+use PrestaShop\CircuitBreaker\Contracts\Storage;
 
 /**
  * Implementation of Storage using the Symfony Cache Component.
@@ -14,18 +13,18 @@ use PrestaShop\CircuitBreaker\Transactions\SimpleCollection;
 final class SymfonyCache implements Storage
 {
     /**
-     * @var AbstractAdapter the Symfony Cache adapter
+     * @var AbstractCache the Symfony Cache
      */
-    private $symfonyCacheAdapter;
+    private $symfonyCache;
 
     /**
      * @var string the Symfony Cache namespace
      */
     private $namespace;
 
-    public function __construct(AbstractAdapter $symfonyCacheAdapter, $namespace)
+    public function __construct(AbstractCache $symfonyCache, $namespace)
     {
-        $this->symfonyCacheAdapter = $symfonyCacheAdapter;
+        $this->symfonyCache = $symfonyCache;
         $this->namespace = $namespace;
     }
 
@@ -35,11 +34,8 @@ final class SymfonyCache implements Storage
     public function saveTransaction($service, Transaction $transaction)
     {
         $key = $this->getKey($service);
-        $cacheItem = $this->symfonyCacheAdapter->getItem($key);
 
-        $cacheItem->set($transaction);
-
-        return $this->symfonyCacheAdapter->save($cacheItem);
+        return $this->symfonyCache->set($key, $transaction);
     }
 
     /**
@@ -50,23 +46,10 @@ final class SymfonyCache implements Storage
         $key = $this->getKey($service);
 
         if ($this->hasTransaction($service)) {
-            return $this->symfonyCacheAdapter->getItem($key)->get();
+            return $this->symfonyCache->get($key);
         }
 
         throw new TransactionNotFound();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTransactions()
-    {
-        $transactions = [];
-        foreach ($this->symfonyCacheAdapter->getItems([$this->namespace]) as $item) {
-            $transactions[] = $item->get();
-        }
-
-        return SimpleCollection::create($transactions);
     }
 
     /**
@@ -76,7 +59,7 @@ final class SymfonyCache implements Storage
     {
         $key = $this->getKey($service);
 
-        return $this->symfonyCacheAdapter->hasItem($key);
+        return $this->symfonyCache->has($key);
     }
 
     /**
@@ -84,7 +67,7 @@ final class SymfonyCache implements Storage
      */
     public function clear()
     {
-        return $this->symfonyCacheAdapter->clear();
+        return $this->symfonyCache->clear();
     }
 
     /**
