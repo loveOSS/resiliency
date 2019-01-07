@@ -1,5 +1,7 @@
 # Circuit Breaker, an implementation for resilient PHP applications
 
+[![codecov](https://codecov.io/gh/PrestaShop/circuit-breaker/branch/master/graph/badge.svg)](https://codecov.io/gh/PrestaShop/circuit-breaker)
+
 > Experimental, don't use it yet!
 
 ## Main principles
