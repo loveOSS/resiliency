@@ -4,15 +4,30 @@ namespace PrestaShop\CircuitBreaker\Storages;
 
 use PrestaShop\CircuitBreaker\Contracts\Storage;
 use PrestaShop\CircuitBreaker\Contracts\Transaction;
-use PrestaShop\CircuitBreaker\Transactions\SimpleCollection;
+use Symfony\Component\Cache\Adapter\AbstractAdapter;
 use PrestaShop\CircuitBreaker\Exceptions\TransactionNotFound;
+use PrestaShop\CircuitBreaker\Transactions\SimpleCollection;
 
 /**
- * Very simple implementation of Storage using a simple PHP array.
+ * Implementation of Storage using the Symfony Cache Component.
  */
-final class SimpleArray implements Storage
+final class SymfonyCache implements Storage
 {
-    public static $transactions = [];
+    /**
+     * @var AbstractAdapter the Symfony Cache adapter
+     */
+    private $symfonyCacheAdapter;
+
+    /**
+     * @var string the Symfony Cache namespace
+     */
+    private $namespace;
+
+    public function __construct(AbstractAdapter $symfonyCacheAdapter, $namespace)
+    {
+        $this->symfonyCacheAdapter = $symfonyCacheAdapter;
+        $this->namespace = $namespace;
+    }
 
     /**
      * {@inheritdoc}
@@ -20,10 +35,11 @@ final class SimpleArray implements Storage
     public function saveTransaction($service, Transaction $transaction)
     {
         $key = $this->getKey($service);
+        $cacheItem = $this->symfonyCacheAdapter->getItem($key);
 
-        self::$transactions[$key] = $transaction;
+        $cacheItem->set($transaction);
 
-        return true;
+        return $this->symfonyCacheAdapter->save($cacheItem);
     }
 
     /**
@@ -34,7 +50,7 @@ final class SimpleArray implements Storage
         $key = $this->getKey($service);
 
         if ($this->hasTransaction($service)) {
-            return self::$transactions[$key];
+            return $this->symfonyCacheAdapter->getItem($key)->get();
         }
 
         throw new TransactionNotFound();
@@ -45,7 +61,12 @@ final class SimpleArray implements Storage
      */
     public function getTransactions()
     {
-        return SimpleCollection::create(self::$transactions);
+        $transactions = [];
+        foreach ($this->symfonyCacheAdapter->getItems([$this->namespace]) as $item) {
+            $transactions[] = $item->get();
+        }
+
+        return SimpleCollection::create($transactions);
     }
 
     /**
@@ -55,7 +76,7 @@ final class SimpleArray implements Storage
     {
         $key = $this->getKey($service);
 
-        return array_key_exists($key, self::$transactions);
+        return $this->symfonyCacheAdapter->hasItem($key);
     }
 
     /**
@@ -63,7 +84,7 @@ final class SimpleArray implements Storage
      */
     public function clear()
     {
-        self::$transactions = [];
+        return $this->symfonyCacheAdapter->clear();
     }
 
     /**
