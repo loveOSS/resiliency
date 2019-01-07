@@ -24,6 +24,16 @@ final class Assert
      *
      * @return bool
      */
+    public static function isPositiveInteger($value)
+    {
+        return self::isPositiveValue($value) && is_int($value);
+    }
+
+    /**
+     * @param mixed $value the value to evaluate
+     *
+     * @return bool
+     */
     public static function isURI($value)
     {
         return !is_null($value)

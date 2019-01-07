@@ -64,9 +64,9 @@ abstract class AbstractPlace implements Place
     private function validate($failures, $timeout, $threshold)
     {
         if (
-            Assert::isPositiveValue($failures) &&
+            Assert::isPositiveInteger($failures) &&
             Assert::isPositiveValue($timeout) &&
-            Assert::isPositiveValue($threshold)
+            Assert::isPositiveInteger($threshold)
             ) {
             return true;
         }

@@ -138,9 +138,9 @@ final class SimpleTransaction implements Transaction
     {
         if (
             Assert::isURI($service) &&
-            Assert::isPositiveValue($failures) &&
+            Assert::isPositiveInteger($failures) &&
             Assert::isString($state) &&
-            Assert::isPositiveValue($threshold)
+            Assert::isPositiveInteger($threshold)
             ) {
             return true;
         }
