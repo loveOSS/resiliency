@@ -20,7 +20,7 @@ class SimpleCircuitBreakerTest extends TestCase
         $circuitBreaker = $this->createCircuitBreaker();
 
         $this->assertSame(States::CLOSED_STATE, $circuitBreaker->getState());
-        $this->assertNull($circuitBreaker->call('https://httpbin.org/get/foo', $this->createFallback()));
+        $this->assertNull($circuitBreaker->call('https://httpbin.org/get/foo', $this->createFallbackResponse()));
     }
 
     /**
@@ -30,14 +30,14 @@ class SimpleCircuitBreakerTest extends TestCase
     {
         $circuitBreaker = $this->createCircuitBreaker();
         // CLOSED
-        $circuitBreaker->call('https://httpbin.org/get/foo', $this->createFallback());
+        $circuitBreaker->call('https://httpbin.org/get/foo', $this->createFallbackResponse());
 
         $this->assertSame(States::OPEN_STATE, $circuitBreaker->getState());
         $this->assertSame(
             '{}',
             $circuitBreaker->call(
                 'https://httpbin.org/get/foo',
-                $this->createFallback()
+                $this->createFallbackResponse()
             )
         );
     }
@@ -50,9 +50,9 @@ class SimpleCircuitBreakerTest extends TestCase
     {
         $circuitBreaker = $this->createCircuitBreaker();
         // CLOSED
-        $circuitBreaker->call('https://httpbin.org/get/foo', $this->createFallback());
+        $circuitBreaker->call('https://httpbin.org/get/foo', $this->createFallbackResponse());
         // OPEN
-        $circuitBreaker->call('https://httpbin.org/get/foo', $this->createFallback());
+        $circuitBreaker->call('https://httpbin.org/get/foo', $this->createFallbackResponse());
 
         sleep(2);
         // NOW HALF OPEN
@@ -60,7 +60,7 @@ class SimpleCircuitBreakerTest extends TestCase
             '{}',
             $circuitBreaker->call(
                 'https://httpbin.org/get/foo',
-                $this->createFallback()
+                $this->createFallbackResponse()
             )
         );
         $this->assertSame(States::HALF_OPEN_STATE, $circuitBreaker->getState());
@@ -81,7 +81,7 @@ class SimpleCircuitBreakerTest extends TestCase
     /**
      * @return callable the fallback callable
      */
-    private function createFallback()
+    private function createFallbackResponse()
     {
         return function () {
             return '{}';

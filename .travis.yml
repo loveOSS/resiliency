@@ -22,7 +22,7 @@ before_script:
   - composer install -n
 
 script:
-  - composer test
+  - composer test -- --coverage-clover=coverage.xml
 
 jobs:
   include:
@@ -32,3 +32,6 @@ jobs:
     - stage: PHPStan Code quality
       script:
         - composer require --dev "phpstan/phpstan:^0.10" && composer phpstan
+
+after_success:
+- bash <(curl -s https://codecov.io/bash)
