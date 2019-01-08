@@ -72,7 +72,7 @@ class SimpleCircuitBreakerTest extends TestCase
         // OPEN
         $circuitBreaker->call('https://httpbin.org/get/foo', $this->createFallbackResponse());
 
-        sleep(1);
+        sleep(2);
         // NOW HALF OPEN
         $this->assertSame(
             '{}',
