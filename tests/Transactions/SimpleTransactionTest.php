@@ -2,11 +2,11 @@
 
 namespace Tests\PrestaShop\CircuitBreaker\Transactions;
 
-use PrestaShop\CircuitBreaker\Transactions\SimpleTransaction;
-use PrestaShop\CircuitBreaker\Contracts\Place;
-use PHPUnit_Framework_MockObject_MockObject;
-use PHPUnit\Framework\TestCase;
 use DateTime;
+use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
+use PrestaShop\CircuitBreaker\Contracts\Place;
+use PrestaShop\CircuitBreaker\Transactions\SimpleTransaction;
 
 class SimpleTransactionTest extends TestCase
 {

@@ -10,6 +10,10 @@ class ClosedPlaceTest extends PlaceTestCase
 {
     /**
      * @dataProvider getFixtures
+     *
+     * @param mixed $failures
+     * @param mixed $timeout
+     * @param mixed $threshold
      */
     public function testCreationWith($failures, $timeout, $threshold)
     {
@@ -22,12 +26,16 @@ class ClosedPlaceTest extends PlaceTestCase
 
     /**
      * @dataProvider getInvalidFixtures
+     *
+     * @param mixed $failures
+     * @param mixed $timeout
+     * @param mixed $threshold
      */
     public function testCreationWithInvalidValues($failures, $timeout, $threshold)
     {
         $this->expectException(InvalidPlace::class);
 
-        $closedPlace = new ClosedPlace($failures, $timeout, $threshold);
+        new ClosedPlace($failures, $timeout, $threshold);
     }
 
     public function testGetExpectedState()

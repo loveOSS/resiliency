@@ -2,11 +2,11 @@
 
 namespace PrestaShop\CircuitBreaker\Transactions;
 
-use PrestaShop\CircuitBreaker\Exceptions\InvalidTransaction;
-use PrestaShop\CircuitBreaker\Contracts\Transaction;
-use PrestaShop\CircuitBreaker\Contracts\Place;
-use PrestaShop\CircuitBreaker\Utils\Assert;
 use DateTime;
+use PrestaShop\CircuitBreaker\Contracts\Place;
+use PrestaShop\CircuitBreaker\Contracts\Transaction;
+use PrestaShop\CircuitBreaker\Exceptions\InvalidTransaction;
+use PrestaShop\CircuitBreaker\Utils\Assert;
 
 /**
  * Main implementation of Circuit Breaker transaction.
@@ -33,6 +33,12 @@ final class SimpleTransaction implements Transaction
      */
     private $thresholdDateTime;
 
+    /**
+     * @param string $service the service URI
+     * @param int $failures the allowed failures
+     * @param string $state the circuit breaker state/place
+     * @param int $threshold the place threshold
+     */
     public function __construct($service, $failures, $state, $threshold)
     {
         $this->validate($service, $failures, $state, $threshold);
@@ -76,31 +82,20 @@ final class SimpleTransaction implements Transaction
     }
 
     /**
-     * Set the right DateTime from the threshold value.
-     *
-     * @param int $threshold the Transaction threshold
-     */
-    private function initThresholdDateTime($threshold)
-    {
-        $thresholdDateTime = new DateTime();
-        $thresholdDateTime->modify("+$threshold second");
-
-        $this->thresholdDateTime = $thresholdDateTime;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function incrementFailures()
     {
         ++$this->failures;
+
+        return true;
     }
 
     /**
      * Helper to create a transaction from the Place.
      *
-     * @var Place the Circuit Breaker place
-     * @var string $service the service URI
+     * @param Place $place the Circuit Breaker place
+     * @param string $service the service URI
      *
      * @return self
      */
@@ -117,7 +112,20 @@ final class SimpleTransaction implements Transaction
     }
 
     /**
-     * Ensure the transaction is valid (PHP5 is permissive)
+     * Set the right DateTime from the threshold value.
+     *
+     * @param int $threshold the Transaction threshold
+     */
+    private function initThresholdDateTime($threshold)
+    {
+        $thresholdDateTime = new DateTime();
+        $thresholdDateTime->modify("+$threshold second");
+
+        $this->thresholdDateTime = $thresholdDateTime;
+    }
+
+    /**
+     * Ensure the transaction is valid (PHP5 is permissive).
      *
      * @param string $service the service URI
      * @param int $failures the failures should be a positive value
@@ -130,12 +138,13 @@ final class SimpleTransaction implements Transaction
      */
     private function validate($service, $failures, $state, $threshold)
     {
-        if (
-            Assert::isURI($service) &&
-            Assert::isPositiveInteger($failures) &&
-            Assert::isString($state) &&
-            Assert::isPositiveInteger($threshold)
-            ) {
+        $assertionsAreValid = Assert::isURI($service)
+            && Assert::isPositiveInteger($failures)
+            && Assert::isString($state)
+            && Assert::isPositiveInteger($threshold)
+        ;
+
+        if ($assertionsAreValid) {
             return true;
         }
 

@@ -2,12 +2,12 @@
 
 namespace Tests\PrestaShop\CircuitBreaker;
 
-use PrestaShop\CircuitBreaker\SimpleCircuitBreaker;
-use PrestaShop\CircuitBreaker\Places\HalfOpenPlace;
-use PrestaShop\CircuitBreaker\Places\ClosedPlace;
-use PrestaShop\CircuitBreaker\Places\OpenPlace;
-use PrestaShop\CircuitBreaker\States;
 use PHPUnit\Framework\TestCase;
+use PrestaShop\CircuitBreaker\Places\ClosedPlace;
+use PrestaShop\CircuitBreaker\Places\HalfOpenPlace;
+use PrestaShop\CircuitBreaker\Places\OpenPlace;
+use PrestaShop\CircuitBreaker\SimpleCircuitBreaker;
+use PrestaShop\CircuitBreaker\States;
 
 /**
  * @todo: needs tools to emulate a service unreachable

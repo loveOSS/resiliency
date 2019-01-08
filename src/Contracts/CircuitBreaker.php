@@ -10,7 +10,7 @@ namespace PrestaShop\CircuitBreaker\Contracts;
 interface CircuitBreaker
 {
     /**
-     * @var string the circuit breaker state
+     * @return string the circuit breaker state
      */
     public function getState();
 
@@ -19,21 +19,25 @@ interface CircuitBreaker
      *
      * @var string the function to call
      * @var callable $fallback if the service is unavailable, rely on the fallback
+     *
+     * @return string
+     *
+     * @param mixed $service
      */
     public function call($service, callable $fallback);
 
     /**
-     * @var bool checks if the circuit breaker is open
+     * @return bool checks if the circuit breaker is open
      */
     public function isOpened();
 
     /**
-     * @var bool checks if the circuit breaker is half open
+     * @return bool checks if the circuit breaker is half open
      */
     public function isHalfOpened();
 
     /**
-     * @var bool checks if the circuit breaker is closed
+     * @return bool checks if the circuit breaker is closed
      */
     public function isClosed();
 }

@@ -32,6 +32,7 @@ return PhpCsFixer\Config::create()
         'self_accessor' => false,
         'yoda_style' => null,
         'non_printable_character' => true,
+        'phpdoc_no_empty_return' => false,
     ])
     ->setFinder($finder)
     ->setCacheFile(__DIR__.'/.php_cs.cache')

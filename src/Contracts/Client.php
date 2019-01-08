@@ -9,8 +9,10 @@ namespace PrestaShop\CircuitBreaker\Contracts;
 interface Client
 {
     /**
-     * @var string The URI of the service to be reached
-     * @var array $options the options if needed
+     * @param string $resource the URI of the service to be reached
+     * @param array $options the options if needed
+     *
+     * @return string
      */
     public function request($resource, array $options);
 }

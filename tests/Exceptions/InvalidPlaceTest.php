@@ -2,8 +2,8 @@
 
 namespace Tests\PrestaShop\CircuitBreaker\Exceptions;
 
-use PrestaShop\CircuitBreaker\Exceptions\InvalidPlace;
 use PHPUnit\Framework\TestCase;
+use PrestaShop\CircuitBreaker\Exceptions\InvalidPlace;
 
 class InvalidPlaceTest extends TestCase
 {
@@ -31,6 +31,9 @@ class InvalidPlaceTest extends TestCase
         $this->assertSame($invalidPlace->getMessage(), $expectedExceptionMessage);
     }
 
+    /**
+     * @return array
+     */
     public function getSettings()
     {
         return [

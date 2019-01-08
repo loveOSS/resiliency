@@ -8,7 +8,9 @@ namespace PrestaShop\CircuitBreaker\Contracts;
 interface Factory
 {
     /**
-     * @var array the settings for the Places
+     * @param array $settings the settings for the Places
+     *
+     * @return CircuitBreaker
      */
     public function create(array $settings);
 }

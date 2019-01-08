@@ -2,8 +2,8 @@
 
 namespace PrestaShop\CircuitBreaker\Exceptions;
 
-use PrestaShop\CircuitBreaker\Utils\ErrorFormatter;
 use Exception;
+use PrestaShop\CircuitBreaker\Utils\ErrorFormatter;
 
 final class InvalidTransaction extends Exception
 {
@@ -12,6 +12,8 @@ final class InvalidTransaction extends Exception
      * @param mixed $failures the failures
      * @param mixed $state the Circuit Breaker
      * @param mixed $threshold the threshold
+     *
+     * @return self
      */
     public static function invalidParameters($service, $failures, $state, $threshold)
     {

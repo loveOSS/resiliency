@@ -3,7 +3,7 @@
 namespace PrestaShop\CircuitBreaker;
 
 /**
- * Define the available states of the Circuit Breaker;
+ * Define the available states of the Circuit Breaker;.
  */
 final class States
 {

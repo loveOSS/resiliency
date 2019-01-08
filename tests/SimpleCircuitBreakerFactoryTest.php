@@ -2,9 +2,9 @@
 
 namespace Tests\PrestaShop\CircuitBreaker;
 
-use PrestaShop\CircuitBreaker\SimpleCircuitBreakerFactory;
-use PrestaShop\CircuitBreaker\SimpleCircuitBreaker;
 use PHPUnit\Framework\TestCase;
+use PrestaShop\CircuitBreaker\SimpleCircuitBreaker;
+use PrestaShop\CircuitBreaker\SimpleCircuitBreakerFactory;
 
 class SimpleCircuitBreakerFactoryTest extends TestCase
 {
