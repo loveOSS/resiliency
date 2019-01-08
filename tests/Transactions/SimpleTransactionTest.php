@@ -80,34 +80,6 @@ class SimpleTransactionTest extends TestCase
 
     /**
      * @depends testCreation
-     * @depends testGetFailures
-     * @depends testIncrementFailures
-     */
-    public function testResetFailures()
-    {
-        $simpleTransaction = $this->createSimpleTransaction();
-        $simpleTransaction->incrementFailures();
-
-        $simpleTransaction->resetFailures();
-
-        $this->assertSame(0, $simpleTransaction->getFailures());
-    }
-
-    /**
-     * @depends testCreation
-     * @depends testGetThresholdDateTime
-     */
-    public function testResetThresholdDateTime()
-    {
-        $simpleTransaction = $this->createSimpleTransaction();
-        $someDate = (new DateTime('+20 second'))->format('d/m/Y H:i:s');
-
-        $simpleTransaction->resetThresholdDateTime(20);
-        $this->assertSame($someDate, $simpleTransaction->getThresholdDateTime()->format('d/m/Y H:i:s'));
-    }
-
-    /**
-     * @depends testCreation
      */
     public function testCreationFromPlaceHelper()
     {

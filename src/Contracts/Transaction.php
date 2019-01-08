@@ -32,20 +32,6 @@ interface Transaction
     public function getThresholdDateTime();
 
     /**
-     * @var bool reset the number of failures to 0
-     */
-    public function resetFailures();
-
-    /**
-     * Reset the threshold happens when service is called successfully.
-     *
-     * @var int the threshold
-     *
-     * @return bool
-     */
-    public function resetThresholdDateTime($threshold);
-
-    /**
      * Everytime the service call fails, increment the number of failures.
      *
      * @return bool

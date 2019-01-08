@@ -40,7 +40,7 @@ final class SimpleTransaction implements Transaction
         $this->service = $service;
         $this->failures = $failures;
         $this->state = $state;
-        $this->resetThresholdDateTime($threshold);
+        $this->initThresholdDateTime($threshold);
     }
 
     /**
@@ -76,17 +76,11 @@ final class SimpleTransaction implements Transaction
     }
 
     /**
-     * {@inheritdoc}
+     * Set the right DateTime from the threshold value.
+     *
+     * @param int $threshold the Transaction threshold
      */
-    public function resetFailures()
-    {
-        $this->failures = 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function resetThresholdDateTime($threshold)
+    private function initThresholdDateTime($threshold)
     {
         $thresholdDateTime = new DateTime();
         $thresholdDateTime->modify("+$threshold second");
