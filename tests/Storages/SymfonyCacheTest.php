@@ -79,7 +79,7 @@ class SymfonyCacheTest extends TestCase
 
         $transaction = $this->symfonyCache->getTransaction('http://test.com');
 
-        $this->assertSame($transaction, $translationStub);
+        $this->assertEquals($transaction, $translationStub);
     }
 
     /**
