@@ -1,6 +1,6 @@
 # Circuit Breaker, an implementation for resilient PHP applications
 
-[![codecov](https://codecov.io/gh/PrestaShop/circuit-breaker/branch/master/graph/badge.svg)](https://codecov.io/gh/PrestaShop/circuit-breaker) [![PHPStan](https://img.shields.io/badge/PHPStan-level%207%2F7-brightgreen.svg)](https://shields.io/#/)
+[![codecov](https://codecov.io/gh/PrestaShop/circuit-breaker/branch/master/graph/badge.svg)](https://codecov.io/gh/PrestaShop/circuit-breaker) [![PHPStan](https://img.shields.io/badge/PHPStan-Level%207-brightgreen.svg?style=flat&logo=php)](https://shields.io/#/)
 
 > Experimental, don't use it yet!
 
