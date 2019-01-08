@@ -10,7 +10,7 @@ namespace PrestaShop\CircuitBreaker\Utils;
 final class ErrorFormatter
 {
     /**
-     * Format error message
+     * Format error message.
      *
      * @param string $parameter the parameter to evaluate
      * @param mixed $value the value to format
@@ -23,8 +23,8 @@ final class ErrorFormatter
     {
         $errorMessage = '';
         $isValid = Assert::$function($value);
-        $type = gettype($value);
-        $hasStringValue = in_array($type, ['integer', 'float', 'string']);
+        $type = \gettype($value);
+        $hasStringValue = \in_array($type, ['integer', 'float', 'string'], true);
 
         if (!$isValid) {
             $errorMessage = sprintf(

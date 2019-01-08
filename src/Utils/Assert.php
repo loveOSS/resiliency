@@ -16,7 +16,7 @@ final class Assert
      */
     public static function isPositiveValue($value)
     {
-        return !is_string($value) && is_numeric($value) && $value >= 0;
+        return !\is_string($value) && is_numeric($value) && $value >= 0;
     }
 
     /**
@@ -26,7 +26,7 @@ final class Assert
      */
     public static function isPositiveInteger($value)
     {
-        return self::isPositiveValue($value) && is_int($value);
+        return self::isPositiveValue($value) && \is_int($value);
     }
 
     /**
@@ -36,10 +36,10 @@ final class Assert
      */
     public static function isURI($value)
     {
-        return !is_null($value)
+        return null !== $value
             && !is_numeric($value)
-            && !is_bool($value)
-            && filter_var($value, FILTER_SANITIZE_URL) !== false
+            && !\is_bool($value)
+            && false !== filter_var($value, FILTER_SANITIZE_URL)
         ;
     }
 
@@ -50,6 +50,6 @@ final class Assert
      */
     public static function isString($value)
     {
-        return !empty($value) && is_string($value);
+        return !empty($value) && \is_string($value);
     }
 }

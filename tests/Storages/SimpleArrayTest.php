@@ -2,13 +2,25 @@
 
 namespace Tests\PrestaShop\CircuitBreaker\Storages;
 
-use PrestaShop\CircuitBreaker\Exceptions\TransactionNotFound;
-use PrestaShop\CircuitBreaker\Contracts\Transaction;
-use PrestaShop\CircuitBreaker\Storages\SimpleArray;
 use PHPUnit\Framework\TestCase;
+use PrestaShop\CircuitBreaker\Contracts\Transaction;
+use PrestaShop\CircuitBreaker\Exceptions\TransactionNotFound;
+use PrestaShop\CircuitBreaker\Storages\SimpleArray;
 
 class SimpleArrayTest extends TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
+    {
+        $simpleArray = new SimpleArray();
+        $simpleArray::$transactions = [];
+    }
+
+    /**
+     * @return void
+     */
     public function testCreation()
     {
         $simpleArray = new SimpleArray();
@@ -19,6 +31,8 @@ class SimpleArrayTest extends TestCase
 
     /**
      * @depends testCreation
+     *
+     * @return void
      */
     public function testSaveTransaction()
     {
@@ -34,6 +48,8 @@ class SimpleArrayTest extends TestCase
     /**
      * @depends testCreation
      * @depends testSaveTransaction
+     *
+     * @return void
      */
     public function testHasTransaction()
     {
@@ -47,6 +63,8 @@ class SimpleArrayTest extends TestCase
      * @depends testCreation
      * @depends testSaveTransaction
      * @depends testHasTransaction
+     *
+     * @return void
      */
     public function testGetTransaction()
     {
@@ -63,6 +81,8 @@ class SimpleArrayTest extends TestCase
      * @depends testCreation
      * @depends testGetTransaction
      * @depends testHasTransaction
+     *
+     * @return void
      */
     public function testGetNotFoundTransactionThrowsAnException()
     {
@@ -75,6 +95,8 @@ class SimpleArrayTest extends TestCase
     /**
      * @depends testSaveTransaction
      * @depends testGetTransaction
+     *
+     * @return void
      */
     public function testClear()
     {
@@ -87,14 +109,5 @@ class SimpleArrayTest extends TestCase
         $simpleArray->clear();
         $transactions = $simpleArray::$transactions;
         $this->assertEmpty($transactions);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp()
-    {
-        $simpleArray = new SimpleArray();
-        $simpleArray::$transactions = [];
     }
 }

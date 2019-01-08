@@ -3,7 +3,7 @@
 namespace PrestaShop\CircuitBreaker;
 
 /**
- * Define the available transitions of the Circuit Breaker;
+ * Define the available transitions of the Circuit Breaker;.
  */
 final class Transitions
 {

@@ -11,23 +11,23 @@ use DateTime;
 interface Transaction
 {
     /**
-     * @var string the service name
+     * @return string the service name
      */
     public function getService();
 
     /**
-     * @var int the number of failures to call the service
+     * @return int the number of failures to call the service
      */
     public function getFailures();
 
     /**
-     * @var string the current state of the Circuit Breaker
+     * @return string the current state of the Circuit Breaker
      */
     public function getState();
 
     /**
-     * @var DateTime the time when the circuit breaker move
-     *               from open to half open state
+     * @return DateTime the time when the circuit breaker move
+     *                  from open to half open state
      */
     public function getThresholdDateTime();
 

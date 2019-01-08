@@ -2,9 +2,9 @@
 
 namespace PrestaShop\CircuitBreaker;
 
-use PrestaShop\CircuitBreaker\Places\HalfOpenPlace;
-use PrestaShop\CircuitBreaker\Places\ClosedPlace;
 use PrestaShop\CircuitBreaker\Contracts\Factory;
+use PrestaShop\CircuitBreaker\Places\ClosedPlace;
+use PrestaShop\CircuitBreaker\Places\HalfOpenPlace;
 use PrestaShop\CircuitBreaker\Places\OpenPlace;
 
 /**
@@ -13,6 +13,9 @@ use PrestaShop\CircuitBreaker\Places\OpenPlace;
  */
 final class SimpleCircuitBreakerFactory implements Factory
 {
+    /**
+     * {@inheritdoc}
+     */
     public function create(array $settings)
     {
         $openPlace = OpenPlace::fromArray($settings['open']);

@@ -2,11 +2,11 @@
 
 namespace Tests\PrestaShop\CircuitBreaker\Storages;
 
-use PrestaShop\CircuitBreaker\Exceptions\TransactionNotFound;
+use PHPUnit\Framework\TestCase;
 use PrestaShop\CircuitBreaker\Contracts\Transaction;
+use PrestaShop\CircuitBreaker\Exceptions\TransactionNotFound;
 use PrestaShop\CircuitBreaker\Storages\SymfonyCache;
 use Symfony\Component\Cache\Simple\FilesystemCache;
-use PHPUnit\Framework\TestCase;
 
 class SymfonyCacheTest extends TestCase
 {
@@ -15,13 +15,29 @@ class SymfonyCacheTest extends TestCase
      */
     private $symfonyCache;
 
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
+    {
+        $this->symfonyCache = new SymfonyCache(
+            new FilesystemCache('ps__circuit_breaker', 20)
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function tearDown()
+    {
+        $filesystemAdapter = new FilesystemCache('ps__circuit_breaker', 20);
+        $filesystemAdapter->clear();
+    }
+
     public function testCreation()
     {
-        $namespace = 'ps__circuit_breaker';
-
         $symfonyCache = new SymfonyCache(
-            new FilesystemCache($namespace),
-            $namespace
+            new FilesystemCache('ps__circuit_breaker')
         );
 
         $this->assertInstanceOf(SymfonyCache::class, $symfonyCache);
@@ -63,7 +79,7 @@ class SymfonyCacheTest extends TestCase
 
         $transaction = $this->symfonyCache->getTransaction('http://test.com');
 
-        $this->assertEquals($transaction, $translationStub);
+        $this->assertSame($transaction, $translationStub);
     }
 
     /**
@@ -93,26 +109,5 @@ class SymfonyCacheTest extends TestCase
         $this->expectException(TransactionNotFound::class);
 
         $this->symfonyCache->getTransaction('http://a.com');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp()
-    {
-        $namespace = 'ps__circuit_breaker';
-        $this->symfonyCache = new SymfonyCache(
-            new FilesystemCache($namespace, 20),
-            $namespace
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function tearDown()
-    {
-        $filesystemAdapter = new FilesystemCache('ps__circuit_breaker', 20);
-        $filesystemAdapter->clear();
     }
 }

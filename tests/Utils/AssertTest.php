@@ -2,8 +2,8 @@
 
 namespace Tests\PrestaShop\CircuitBreaker\Utils;
 
-use PrestaShop\CircuitBreaker\Utils\Assert;
 use PHPUnit\Framework\TestCase;
+use PrestaShop\CircuitBreaker\Utils\Assert;
 
 class AssertTest extends TestCase
 {
@@ -40,6 +40,9 @@ class AssertTest extends TestCase
         $this->assertSame($expected, Assert::isString($value));
     }
 
+    /**
+     * @return array
+     */
     public function getValues()
     {
         return [
@@ -47,12 +50,20 @@ class AssertTest extends TestCase
             'str_0' => ['0', false],
             'float' => [0.1, true],
             'stdclass' => [new \stdClass(), false],
-            'callable' => [function () { return 0; }, false],
+            'callable' => [
+                function () {
+                    return 0;
+                },
+                false,
+            ],
             'negative' => [-1, false],
             'bool' => [false, false],
         ];
     }
 
+    /**
+     * @return array
+     */
     public function getURIs()
     {
         return [

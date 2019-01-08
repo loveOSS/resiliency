@@ -2,10 +2,10 @@
 
 namespace PrestaShop\CircuitBreaker\Clients;
 
-use PrestaShop\CircuitBreaker\Exceptions\UnavailableService;
-use PrestaShop\CircuitBreaker\Contracts\Client;
-use GuzzleHttp\Client as OriginalGuzzleClient;
 use Exception;
+use GuzzleHttp\Client as OriginalGuzzleClient;
+use PrestaShop\CircuitBreaker\Contracts\Client;
+use PrestaShop\CircuitBreaker\Exceptions\UnavailableService;
 
 /**
  * Guzzle implementation of client.

@@ -2,10 +2,10 @@
 
 namespace PrestaShop\CircuitBreaker\Storages;
 
+use PrestaShop\CircuitBreaker\Contracts\Storage;
+use PrestaShop\CircuitBreaker\Contracts\Transaction;
 use PrestaShop\CircuitBreaker\Exceptions\TransactionNotFound;
 use Symfony\Component\Cache\Simple\AbstractCache;
-use PrestaShop\CircuitBreaker\Contracts\Transaction;
-use PrestaShop\CircuitBreaker\Contracts\Storage;
 
 /**
  * Implementation of Storage using the Symfony Cache Component.
@@ -17,15 +17,9 @@ final class SymfonyCache implements Storage
      */
     private $symfonyCache;
 
-    /**
-     * @var string the Symfony Cache namespace
-     */
-    private $namespace;
-
-    public function __construct(AbstractCache $symfonyCache, $namespace)
+    public function __construct(AbstractCache $symfonyCache)
     {
         $this->symfonyCache = $symfonyCache;
-        $this->namespace = $namespace;
     }
 
     /**
@@ -71,7 +65,7 @@ final class SymfonyCache implements Storage
     }
 
     /**
-     * Helper method to properly store the transaction
+     * Helper method to properly store the transaction.
      *
      * @param string $service the service URI
      *

@@ -17,17 +17,17 @@ interface Place
     public function getState();
 
     /**
-     * @var int the number of failures
+     * @return int the number of failures
      */
     public function getFailures();
 
     /**
-     * @var int the allowed number of trials
+     * @return int the allowed number of trials
      */
     public function getThreshold();
 
     /**
-     * @var int the allowed timeout
+     * @return float the allowed timeout
      */
     public function getTimeout();
 }

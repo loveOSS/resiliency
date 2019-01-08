@@ -2,8 +2,8 @@
 
 namespace Tests\PrestaShop\CircuitBreaker\Exceptions;
 
-use PrestaShop\CircuitBreaker\Exceptions\InvalidTransaction;
 use PHPUnit\Framework\TestCase;
+use PrestaShop\CircuitBreaker\Exceptions\InvalidTransaction;
 
 class InvalidTransactionTest extends TestCase
 {
@@ -32,6 +32,9 @@ class InvalidTransactionTest extends TestCase
         $this->assertSame($invalidPlace->getMessage(), $expectedExceptionMessage);
     }
 
+    /**
+     * @return array
+     */
     public function getParameters()
     {
         return [

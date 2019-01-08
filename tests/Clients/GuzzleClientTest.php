@@ -2,9 +2,9 @@
 
 namespace Tests\PrestaShop\CircuitBreaker\Clients;
 
+use PHPUnit\Framework\TestCase;
 use PrestaShop\CircuitBreaker\Clients\GuzzleClient;
 use PrestaShop\CircuitBreaker\Exceptions\UnavailableService;
-use PHPUnit\Framework\TestCase;
 
 class GuzzleClientTest extends TestCase
 {

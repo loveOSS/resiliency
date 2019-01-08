@@ -32,6 +32,8 @@ jobs:
     - stage: PHPStan Code quality
       script:
         - composer require --dev "phpstan/phpstan:^0.10" --ignore-platform-reqs && composer phpstan
-
+    - stage: PHPQA Full analysis
+      script:
+        - docker run --rm -u $UID -v $PWD:/app eko3alpha/docker-phpqa --report --ignoredDirs vendor
 after_success:
 - bash <(curl -s https://codecov.io/bash)

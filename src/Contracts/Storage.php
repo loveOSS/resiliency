@@ -17,6 +17,8 @@ interface Storage
      * @var Transaction $transaction the transaction
      *
      * @return bool
+     *
+     * @param mixed $service
      */
     public function saveTransaction($service, Transaction $transaction);
 
@@ -28,6 +30,8 @@ interface Storage
      * @throws TransactionNotFound
      *
      * @return Transaction
+     *
+     * @param mixed $service
      */
     public function getTransaction($service);
 
@@ -37,6 +41,8 @@ interface Storage
      * @var string the service name
      *
      * @return bool
+     *
+     * @param mixed $service
      */
     public function hasTransaction($service);
 

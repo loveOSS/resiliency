@@ -2,8 +2,8 @@
 
 namespace PrestaShop\CircuitBreaker\Exceptions;
 
-use PrestaShop\CircuitBreaker\Utils\ErrorFormatter;
 use Exception;
+use PrestaShop\CircuitBreaker\Utils\ErrorFormatter;
 
 final class InvalidPlace extends Exception
 {
@@ -11,6 +11,8 @@ final class InvalidPlace extends Exception
      * @param mixed $failures the failures
      * @param mixed $timeout the timeout
      * @param mixed $threshold the threshold
+     *
+     * @return self
      */
     public static function invalidSettings($failures, $timeout, $threshold)
     {

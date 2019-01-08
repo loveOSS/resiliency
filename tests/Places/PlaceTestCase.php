@@ -9,6 +9,9 @@ use PHPUnit\Framework\TestCase;
  */
 class PlaceTestCase extends TestCase
 {
+    /**
+     * @return array
+     */
     public function getFixtures()
     {
         return [
@@ -17,6 +20,9 @@ class PlaceTestCase extends TestCase
         ];
     }
 
+    /**
+     * @return array
+     */
     public function getInvalidFixtures()
     {
         return [
