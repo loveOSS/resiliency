@@ -101,7 +101,7 @@ class SimpleTransactionTest extends TestCase
     /**
      * Returns an instance of SimpleTransaction for tests.
      *
-     * @return SimpleTransaction&PHPUnit_Framework_MockObject_MockObject
+     * @return SimpleTransaction
      */
     private function createSimpleTransaction()
     {
