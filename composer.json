@@ -20,18 +20,21 @@
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.12",
         "symfony/cache": "^3.4.0",
-        "phpunit/phpunit": "~5.7",
-        "mockery/mockery": "^1.2",
-        "symfony/lts": "v3"
+        "phpunit/phpunit": "^5.7.0"
     },
     "suggest": {
         "symfony/cache": "Allows use of Symfony Cache adapters to store transactions",
         "ext-apcu": "Allows use of APCu adapter (performant) to store transactions"
     },
     "autoload": {
-		"psr-4": {
-			"PrestaShop\\CircuitBreaker\\": "src/"
-		}
+        "psr-4": {
+            "PrestaShop\\CircuitBreaker\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\PrestaShop\\CircuitBreaker\\": "tests/"
+        }
     },
     "scripts": {
         "phpstan": "@php ./vendor/bin/phpstan analyse src tests -l 7 -c extension.neon",
@@ -43,12 +46,10 @@
         "cs-fix": "Check and fix coding styles using PHP CS Fixer",
         "test": "Launch PHPUnit test suite"
     },
-    "autoload-dev": {
-		"psr-4": {
-			"Tests\\PrestaShop\\CircuitBreaker\\": "tests/"
-		}
-    },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "platform": {
+            "php": "5.6"
+        }
     }
 }
