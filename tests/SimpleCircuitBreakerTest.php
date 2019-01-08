@@ -9,21 +9,35 @@ use PrestaShop\CircuitBreaker\Places\OpenPlace;
 use PrestaShop\CircuitBreaker\States;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @todo: needs tools to emulate a service unreachable
+ * and then back again.
+ */
 class SimpleCircuitBreakerTest extends TestCase
 {
     /**
-     * @todo: imho the circuit breaker shouldn't returns null
-     * in closed state, needs more information.
+     * When we use the circuit breaker on unreachable service
+     * the fallback response is used.
      */
     public function testCircuitBreakerIsInClosedStateAtStart()
     {
         $circuitBreaker = $this->createCircuitBreaker();
 
         $this->assertSame(States::CLOSED_STATE, $circuitBreaker->getState());
-        $this->assertNull($circuitBreaker->call('https://httpbin.org/get/foo', $this->createFallbackResponse()));
+
+        $this->assertSame(
+            '{}',
+            $circuitBreaker->call(
+                'https://httpbin.org/get/foo',
+                $this->createFallbackResponse()
+            )
+        );
     }
 
     /**
+     * Once the number of failures is reached, the circuit breaker
+     * is opened. This time no calls to the services are done.
+     *
      * @depends testCircuitBreakerIsInClosedStateAtStart
      */
     public function testCircuitBreakerWillBeOpenedInCaseOfFailures()
@@ -43,6 +57,10 @@ class SimpleCircuitBreakerTest extends TestCase
     }
 
     /**
+     * Once the threshold is reached, the circuit breaker
+     * try again to reach the service. This time, the service
+     * is not reachable.
+     *
      * @depends testCircuitBreakerIsInClosedStateAtStart
      * @depends testCircuitBreakerWillBeOpenedInCaseOfFailures
      */
@@ -54,7 +72,7 @@ class SimpleCircuitBreakerTest extends TestCase
         // OPEN
         $circuitBreaker->call('https://httpbin.org/get/foo', $this->createFallbackResponse());
 
-        sleep(2);
+        sleep(1);
         // NOW HALF OPEN
         $this->assertSame(
             '{}',
@@ -64,6 +82,7 @@ class SimpleCircuitBreakerTest extends TestCase
             )
         );
         $this->assertSame(States::HALF_OPEN_STATE, $circuitBreaker->getState());
+        $this->assertTrue($circuitBreaker->isHalfOpened());
     }
 
     /**

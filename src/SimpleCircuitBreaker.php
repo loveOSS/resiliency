@@ -91,9 +91,11 @@ final class SimpleCircuitBreaker implements CircuitBreaker
 
             if (!$this->isAllowedToRetry()) {
                 $this->moveStateTo(States::OPEN_STATE, $service);
+
+                return call_user_func($fallback);
             }
 
-            $this->call($service, $fallback);
+            return $this->call($service, $fallback);
         }
     }
 
