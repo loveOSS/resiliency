@@ -84,20 +84,18 @@ final class SimpleCircuitBreaker implements CircuitBreaker
             $response = $this->tryExecute($service);
             $this->moveStateTo(States::CLOSED_STATE, $service);
 
-            $this->transaction->resetFailures();
-            $this->transaction->resetThresholdDateTime($this->currentPlace->getThreshold());
-            $this->storage->saveTransaction($service, $this->transaction);
-
             return $response;
         } catch (UnavailableService $exception) {
             $this->transaction->incrementFailures();
             $this->storage->saveTransaction($service, $this->transaction);
 
-            if ($this->isClosed() && !$this->isAllowedToRetry()) {
+            if (!$this->isAllowedToRetry()) {
                 $this->moveStateTo(States::OPEN_STATE, $service);
+
+                return call_user_func($fallback);
             }
 
-            $this->call($service, $fallback);
+            return $this->call($service, $fallback);
         }
     }
 
@@ -166,7 +164,8 @@ final class SimpleCircuitBreaker implements CircuitBreaker
     private function tryExecute($service)
     {
         $client = new GuzzleClient();
-        $response = $client->request(
+
+        return $client->request(
             $service,
             [
                 'method' => 'GET',
@@ -175,7 +174,5 @@ final class SimpleCircuitBreaker implements CircuitBreaker
                 'timeout' => $this->currentPlace->getTimeout(),
             ]
         );
-
-        return $response;
     }
 }
