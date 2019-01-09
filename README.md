@@ -72,7 +72,7 @@ during the CI management of the contributions.
 If you want to use it (using Docker):
 
 ```
-docker run --rm -it zdenekdrahos/phpqa:v1.20.0 phpqa --report --ignoredDirs vendor
+docker run --rm -u $UID -v $(pwd):/app eko3alpha/docker-phpqa --report --ignoredDirs vendor
 ```
 
 If you want to use it (using Composer):

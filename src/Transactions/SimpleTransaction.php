@@ -115,6 +115,8 @@ final class SimpleTransaction implements Transaction
      * Set the right DateTime from the threshold value.
      *
      * @param int $threshold the Transaction threshold
+     *
+     * @return void
      */
     private function initThresholdDateTime($threshold)
     {
