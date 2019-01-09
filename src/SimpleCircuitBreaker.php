@@ -3,8 +3,8 @@
 namespace PrestaShop\CircuitBreaker;
 
 use DateTime;
-use PrestaShop\CircuitBreaker\Clients\GuzzleClient;
 use PrestaShop\CircuitBreaker\Contracts\CircuitBreaker;
+use PrestaShop\CircuitBreaker\Contracts\Client;
 use PrestaShop\CircuitBreaker\Contracts\Place;
 use PrestaShop\CircuitBreaker\Contracts\Storage;
 use PrestaShop\CircuitBreaker\Contracts\Transaction;
@@ -17,6 +17,11 @@ use PrestaShop\CircuitBreaker\Transactions\SimpleTransaction;
  */
 final class SimpleCircuitBreaker implements CircuitBreaker
 {
+    /**
+     * @var Client the client in charge of calling the service
+     */
+    private $client;
+
     /**
      * @var Place the current Circuit Breaker place
      */
@@ -38,7 +43,8 @@ final class SimpleCircuitBreaker implements CircuitBreaker
     public function __construct(
         Place $openPlace,
         Place $halfOpenPlace,
-        Place $closedPlace
+        Place $closedPlace,
+        Client $client
     ) {
         $this->currentPlace = $closedPlace;
         $this->places = [
@@ -47,6 +53,7 @@ final class SimpleCircuitBreaker implements CircuitBreaker
             States::OPEN_STATE => $openPlace,
         ];
 
+        $this->client = $client;
         $this->storage = new SimpleArray();
     }
 
@@ -186,9 +193,7 @@ final class SimpleCircuitBreaker implements CircuitBreaker
      */
     private function tryExecute($service)
     {
-        $client = new GuzzleClient();
-
-        return $client->request(
+        return $this->client->request(
             $service,
             [
                 'method' => 'GET',

@@ -9,8 +9,9 @@ notifications:
 
 php:
   - 7.2
-  - 5.6
   - 7.3
+  - 5.6
+
 
 matrix:
   fast_finish: true
@@ -37,6 +38,7 @@ jobs:
         - composer require --dev "phpstan/phpstan:^0.10" --ignore-platform-reqs && composer phpstan
     - stage: PHPQA Full analysis
       script:
-        - docker run --rm -u $UID -v $PWD:/app eko3alpha/docker-phpqa --report --ignoredDirs vendor
+        - docker build -t prestashop/phpqa .
+        - docker run --rm -u $UID -v $PWD:/app prestashop/phpqa --report --ignoredDirs vendor
 after_success:
 - bash <(curl -s https://codecov.io/bash)
