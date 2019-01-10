@@ -1,4 +1,4 @@
-workflow "New workflow" {
+workflow "Code Quality" {
   on = "push"
   resolves = [
     "PHPStan",
@@ -20,8 +20,8 @@ action "PHP-CS-Fixer" {
 }
 
 action "Psalm" {
+  needs="PHPStan"
   uses = "docker://mickaelandrieu/psalm-ga"
   secrets = ["GITHUB_TOKEN"]
   args = "--find-dead-code --threads=8 --diff --diff-methods"
 }
-
