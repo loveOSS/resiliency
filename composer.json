@@ -19,8 +19,9 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.12",
+        "phpunit/phpunit": "^5.7.0",
         "symfony/cache": "^3.4.0",
-        "phpunit/phpunit": "^5.7.0"
+        "vimeo/psalm": "^1.1"
     },
     "suggest": {
         "symfony/cache": "Allows use of Symfony Cache adapters to store transactions",
@@ -38,11 +39,13 @@
     },
     "scripts": {
         "phpstan": "@php ./vendor/bin/phpstan analyse src tests -l 7 -c extension.neon",
+        "psalm": "@php ./vendor/bin/psalm --find-dead-code --threads=8 --diff --diff-methods",
         "cs-fix": "@php ./vendor/bin/php-cs-fixer fix",
         "test": "@php ./vendor/bin/phpunit"
     },
     "scripts-descriptions": {
         "phpstan": "Execute PHPStan on PHP7.0+, you need to install it",
+        "psalm": "Execute Psalm on PHP7.0+, you need to install it",
         "cs-fix": "Check and fix coding styles using PHP CS Fixer",
         "test": "Launch PHPUnit test suite"
     },

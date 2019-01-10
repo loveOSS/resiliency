@@ -9,8 +9,8 @@ notifications:
 
 php:
   - 7.2
-  - 5.6
   - 7.3
+  - 5.6
 
 matrix:
   fast_finish: true
@@ -29,13 +29,7 @@ script:
 
 jobs:
   include:
-    - stage: PHP CS Fixer
-      script:
-        - ./vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --using-cache=no --path-mode=intersection `git diff --name-only --diff-filter=ACMRTUXB $TRAVIS_COMMIT_RANGE`
-    - stage: PHPStan Code quality
-      script:
-        - composer require --dev "phpstan/phpstan:^0.10" --ignore-platform-reqs && composer phpstan
-    - stage: PHPQA Full analysis
+    - stage: PHPQA Code Quality
       script:
         - docker run --rm -u $UID -v $PWD:/app eko3alpha/docker-phpqa --report --ignoredDirs vendor
 after_success:

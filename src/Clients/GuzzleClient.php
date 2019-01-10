@@ -14,15 +14,25 @@ use PrestaShop\CircuitBreaker\Exceptions\UnavailableService;
 class GuzzleClient implements Client
 {
     /**
+     * @var array the Client main options
+     */
+    private $mainOptions;
+
+    public function __construct(array $mainOptions = [])
+    {
+        $this->mainOptions = $mainOptions;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function request($resource, array $options)
     {
         try {
-            $client = new OriginalGuzzleClient();
+            $client = new OriginalGuzzleClient($this->mainOptions);
             $method = isset($options['method']) ? $options['method'] : 'GET';
 
-            return $client->request($method, $resource, $options)->getBody();
+            return (string) $client->request($method, $resource, $options)->getBody();
         } catch (Exception $exception) {
             throw new UnavailableService($exception->getMessage());
         }
