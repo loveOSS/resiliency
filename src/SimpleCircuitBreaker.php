@@ -77,14 +77,14 @@ final class SimpleCircuitBreaker implements CircuitBreaker
         try {
             if ($this->isOpened()) {
                 if ($this->canAccessService($transaction)) {
-                    $this->moveStateTo(States::HALF_OPEN_STATE, $transaction, $service);
+                    $this->moveStateTo(States::HALF_OPEN_STATE, $service);
                 }
 
                 return \call_user_func($fallback);
             }
 
             $response = $this->tryExecute($service);
-            $this->moveStateTo(States::CLOSED_STATE, $transaction, $service);
+            $this->moveStateTo(States::CLOSED_STATE, $service);
 
             return $response;
         } catch (UnavailableService $exception) {
@@ -92,7 +92,7 @@ final class SimpleCircuitBreaker implements CircuitBreaker
             $this->storage->saveTransaction($service, $transaction);
 
             if (!$this->isAllowedToRetry($transaction)) {
-                $this->moveStateTo(States::OPEN_STATE, $transaction, $service);
+                $this->moveStateTo(States::OPEN_STATE, $service);
 
                 return \call_user_func($fallback);
             }
@@ -127,12 +127,11 @@ final class SimpleCircuitBreaker implements CircuitBreaker
 
     /**
      * @param string $state the Place state
-     * @param Transaction $transaction the Circuit Breaker transaction
      * @param string $service the service URI
      *
      * @return bool
      */
-    private function moveStateTo($state, Transaction $transaction, $service)
+    private function moveStateTo($state, $service)
     {
         $this->currentPlace = $this->places[$state];
         $transaction = SimpleTransaction::createFromPlace(
