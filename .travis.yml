@@ -1,8 +1,5 @@
 language: php
 
-services:
-  - docker
-
 notifications:
   email:
     on_success: never
@@ -27,10 +24,5 @@ before_script:
 script:
   - composer test -- --coverage-clover=coverage.xml
 
-jobs:
-  include:
-    - stage: PHPQA Code Quality
-      script:
-        - docker run --rm -u $UID -v $PWD:/app eko3alpha/docker-phpqa --report --ignoredDirs vendor
 after_success:
 - bash <(curl -s https://codecov.io/bash)

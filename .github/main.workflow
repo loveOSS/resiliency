@@ -3,7 +3,8 @@ workflow "Code Quality" {
   resolves = [
     "PHPStan",
     "PHP-CS-Fixer",
-    "Psalm"
+    "Psalm",
+    "PHPQA"
   ]
 }
 
@@ -24,4 +25,11 @@ action "Psalm" {
   uses = "docker://mickaelandrieu/psalm-ga"
   secrets = ["GITHUB_TOKEN"]
   args = "--find-dead-code --diff --diff-methods"
+}
+
+action "PHPQA" {
+  needs="PHP-CS-Fixer"
+  uses = "docker://mickaelandrieu/phpqa-ga"
+  secrets = ["GITHUB_TOKEN"]
+  args = "--report --tools phpcs:0,phpmd:0,phpcpd:0,parallel-lint:0,phpmetrics,phploc,pdepend --ignoredDirs vendor"
 }
