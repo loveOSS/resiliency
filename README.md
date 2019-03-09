@@ -40,7 +40,10 @@ $circuitBreaker = $circuitBreakerFactory->create(
         'closed' => [2, 0.1, 0],
         'open' => [0, 0, 10],
         'half_open' => [1, 0.2, 0],
-        'client' => ['proxy' => '192.168.16.1:10'],
+        'client' => [
+            'proxy' => '192.168.16.1:10',
+            'method' => 'POST',
+        ],
     ]
 );
 
@@ -79,5 +82,5 @@ If you want to use it (using Composer):
 
 ```
 composer global require edgedesign/phpqa=v1.20.0 --update-no-dev
-phpqa --report --ignoreDirs vendor
+phpqa --report --ignoredDirs vendor
 ```

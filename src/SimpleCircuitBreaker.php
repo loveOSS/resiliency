@@ -195,8 +195,6 @@ final class SimpleCircuitBreaker implements CircuitBreaker
         return $this->client->request(
             $service,
             [
-                'method' => 'GET',
-                'http_errors' => true,
                 'connect_timeout' => $this->currentPlace->getTimeout(),
                 'timeout' => $this->currentPlace->getTimeout(),
             ]
