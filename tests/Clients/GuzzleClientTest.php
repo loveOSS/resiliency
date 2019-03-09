@@ -12,7 +12,7 @@ class GuzzleClientTest extends TestCase
     {
         $client = new GuzzleClient();
 
-        $this->assertNotNull($client->request('http://google.com', [
+        $this->assertNotNull($client->request('https://www.google.com', [
             'method' => 'GET',
         ]));
     }
@@ -23,5 +23,14 @@ class GuzzleClientTest extends TestCase
 
         $client = new GuzzleClient();
         $client->request('http://not-even-a-valid-domain.xxx', []);
+    }
+
+    public function testTheClientAcceptsHttpMethodOverride()
+    {
+        $client = new GuzzleClient([
+            'method' => 'HEAD',
+        ]);
+
+        $this->assertEmpty($client->request('https://www.google.fr', []));
     }
 }
