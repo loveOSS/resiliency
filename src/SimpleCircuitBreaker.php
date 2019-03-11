@@ -21,7 +21,7 @@ final class SimpleCircuitBreaker extends PartialCircuitBreaker
     ) {
         $system = new MainSystem($closedPlace, $halfOpenPlace, $openPlace);
 
-        return parent::__construct($system, $client, new SimpleArray());
+        parent::__construct($system, $client, new SimpleArray());
     }
 
     /**

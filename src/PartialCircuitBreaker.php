@@ -8,6 +8,7 @@ use PrestaShop\CircuitBreaker\Contracts\Transaction;
 use PrestaShop\CircuitBreaker\Contracts\Storage;
 use PrestaShop\CircuitBreaker\Contracts\System;
 use PrestaShop\CircuitBreaker\Contracts\Client;
+use PrestaShop\CircuitBreaker\Contracts\Place;
 use DateTime;
 
 abstract class PartialCircuitBreaker implements CircuitBreaker

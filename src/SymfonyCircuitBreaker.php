@@ -3,7 +3,10 @@
 namespace PrestaShop\CircuitBreaker;
 
 use PrestaShop\CircuitBreaker\Contracts\Client;
+use PrestaShop\CircuitBreaker\Contracts\System;
 use PrestaShop\CircuitBreaker\Contracts\Storage;
+use PrestaShop\CircuitBreaker\Events\TransitionEvent;
+use PrestaShop\CircuitBreaker\Contracts\ConfigurableCall;
 use PrestaShop\CircuitBreaker\Exceptions\UnavailableService;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
@@ -33,7 +36,7 @@ final class SymfonyCircuitBreaker extends PartialCircuitBreaker implements Confi
         $this->eventDispatcher = $eventDispatcher;
         $this->logger = $logger;
 
-        return parent::__construct($system, $client, $storage);
+        parent::__construct($system, $client, $storage);
     }
 
     /**

@@ -2,9 +2,7 @@
 
 namespace PrestaShop\CircuitBreaker\System;
 
-use PrestaShop\CircuitBreaker\Places\HalfOpenPlace;
-use PrestaShop\CircuitBreaker\Places\ClosedPlace;
-use PrestaShop\CircuitBreaker\Places\OpenPlace;
+use PrestaShop\CircuitBreaker\Contracts\Place;
 use PrestaShop\CircuitBreaker\Contracts\System;
 use PrestaShop\CircuitBreaker\States;
 
@@ -23,9 +21,9 @@ final class MainSystem implements System
     private $places;
 
     public function __construct(
-        ClosedPlace $closedPlace,
-        HalfOpenPlace $halfOpenPlace,
-        OpenPlace $openPlace
+        Place $closedPlace,
+        Place $halfOpenPlace,
+        Place $openPlace
     ) {
         $this->places = [
             States::CLOSED_STATE => $closedPlace,
