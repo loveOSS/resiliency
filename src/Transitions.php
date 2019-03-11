@@ -13,9 +13,8 @@ final class Transitions
     const INITIATING_TRANSITION = 'INITIATING';
 
     /**
-     * Happened once when we open the Circuit Breaker.
-     * This means once the Circuit Breaker is in failure
-     * for the first time.
+     * Happened when we open the Circuit Breaker.
+     * This means once the Circuit Breaker is in failure.
      */
     const OPENING_TRANSITION = 'OPENING';
 
