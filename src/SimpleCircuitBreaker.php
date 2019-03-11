@@ -4,12 +4,9 @@ namespace PrestaShop\CircuitBreaker;
 
 use PrestaShop\CircuitBreaker\Contracts\Place;
 use PrestaShop\CircuitBreaker\Contracts\Client;
-use PrestaShop\CircuitBreaker\Contracts\Storage;
 use PrestaShop\CircuitBreaker\System\MainSystem;
 use PrestaShop\CircuitBreaker\Storages\SimpleArray;
-use PrestaShop\CircuitBreaker\Contracts\Transaction;
 use PrestaShop\CircuitBreaker\Exceptions\UnavailableService;
-use PrestaShop\CircuitBreaker\Transactions\SimpleTransaction;
 use PrestaShop\CircuitBreaker\CircuitBreaker\PartialCircuitBreaker;
 
 /**
@@ -24,7 +21,7 @@ final class SimpleCircuitBreaker extends PartialCircuitBreaker
         Client $client
     ) {
         $system = new MainSystem($closedPlace, $halfOpenPlace, $openPlace);
-        
+
         return parent::__construct($system, $client, new SimpleArray());
     }
 
