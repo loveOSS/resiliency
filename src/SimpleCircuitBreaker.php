@@ -7,7 +7,6 @@ use PrestaShop\CircuitBreaker\Contracts\Client;
 use PrestaShop\CircuitBreaker\System\MainSystem;
 use PrestaShop\CircuitBreaker\Storages\SimpleArray;
 use PrestaShop\CircuitBreaker\Exceptions\UnavailableService;
-use PrestaShop\CircuitBreaker\CircuitBreaker\PartialCircuitBreaker;
 
 /**
  * Main implementation of Circuit Breaker.

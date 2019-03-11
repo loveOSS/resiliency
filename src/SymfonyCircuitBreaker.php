@@ -1,13 +1,11 @@
 <?php
 
-namespace PrestaShop\CircuitBreaker\CircuitBreaker;
+namespace PrestaShop\CircuitBreaker;
 
 use PrestaShop\CircuitBreaker\Contracts\Client;
 use PrestaShop\CircuitBreaker\Contracts\Storage;
 use PrestaShop\CircuitBreaker\Exceptions\UnavailableService;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use PrestaShop\CircuitBreaker\Transitions;
-use PrestaShop\CircuitBreaker\States;
 use Psr\Log\LoggerInterface;
 
 /**
