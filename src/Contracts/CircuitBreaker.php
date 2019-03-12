@@ -17,12 +17,10 @@ interface CircuitBreaker
     /**
      * The function that execute the service.
      *
-     * @var string the function to call
-     * @var callable $fallback if the service is unavailable, rely on the fallback
+     * @param string $service the service to call
+     * @param callable $fallback if the service is unavailable, rely on the fallback
      *
      * @return string
-     *
-     * @param mixed $service
      */
     public function call($service, callable $fallback);
 
