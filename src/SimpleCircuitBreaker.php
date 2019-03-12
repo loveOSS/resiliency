@@ -4,7 +4,7 @@ namespace PrestaShop\CircuitBreaker;
 
 use PrestaShop\CircuitBreaker\Contracts\Place;
 use PrestaShop\CircuitBreaker\Contracts\Client;
-use PrestaShop\CircuitBreaker\System\MainSystem;
+use PrestaShop\CircuitBreaker\Systems\MainSystem;
 use PrestaShop\CircuitBreaker\Storages\SimpleArray;
 use PrestaShop\CircuitBreaker\Exceptions\UnavailableService;
 

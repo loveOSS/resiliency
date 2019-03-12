@@ -9,7 +9,6 @@ use PrestaShop\CircuitBreaker\Events\TransitionEvent;
 use PrestaShop\CircuitBreaker\Contracts\ConfigurableCall;
 use PrestaShop\CircuitBreaker\Exceptions\UnavailableService;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Psr\Log\LoggerInterface;
 
 /**
  * Symfony implementation of Circuit Breaker.
@@ -21,20 +20,13 @@ final class SymfonyCircuitBreaker extends PartialCircuitBreaker implements Confi
      */
     private $eventDispatcher;
 
-    /**
-     * @var LoggerInterface the PSR Logger
-     */
-    private $logger;
-
     public function __construct(
         System $system,
         Client $client,
         Storage $storage,
-        EventDispatcherInterface $eventDispatcher,
-        LoggerInterface $logger
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->eventDispatcher = $eventDispatcher;
-        $this->logger = $logger;
 
         parent::__construct($system, $client, $storage);
     }
@@ -137,7 +129,7 @@ final class SymfonyCircuitBreaker extends PartialCircuitBreaker implements Confi
 
         return $this->eventDispatcher
             ->dispatch(
-                Transitions::TRIAL_TRANSITION,
+                $eventName,
                 $event
             )
         ;

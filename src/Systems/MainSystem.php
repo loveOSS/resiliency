@@ -1,6 +1,6 @@
 <?php
 
-namespace PrestaShop\CircuitBreaker\System;
+namespace PrestaShop\CircuitBreaker\Systems;
 
 use PrestaShop\CircuitBreaker\Contracts\Place;
 use PrestaShop\CircuitBreaker\Contracts\System;
@@ -26,17 +26,23 @@ final class MainSystem implements System
         Place $openPlace
     ) {
         $this->places = [
-            States::CLOSED_STATE => $closedPlace,
-            States::HALF_OPEN_STATE => $halfOpenPlace,
-            States::OPEN_STATE => $openPlace,
+            $closedPlace->getState() => $closedPlace,
+            $halfOpenPlace->getState() => $halfOpenPlace,
+            $openPlace->getState() => $openPlace,
         ];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getInitialPlace()
     {
         return $this->places[States::CLOSED_STATE];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getPlaces()
     {
         return $this->places;
