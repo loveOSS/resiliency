@@ -2,7 +2,7 @@
 
 namespace PrestaShop\CircuitBreaker\Contracts;
 
-interface ConfigurableCall
+interface ConfigurableCall extends CircuitBreaker
 {
     /**
      * The function that execute the service.

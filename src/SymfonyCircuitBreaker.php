@@ -63,7 +63,7 @@ final class SymfonyCircuitBreaker extends PartialCircuitBreaker implements Confi
                 return \call_user_func($fallback);
             }
 
-            $response = $this->request($service);
+            $response = $this->request($service, $serviceParameters);
             $this->moveStateTo(States::CLOSED_STATE, $service);
             $this->dispatch(
                 Transitions::CLOSING_TRANSITION,
