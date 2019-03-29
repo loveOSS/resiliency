@@ -11,7 +11,7 @@ This library is compatible with PHP 5.6+.
 ## Installation
 
 ```
-composer install prestashop/circuit-breaker
+composer require prestashop/circuit-breaker
 ```
 
 ## Use
