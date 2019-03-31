@@ -1,10 +1,10 @@
 <?php
 
-namespace PrestaShop\CircuitBreaker\Places;
+namespace Resiliency\Places;
 
-use PrestaShop\CircuitBreaker\Contracts\Place;
-use PrestaShop\CircuitBreaker\Exceptions\InvalidPlace;
-use PrestaShop\CircuitBreaker\Utils\Assert;
+use Resiliency\Contracts\Place;
+use Resiliency\Exceptions\InvalidPlace;
+use Resiliency\Utils\Assert;
 
 abstract class AbstractPlace implements Place
 {

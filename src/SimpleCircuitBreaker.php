@@ -1,12 +1,12 @@
 <?php
 
-namespace PrestaShop\CircuitBreaker;
+namespace Resiliency;
 
-use PrestaShop\CircuitBreaker\Contracts\Place;
-use PrestaShop\CircuitBreaker\Contracts\Client;
-use PrestaShop\CircuitBreaker\Systems\MainSystem;
-use PrestaShop\CircuitBreaker\Storages\SimpleArray;
-use PrestaShop\CircuitBreaker\Exceptions\UnavailableService;
+use Resiliency\Contracts\Place;
+use Resiliency\Contracts\Client;
+use Resiliency\Systems\MainSystem;
+use Resiliency\Storages\SimpleArray;
+use Resiliency\Exceptions\UnavailableService;
 
 /**
  * Main implementation of Circuit Breaker.
@@ -27,7 +27,7 @@ final class SimpleCircuitBreaker extends PartialCircuitBreaker
     /**
      * {@inheritdoc}
      */
-    public function call($service, callable $fallback)
+    public function call($service, callable $fallback, $serviceParameters = [])
     {
         $transaction = $this->initTransaction($service);
 
@@ -54,7 +54,7 @@ final class SimpleCircuitBreaker extends PartialCircuitBreaker
                 return \call_user_func($fallback);
             }
 
-            return $this->call($service, $fallback);
+            return $this->call($service, $fallback, $serviceParameters);
         }
     }
 }

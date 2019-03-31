@@ -1,15 +1,14 @@
 <?php
 
-namespace Tests\PrestaShop\CircuitBreaker;
+namespace Tests\Resiliency;
 
-use PHPUnit_Framework_MockObject_Matcher_AnyInvokedCount;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use PrestaShop\CircuitBreaker\SymfonyCircuitBreaker;
-use PrestaShop\CircuitBreaker\Storages\SymfonyCache;
-use PrestaShop\CircuitBreaker\Places\HalfOpenPlace;
-use PrestaShop\CircuitBreaker\Systems\MainSystem;
-use PrestaShop\CircuitBreaker\Places\ClosedPlace;
-use PrestaShop\CircuitBreaker\Places\OpenPlace;
+use Resiliency\SymfonyCircuitBreaker;
+use Resiliency\Storages\SymfonyCache;
+use Resiliency\Places\HalfOpenPlace;
+use Resiliency\Systems\MainSystem;
+use Resiliency\Places\ClosedPlace;
+use Resiliency\Places\OpenPlace;
 use Symfony\Component\Cache\Simple\ArrayCache;
 
 class SymfonyCircuitBreakerEventsTest extends CircuitBreakerTestCase
@@ -17,7 +16,7 @@ class SymfonyCircuitBreakerEventsTest extends CircuitBreakerTestCase
     /**
      * Used to track the dispatched events.
      *
-     * @var PHPUnit_Framework_MockObject_Matcher_AnyInvokedCount
+     * @var \PHPUnit\Framework\MockObject\Matcher\AnyInvokedCount
      */
     private $spy;
 
@@ -43,10 +42,11 @@ class SymfonyCircuitBreakerEventsTest extends CircuitBreakerTestCase
          */
         $invocations = $this->spy->getInvocations();
         $this->assertCount(4, $invocations);
-        $this->assertSame('INITIATING', $invocations[0]->parameters[0]);
-        $this->assertSame('TRIAL', $invocations[1]->parameters[0]);
-        $this->assertSame('TRIAL', $invocations[2]->parameters[0]);
-        $this->assertSame('OPENING', $invocations[3]->parameters[0]);
+
+        $this->assertSame('INITIATING', $invocations[0]->getParameters()[0]);
+        $this->assertSame('TRIAL', $invocations[1]->getParameters()[0]);
+        $this->assertSame('TRIAL', $invocations[2]->getParameters()[0]);
+        $this->assertSame('OPENING', $invocations[3]->getParameters()[0]);
     }
 
     /**

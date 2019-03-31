@@ -1,6 +1,6 @@
 <?php
 
-namespace PrestaShop\CircuitBreaker\Contracts;
+namespace Resiliency\Contracts;
 
 /**
  * Ease the creation of the Circuit Breaker.

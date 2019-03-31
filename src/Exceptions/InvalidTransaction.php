@@ -1,11 +1,12 @@
 <?php
 
-namespace PrestaShop\CircuitBreaker\Exceptions;
+namespace Resiliency\Exceptions;
 
 use Exception;
-use PrestaShop\CircuitBreaker\Utils\ErrorFormatter;
+use Resiliency\Utils\ErrorFormatter;
+use Resiliency\Contracts\Exception as ResiliencyException;
 
-final class InvalidTransaction extends Exception
+final class InvalidTransaction extends Exception implements ResiliencyException
 {
     /**
      * @param mixed $service the service URI

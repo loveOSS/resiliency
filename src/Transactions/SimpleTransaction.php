@@ -1,12 +1,12 @@
 <?php
 
-namespace PrestaShop\CircuitBreaker\Transactions;
+namespace Resiliency\Transactions;
 
 use DateTime;
-use PrestaShop\CircuitBreaker\Contracts\Place;
-use PrestaShop\CircuitBreaker\Contracts\Transaction;
-use PrestaShop\CircuitBreaker\Exceptions\InvalidTransaction;
-use PrestaShop\CircuitBreaker\Utils\Assert;
+use Resiliency\Contracts\Place;
+use Resiliency\Contracts\Transaction;
+use Resiliency\Exceptions\InvalidTransaction;
+use Resiliency\Utils\Assert;
 
 /**
  * Main implementation of Circuit Breaker transaction.

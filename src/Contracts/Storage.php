@@ -1,8 +1,8 @@
 <?php
 
-namespace PrestaShop\CircuitBreaker\Contracts;
+namespace Resiliency\Contracts;
 
-use PrestaShop\CircuitBreaker\Exceptions\TransactionNotFound;
+use Resiliency\Exceptions\TransactionNotFound;
 
 /**
  * Store the transaction between the Circuit Breaker

@@ -1,10 +1,10 @@
 <?php
 
-namespace PrestaShop\CircuitBreaker\Storages;
+namespace Resiliency\Storages;
 
-use PrestaShop\CircuitBreaker\Contracts\Storage;
-use PrestaShop\CircuitBreaker\Contracts\Transaction;
-use PrestaShop\CircuitBreaker\Exceptions\TransactionNotFound;
+use Resiliency\Contracts\Storage;
+use Resiliency\Contracts\Transaction;
+use Resiliency\Exceptions\TransactionNotFound;
 use Psr\SimpleCache\CacheInterface;
 
 /**

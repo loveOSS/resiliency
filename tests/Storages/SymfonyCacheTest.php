@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\PrestaShop\CircuitBreaker\Storages;
+namespace Tests\Resiliency\Storages;
 
 use PHPUnit\Framework\TestCase;
-use PrestaShop\CircuitBreaker\Contracts\Transaction;
-use PrestaShop\CircuitBreaker\Exceptions\TransactionNotFound;
-use PrestaShop\CircuitBreaker\Storages\SymfonyCache;
+use Resiliency\Contracts\Transaction;
+use Resiliency\Exceptions\TransactionNotFound;
+use Resiliency\Storages\SymfonyCache;
 use Symfony\Component\Cache\Simple\FilesystemCache;
 
 class SymfonyCacheTest extends TestCase
@@ -18,7 +18,7 @@ class SymfonyCacheTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->symfonyCache = new SymfonyCache(
             new FilesystemCache('ps__circuit_breaker', 20)
@@ -28,7 +28,7 @@ class SymfonyCacheTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $filesystemAdapter = new FilesystemCache('ps__circuit_breaker', 20);
         $filesystemAdapter->clear();

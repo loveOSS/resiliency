@@ -1,12 +1,12 @@
 <?php
 
-namespace PrestaShop\CircuitBreaker;
+namespace Resiliency;
 
-use PrestaShop\CircuitBreaker\Contracts\Factory;
-use PrestaShop\CircuitBreaker\Places\ClosedPlace;
-use PrestaShop\CircuitBreaker\Places\HalfOpenPlace;
-use PrestaShop\CircuitBreaker\Places\OpenPlace;
-use PrestaShop\CircuitBreaker\Clients\GuzzleClient;
+use Resiliency\Contracts\Factory;
+use Resiliency\Places\ClosedPlace;
+use Resiliency\Places\HalfOpenPlace;
+use Resiliency\Places\OpenPlace;
+use Resiliency\Clients\GuzzleClient;
 
 /**
  * Main implementation of Circuit Breaker Factory

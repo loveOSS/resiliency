@@ -1,10 +1,10 @@
 <?php
 
-namespace PrestaShop\CircuitBreaker\Systems;
+namespace Resiliency\Systems;
 
-use PrestaShop\CircuitBreaker\Contracts\Place;
-use PrestaShop\CircuitBreaker\Contracts\System;
-use PrestaShop\CircuitBreaker\States;
+use Resiliency\Contracts\Place;
+use Resiliency\Contracts\System;
+use Resiliency\States;
 
 /**
  * Implement the system described by the documentation.

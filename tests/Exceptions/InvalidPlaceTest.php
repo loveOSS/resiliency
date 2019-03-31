@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\PrestaShop\CircuitBreaker\Exceptions;
+namespace Tests\Resiliency\Exceptions;
 
 use PHPUnit\Framework\TestCase;
-use PrestaShop\CircuitBreaker\Exceptions\InvalidPlace;
+use Resiliency\Exceptions\InvalidPlace;
 
 class InvalidPlaceTest extends TestCase
 {

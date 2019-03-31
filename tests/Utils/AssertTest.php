@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\PrestaShop\CircuitBreaker\Utils;
+namespace Tests\Resiliency\Utils;
 
 use PHPUnit\Framework\TestCase;
-use PrestaShop\CircuitBreaker\Utils\Assert;
+use Resiliency\Utils\Assert;
 
 class AssertTest extends TestCase
 {

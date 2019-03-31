@@ -1,15 +1,15 @@
 <?php
 
-namespace Tests\PrestaShop\CircuitBreaker;
+namespace Tests\Resiliency;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use PrestaShop\CircuitBreaker\Storages\SymfonyCache;
-use PrestaShop\CircuitBreaker\SymfonyCircuitBreaker;
-use PrestaShop\CircuitBreaker\SimpleCircuitBreaker;
-use PrestaShop\CircuitBreaker\Places\HalfOpenPlace;
-use PrestaShop\CircuitBreaker\Places\ClosedPlace;
-use PrestaShop\CircuitBreaker\Systems\MainSystem;
-use PrestaShop\CircuitBreaker\Places\OpenPlace;
+use Resiliency\Storages\SymfonyCache;
+use Resiliency\SymfonyCircuitBreaker;
+use Resiliency\SimpleCircuitBreaker;
+use Resiliency\Places\HalfOpenPlace;
+use Resiliency\Places\ClosedPlace;
+use Resiliency\Systems\MainSystem;
+use Resiliency\Places\OpenPlace;
 use Symfony\Component\Cache\Simple\ArrayCache;
 
 class CircuitBreakerTests extends CircuitBreakerTestCase
