@@ -14,10 +14,10 @@
         }
     ],
     "require": {
-        "php": "^7.2",
-        "guzzlehttp/guzzle": "^6.3"
+        "php": "^7.2"
     },
     "require-dev": {
+        "guzzlehttp/guzzle": "^6.3",
         "friendsofphp/php-cs-fixer": "^2.12",
         "phpstan/phpstan": "^0.11.5",
         "phpstan/phpstan-phpunit": "^0.11.0",
@@ -28,7 +28,8 @@
     },
     "suggest": {
         "symfony/cache": "Allows use of Symfony Cache adapters to store transactions",
-        "ext-apcu": "Allows use of APCu adapter (performant) to store transactions"
+        "ext-apcu": "Allows use of APCu adapter (performant) to store transactions",
+        "guzzlehttp/guzzle": "Allows use of Guzzle 6 HTTP Client"
     },
     "autoload": {
         "psr-4": {

@@ -51,7 +51,13 @@ $fallbackResponse = function () {
     return '{}';
 };
 
-$circuitBreaker->call('https://api.domain.com', $fallbackResponse);
+$circuitBreaker->call(
+    'https://api.domain.com',
+    $fallbackResponse,
+    [
+        '_token' => '123456789',
+    ]
+);
 ```
 
 > For the Guzzle implementation, the Client options are described

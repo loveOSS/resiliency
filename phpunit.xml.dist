@@ -2,7 +2,7 @@
 <phpunit colors="true" bootstrap="./vendor/autoload.php">
 
     <testsuites>
-        <testsuite name="PrestaShop Circuit Breaker Test suite">
+        <testsuite name="Resiliency test suite">
             <directory>./tests/</directory>
         </testsuite>
     </testsuites>
