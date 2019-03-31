@@ -1,6 +1,6 @@
 <?php
 
-namespace PrestaShop\CircuitBreaker\Utils;
+namespace Resiliency\Utils;
 
 /**
  * Helper to provide complete and easy to read

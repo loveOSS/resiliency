@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\PrestaShop\CircuitBreaker;
+namespace Tests\Resiliency;
 
 use PHPUnit\Framework\TestCase;
-use PrestaShop\CircuitBreaker\SimpleCircuitBreaker;
-use PrestaShop\CircuitBreaker\SimpleCircuitBreakerFactory;
+use Resiliency\SimpleCircuitBreaker;
+use Resiliency\SimpleCircuitBreakerFactory;
 
 class SimpleCircuitBreakerFactoryTest extends TestCase
 {

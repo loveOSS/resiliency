@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\PrestaShop\CircuitBreaker;
+namespace Tests\Resiliency;
 
-use PrestaShop\CircuitBreaker\Clients\GuzzleClient;
+use Resiliency\Clients\GuzzleClient;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Handler\MockHandler;
 use PHPUnit\Framework\TestCase;

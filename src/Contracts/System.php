@@ -1,6 +1,6 @@
 <?php
 
-namespace PrestaShop\CircuitBreaker\Contracts;
+namespace Resiliency\Contracts;
 
 /**
  * The System define the places available

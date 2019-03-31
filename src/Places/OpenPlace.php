@@ -1,8 +1,8 @@
 <?php
 
-namespace PrestaShop\CircuitBreaker\Places;
+namespace Resiliency\Places;
 
-use PrestaShop\CircuitBreaker\States;
+use Resiliency\States;
 
 final class OpenPlace extends AbstractPlace
 {

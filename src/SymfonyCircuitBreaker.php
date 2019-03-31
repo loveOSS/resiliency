@@ -1,19 +1,18 @@
 <?php
 
-namespace PrestaShop\CircuitBreaker;
+namespace Resiliency;
 
-use PrestaShop\CircuitBreaker\Contracts\Client;
-use PrestaShop\CircuitBreaker\Contracts\System;
-use PrestaShop\CircuitBreaker\Contracts\Storage;
-use PrestaShop\CircuitBreaker\Events\TransitionEvent;
-use PrestaShop\CircuitBreaker\Contracts\ConfigurableCall;
-use PrestaShop\CircuitBreaker\Exceptions\UnavailableService;
+use Resiliency\Contracts\Client;
+use Resiliency\Contracts\System;
+use Resiliency\Contracts\Storage;
+use Resiliency\Events\TransitionEvent;
+use Resiliency\Exceptions\UnavailableService;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Symfony implementation of Circuit Breaker.
  */
-final class SymfonyCircuitBreaker extends PartialCircuitBreaker implements ConfigurableCall
+final class SymfonyCircuitBreaker extends PartialCircuitBreaker
 {
     /**
      * @var EventDispatcherInterface the Symfony Event Dispatcher
@@ -34,19 +33,8 @@ final class SymfonyCircuitBreaker extends PartialCircuitBreaker implements Confi
     /**
      * {@inheritdoc}
      */
-    public function call($service, callable $fallback)
+    public function call($service, callable $fallback, $serviceParameters = [])
     {
-        return $this->callWithParameters($service, $fallback);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function callWithParameters(
-        $service,
-        callable $fallback,
-        array $serviceParameters = []
-    ) {
         $transaction = $this->initTransaction($service);
 
         try {
@@ -90,11 +78,7 @@ final class SymfonyCircuitBreaker extends PartialCircuitBreaker implements Confi
                 return \call_user_func($fallback);
             }
 
-            return $this->callWithParameters(
-                $service,
-                $fallback,
-                $serviceParameters
-            );
+            return $this->call($service, $fallback, $serviceParameters);
         }
     }
 
@@ -122,6 +106,12 @@ final class SymfonyCircuitBreaker extends PartialCircuitBreaker implements Confi
 
     /**
      * Helper to dispatch event
+     *
+     * @param string $eventName the event name
+     * @param string $service the URI service called
+     * @param array $parameters the service parameters
+     *
+     * @return object the passed $event object
      */
     private function dispatch($eventName, $service, array $parameters)
     {

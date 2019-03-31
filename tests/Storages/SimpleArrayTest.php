@@ -1,18 +1,18 @@
 <?php
 
-namespace Tests\PrestaShop\CircuitBreaker\Storages;
+namespace Tests\Resiliency\Storages;
 
 use PHPUnit\Framework\TestCase;
-use PrestaShop\CircuitBreaker\Contracts\Transaction;
-use PrestaShop\CircuitBreaker\Exceptions\TransactionNotFound;
-use PrestaShop\CircuitBreaker\Storages\SimpleArray;
+use Resiliency\Contracts\Transaction;
+use Resiliency\Exceptions\TransactionNotFound;
+use Resiliency\Storages\SimpleArray;
 
 class SimpleArrayTest extends TestCase
 {
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $simpleArray = new SimpleArray();
         $simpleArray::$transactions = [];

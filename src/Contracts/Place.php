@@ -1,6 +1,6 @@
 <?php
 
-namespace PrestaShop\CircuitBreaker\Contracts;
+namespace Resiliency\Contracts;
 
 /**
  * A circuit breaker can be in 3 places:

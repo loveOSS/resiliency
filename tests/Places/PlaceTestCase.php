@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\PrestaShop\CircuitBreaker\Places;
+namespace Tests\Resiliency\Places;
 
 use PHPUnit\Framework\TestCase;
 

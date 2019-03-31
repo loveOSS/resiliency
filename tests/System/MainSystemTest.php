@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\PrestaShop\CircuitBreaker\System;
+namespace Tests\Resiliency\System;
 
 use PHPUnit\Framework\TestCase;
-use PrestaShop\CircuitBreaker\States;
-use PrestaShop\CircuitBreaker\Places\OpenPlace;
-use PrestaShop\CircuitBreaker\Places\HalfOpenPlace;
-use PrestaShop\CircuitBreaker\Places\ClosedPlace;
-use PrestaShop\CircuitBreaker\Contracts\Place;
-use PrestaShop\CircuitBreaker\Systems\MainSystem;
+use Resiliency\States;
+use Resiliency\Places\OpenPlace;
+use Resiliency\Places\HalfOpenPlace;
+use Resiliency\Places\ClosedPlace;
+use Resiliency\Contracts\Place;
+use Resiliency\Systems\MainSystem;
 
 class MainSystemTest extends TestCase
 {
@@ -47,7 +47,7 @@ class MainSystemTest extends TestCase
         $mainSystem = $this->createMainSystem();
         $places = $mainSystem->getPlaces();
 
-        $this->assertInternalType('array', $places);
+        $this->assertIsArray($places);
         $this->assertCount(3, $places);
 
         foreach ($places as $place) {

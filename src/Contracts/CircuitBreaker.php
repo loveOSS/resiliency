@@ -1,6 +1,6 @@
 <?php
 
-namespace PrestaShop\CircuitBreaker\Contracts;
+namespace Resiliency\Contracts;
 
 /**
  * A circuit breaker is used to provide
@@ -18,11 +18,12 @@ interface CircuitBreaker
      * The function that execute the service.
      *
      * @param string $service the service to call
+     * @param array $serviceParameters the service parameters
      * @param callable $fallback if the service is unavailable, rely on the fallback
      *
      * @return string
      */
-    public function call($service, callable $fallback);
+    public function call($service, callable $fallback, $serviceParameters = []);
 
     /**
      * @return bool checks if the circuit breaker is open

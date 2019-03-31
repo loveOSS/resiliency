@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\PrestaShop\CircuitBreaker\Clients;
+namespace Tests\Resiliency\Clients;
 
 use PHPUnit\Framework\TestCase;
-use PrestaShop\CircuitBreaker\Clients\GuzzleClient;
-use PrestaShop\CircuitBreaker\Exceptions\UnavailableService;
+use Resiliency\Clients\GuzzleClient;
+use Resiliency\Exceptions\UnavailableService;
 
 class GuzzleClientTest extends TestCase
 {

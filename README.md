@@ -1,17 +1,17 @@
-# Circuit Breaker, an implementation for resilient PHP applications
+# Resiliency, an implementation for resilient PHP applications
 
-[![codecov](https://codecov.io/gh/PrestaShop/circuit-breaker/branch/master/graph/badge.svg)](https://codecov.io/gh/PrestaShop/circuit-breaker) [![PHPStan](https://img.shields.io/badge/PHPStan-Level%207-brightgreen.svg?style=flat&logo=php)](https://shields.io/#/) [![Psalm](https://img.shields.io/badge/Psalm-Level%20Max-brightgreen.svg?style=flat&logo=php)](https://shields.io/#/) [![Build Status](https://travis-ci.com/PrestaShop/circuit-breaker.svg?branch=master)](https://travis-ci.com/PrestaShop/circuit-breaker) 
+[![codecov](https://codecov.io/gh/loveOSS/resiliency/branch/master/graph/badge.svg)](https://codecov.io/gh/loveOSS/resiliency) [![PHPStan](https://img.shields.io/badge/PHPStan-Level%207-brightgreen.svg?style=flat&logo=php)](https://shields.io/#/) [![Psalm](https://img.shields.io/badge/Psalm-Level%20Max-brightgreen.svg?style=flat&logo=php)](https://shields.io/#/) [![Build Status](https://travis-ci.com/loveOSS/resiliency.svg?branch=master)](https://travis-ci.com/loveOSS/resiliency) 
 
 ## Main principles
 
 ![circuit breaker](https://user-images.githubusercontent.com/1247388/49721725-438bd700-fc63-11e8-8498-82ca681b15fb.png)
 
-This library is compatible with PHP 5.6+.
+This library is compatible with PHP 7.1+.
 
 ## Installation
 
 ```
-composer require prestashop/circuit-breaker
+composer require love-oss/resiliency
 ```
 
 ## Use
@@ -32,7 +32,7 @@ The **fallback** callback will be used if the distant service is unreachable whe
 > You'd better return the same type of response expected from your distant call.
 
 ```php
-use PrestaShop\CircuitBreaker\SimpleCircuitBreakerFactory;
+use Resiliency\SimpleCircuitBreakerFactory;
 
 $circuitBreakerFactory = new SimpleCircuitBreakerFactory();
 $circuitBreaker = $circuitBreakerFactory->create(

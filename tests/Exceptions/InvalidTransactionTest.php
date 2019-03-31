@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\PrestaShop\CircuitBreaker\Exceptions;
+namespace Tests\Resiliency\Exceptions;
 
 use PHPUnit\Framework\TestCase;
-use PrestaShop\CircuitBreaker\Exceptions\InvalidTransaction;
+use Resiliency\Exceptions\InvalidTransaction;
 
 class InvalidTransactionTest extends TestCase
 {

@@ -1,14 +1,14 @@
 <?php
 
-namespace PrestaShop\CircuitBreaker;
+namespace Resiliency;
 
-use PrestaShop\CircuitBreaker\Transactions\SimpleTransaction;
-use PrestaShop\CircuitBreaker\Contracts\CircuitBreaker;
-use PrestaShop\CircuitBreaker\Contracts\Transaction;
-use PrestaShop\CircuitBreaker\Contracts\Storage;
-use PrestaShop\CircuitBreaker\Contracts\System;
-use PrestaShop\CircuitBreaker\Contracts\Client;
-use PrestaShop\CircuitBreaker\Contracts\Place;
+use Resiliency\Transactions\SimpleTransaction;
+use Resiliency\Contracts\CircuitBreaker;
+use Resiliency\Contracts\Transaction;
+use Resiliency\Contracts\Storage;
+use Resiliency\Contracts\System;
+use Resiliency\Contracts\Client;
+use Resiliency\Contracts\Place;
 use DateTime;
 
 abstract class PartialCircuitBreaker implements CircuitBreaker
@@ -47,7 +47,7 @@ abstract class PartialCircuitBreaker implements CircuitBreaker
     /**
      * {@inheritdoc}
      */
-    abstract public function call($service, callable $fallback);
+    abstract public function call($service, callable $fallback, $serviceParameters = []);
 
     /**
      * {@inheritdoc}

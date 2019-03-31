@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\PrestaShop\CircuitBreaker\Places;
+namespace Tests\Resiliency\Places;
 
-use PrestaShop\CircuitBreaker\Exceptions\InvalidPlace;
-use PrestaShop\CircuitBreaker\Places\ClosedPlace;
-use PrestaShop\CircuitBreaker\States;
+use Resiliency\Exceptions\InvalidPlace;
+use Resiliency\Places\ClosedPlace;
+use Resiliency\States;
 
 class ClosedPlaceTest extends PlaceTestCase
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace PrestaShop\CircuitBreaker\Clients;
+namespace Resiliency\Clients;
 
 use Exception;
 use GuzzleHttp\Client as OriginalGuzzleClient;
-use PrestaShop\CircuitBreaker\Contracts\Client;
-use PrestaShop\CircuitBreaker\Exceptions\UnavailableService;
+use Resiliency\Contracts\Client;
+use Resiliency\Exceptions\UnavailableService;
 
 /**
  * Guzzle implementation of client.

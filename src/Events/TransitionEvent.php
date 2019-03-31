@@ -1,6 +1,6 @@
 <?php
 
-namespace PrestaShop\CircuitBreaker\Events;
+namespace Resiliency\Events;
 
 use Symfony\Component\EventDispatcher\Event;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace PrestaShop\CircuitBreaker;
+namespace Resiliency;
 
 /**
  * Define the available transitions of the Circuit Breaker;.

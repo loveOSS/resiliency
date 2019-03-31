@@ -1,6 +1,6 @@
 <?php
 
-namespace PrestaShop\CircuitBreaker\Utils;
+namespace Resiliency\Utils;
 
 /**
  * Utils class to handle object validation

@@ -1,9 +1,10 @@
 <?php
 
-namespace PrestaShop\CircuitBreaker\Exceptions;
+namespace Resiliency\Exceptions;
 
 use Exception;
+use Resiliency\Contracts\Exception as ResiliencyException;
 
-final class TransactionNotFound extends Exception
+final class TransactionNotFound extends Exception implements ResiliencyException
 {
 }

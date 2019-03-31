@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\PrestaShop\CircuitBreaker\Events;
+namespace Tests\Resiliency\Events;
 
 use PHPUnit\Framework\TestCase;
-use PrestaShop\CircuitBreaker\Events\TransitionEvent;
+use Resiliency\Events\TransitionEvent;
 
 class TransitionEventTest extends TestCase
 {

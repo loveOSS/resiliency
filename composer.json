@@ -1,28 +1,30 @@
 {
-    "name": "prestashop/circuit-breaker",
-    "description": "A circuit breaker implementation for PHP",
+    "name": "love-oss/resiliency",
+    "description": "A circuit breaker implementation for PHP 7+",
     "type": "library",
     "license": "MIT",
     "authors": [
         {
-            "name": "PrestaShop SA",
-            "email": "contact@prestashop.com"
+            "name": "Mickaël Andrieu",
+            "email": "mickael.andrieu@solvolabs.com"
         },
         {
-            "name": "PrestaShop Community",
-            "homepage": "http://contributors.prestashop.com/"
+            "name": "Resiliency Community",
+            "homepage": "https://github.com/loveOSS/resiliency/graphs/contributors"
         }
     ],
     "require": {
-        "php": ">=5.6",
+        "php": "^7.2",
         "guzzlehttp/guzzle": "^6.3"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.12",
-        "phpunit/phpunit": "^5.7.0",
-        "symfony/cache": "^3.4.0",
-        "symfony/event-dispatcher": "^3.4",
-        "vimeo/psalm": "^1.1"
+        "phpstan/phpstan": "^0.11.5",
+        "phpstan/phpstan-phpunit": "^0.11.0",
+        "phpunit/phpunit": "^8.0",
+        "symfony/cache": "^3.4.0|^4.2.0",
+        "symfony/event-dispatcher": "^3.4|^4.2.0",
+        "vimeo/psalm": "^3.2"
     },
     "suggest": {
         "symfony/cache": "Allows use of Symfony Cache adapters to store transactions",
@@ -30,12 +32,12 @@
     },
     "autoload": {
         "psr-4": {
-            "PrestaShop\\CircuitBreaker\\": "src/"
+            "Resiliency\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\PrestaShop\\CircuitBreaker\\": "tests/"
+            "Tests\\Resiliency\\": "tests/"
         }
     },
     "scripts": {
@@ -51,9 +53,6 @@
         "test": "Launch PHPUnit test suite"
     },
     "config": {
-        "sort-packages": true,
-        "platform": {
-            "php": "5.6"
-        }
+        "sort-packages": true
     }
 }

@@ -1,12 +1,11 @@
 <?php
 
-namespace Tests\PrestaShop\CircuitBreaker\Transactions;
+namespace Tests\Resiliency\Transactions;
 
 use DateTime;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
-use PrestaShop\CircuitBreaker\Contracts\Place;
-use PrestaShop\CircuitBreaker\Transactions\SimpleTransaction;
+use Resiliency\Contracts\Place;
+use Resiliency\Transactions\SimpleTransaction;
 
 class SimpleTransactionTest extends TestCase
 {
@@ -119,7 +118,7 @@ class SimpleTransactionTest extends TestCase
      * Returns an instance of Place with State equals to "FAKE_STATE"
      * and threshold equals to 2.
      *
-     * @return Place&PHPUnit_Framework_MockObject_MockObject
+     * @return Place&\PHPUnit\Framework\MockObject\MockObject
      */
     private function createPlaceStub()
     {
