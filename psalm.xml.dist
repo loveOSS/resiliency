@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <psalm
-    name="Psalm configuration for the PrestaShop Circuit Breaker"
+    name="Psalm configuration for the Resiliency library"
     totallyTyped="false"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
-    xsi:schemaLocation="https://getpsalm.org/schema/config file:///home/dev/Projects/circuit-breaker/vendor/vimeo/psalm/config.xsd"
+    xsi:schemaLocation="https://getpsalm.org/schema/config file:///vendor/vimeo/psalm/config.xsd"
 >
     <projectFiles>
         <directory name="src" />
