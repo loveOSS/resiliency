@@ -2,9 +2,7 @@ workflow "Code Quality" {
   on = "push"
   resolves = [
     "PHPStan",
-    "PHP-CS-Fixer",
-    "Psalm",
-    "PHPQA"
+    "PHP-CS-Fixer"
   ]
 }
 
