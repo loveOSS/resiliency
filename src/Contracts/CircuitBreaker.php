@@ -12,7 +12,7 @@ interface CircuitBreaker
     /**
      * @return string the circuit breaker state
      */
-    public function getState();
+    public function getState(): string;
 
     /**
      * The function that execute the service.
@@ -23,20 +23,20 @@ interface CircuitBreaker
      *
      * @return string
      */
-    public function call($service, callable $fallback, $serviceParameters = []);
+    public function call(string $service, callable $fallback, array $serviceParameters = []): string;
 
     /**
      * @return bool checks if the circuit breaker is open
      */
-    public function isOpened();
+    public function isOpened(): bool;
 
     /**
      * @return bool checks if the circuit breaker is half open
      */
-    public function isHalfOpened();
+    public function isHalfOpened(): bool;
 
     /**
      * @return bool checks if the circuit breaker is closed
      */
-    public function isClosed();
+    public function isClosed(): bool;
 }

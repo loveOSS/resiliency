@@ -14,11 +14,6 @@ use Resiliency\Exceptions\UnavailableService;
 class GuzzleClient implements Client
 {
     /**
-     * @var string by default, calls are sent using GET method
-     */
-    const DEFAULT_METHOD = 'GET';
-
-    /**
      * @var array the Client main options
      */
     private $mainOptions;
@@ -31,7 +26,7 @@ class GuzzleClient implements Client
     /**
      * {@inheritdoc}
      */
-    public function request($resource, array $options)
+    public function request($resource, array $options): string
     {
         try {
             $client = new OriginalGuzzleClient($this->mainOptions);
@@ -49,14 +44,14 @@ class GuzzleClient implements Client
      *
      * @return string the method
      */
-    private function defineMethod(array $options)
+    private function defineMethod(array $options): string
     {
         if (isset($this->mainOptions['method'])) {
-            return $this->mainOptions['method'];
+            return (string) $this->mainOptions['method'];
         }
 
         if (isset($options['method'])) {
-            return $options['method'];
+            return (string) $options['method'];
         }
 
         return self::DEFAULT_METHOD;

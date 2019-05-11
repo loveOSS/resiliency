@@ -11,10 +11,10 @@ interface System
     /**
      * @return Place[] the list of places of the system
      */
-    public function getPlaces();
+    public function getPlaces(): array;
 
     /**
      * @return Place the initial place of the system
      */
-    public function getInitialPlace();
+    public function getInitialPlace(): Place;
 }

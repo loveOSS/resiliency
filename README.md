@@ -37,9 +37,9 @@ use Resiliency\SimpleCircuitBreakerFactory;
 $circuitBreakerFactory = new SimpleCircuitBreakerFactory();
 $circuitBreaker = $circuitBreakerFactory->create(
     [
-        'closed' => [2, 0.1, 0],
-        'open' => [0, 0, 10],
-        'half_open' => [1, 0.2, 0],
+        'closed' => [2, 0.1, 0.1],
+        'open' => [0, 0.0, 10.0],
+        'half_open' => [1, 0.2, 0.0],
         'client' => [
             'proxy' => '192.168.16.1:10',
             'method' => 'POST',

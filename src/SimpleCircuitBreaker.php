@@ -27,7 +27,7 @@ final class SimpleCircuitBreaker extends PartialCircuitBreaker
     /**
      * {@inheritdoc}
      */
-    public function call($service, callable $fallback, $serviceParameters = [])
+    public function call(string $service, callable $fallback, array $serviceParameters = []): string
     {
         $transaction = $this->initTransaction($service);
 
@@ -37,7 +37,7 @@ final class SimpleCircuitBreaker extends PartialCircuitBreaker
                     $this->moveStateTo(States::HALF_OPEN_STATE, $service);
                 }
 
-                return \call_user_func($fallback);
+                return (string) $fallback();
             }
 
             $response = $this->request($service);
@@ -51,7 +51,7 @@ final class SimpleCircuitBreaker extends PartialCircuitBreaker
             if (!$this->isAllowedToRetry($transaction)) {
                 $this->moveStateTo(States::OPEN_STATE, $service);
 
-                return \call_user_func($fallback);
+                return (string) $fallback();
             }
 
             return $this->call($service, $fallback, $serviceParameters);

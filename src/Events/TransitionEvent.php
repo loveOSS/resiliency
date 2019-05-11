@@ -36,7 +36,7 @@ class TransitionEvent extends Event
     /**
      * @return string the Transition name
      */
-    public function getEvent()
+    public function getEvent(): string
     {
         return $this->eventName;
     }
@@ -44,7 +44,7 @@ class TransitionEvent extends Event
     /**
      * @return string the Service URI
      */
-    public function getService()
+    public function getService(): string
     {
         return $this->service;
     }
@@ -52,7 +52,7 @@ class TransitionEvent extends Event
     /**
      * @return array the Service parameters
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }

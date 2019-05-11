@@ -19,16 +19,16 @@ abstract class AbstractPlace implements Place
     private $timeout;
 
     /**
-     * @var int the Place threshold
+     * @var float the Place threshold
      */
     private $threshold;
 
     /**
      * @param int $failures the Place failures
      * @param float $timeout the Place timeout
-     * @param int $threshold the Place threshold
+     * @param float $threshold the Place threshold
      */
-    public function __construct($failures, $timeout, $threshold)
+    public function __construct(int $failures, float $timeout, float $threshold)
     {
         $this->validate($failures, $timeout, $threshold);
 
@@ -40,12 +40,12 @@ abstract class AbstractPlace implements Place
     /**
      * {@inheritdoc}
      */
-    abstract public function getState();
+    abstract public function getState(): string;
 
     /**
      * {@inheritdoc}
      */
-    public function getFailures()
+    public function getFailures(): int
     {
         return $this->failures;
     }
@@ -53,7 +53,7 @@ abstract class AbstractPlace implements Place
     /**
      * {@inheritdoc}
      */
-    public function getTimeout()
+    public function getTimeout(): float
     {
         return $this->timeout;
     }
@@ -61,7 +61,7 @@ abstract class AbstractPlace implements Place
     /**
      * {@inheritdoc}
      */
-    public function getThreshold()
+    public function getThreshold(): float
     {
         return $this->threshold;
     }
@@ -69,31 +69,31 @@ abstract class AbstractPlace implements Place
     /**
      * Helper: create a Place from an array.
      *
-     * @var array the failures, timeout and treshold
+     * @var array the failures, timeout and threshold
      *
      * @return self
      */
-    public static function fromArray(array $settings)
+    public static function fromArray(array $settings): self
     {
-        return new static($settings[0], $settings[1], $settings[2]);
+        return new static((int) $settings[0], (float) $settings[1], (float) $settings[2]);
     }
 
     /**
-     * Ensure the place is valid (PHP5 is permissive).
+     * Ensure the place is valid
      *
      * @param int $failures the failures should be a positive value
      * @param float $timeout the timeout should be a positive value
-     * @param int $threshold the threshold should be a positive value
+     * @param float $threshold the threshold should be a positive value
      *
      * @throws InvalidPlace
      *
      * @return bool true if valid
      */
-    private function validate($failures, $timeout, $threshold)
+    private function validate(int $failures, float $timeout, float $threshold): bool
     {
         $assertionsAreValid = Assert::isPositiveInteger($failures)
             && Assert::isPositiveValue($timeout)
-            && Assert::isPositiveInteger($threshold)
+            && Assert::isPositiveValue($threshold)
         ;
 
         if ($assertionsAreValid) {

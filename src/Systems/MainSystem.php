@@ -35,7 +35,7 @@ final class MainSystem implements System
     /**
      * {@inheritdoc}
      */
-    public function getInitialPlace()
+    public function getInitialPlace(): Place
     {
         return $this->places[States::CLOSED_STATE];
     }
@@ -43,7 +43,7 @@ final class MainSystem implements System
     /**
      * {@inheritdoc}
      */
-    public function getPlaces()
+    public function getPlaces(): array
     {
         return $this->places;
     }

@@ -43,7 +43,7 @@
     },
     "scripts": {
         "phpstan": "@php ./vendor/bin/phpstan analyse src tests -l 7 -c extension.neon",
-        "psalm": "@php ./vendor/bin/psalm --find-dead-code --threads=8 --diff --diff-methods",
+        "psalm": "@php ./vendor/bin/psalm --threads=8 --diff --diff-methods",
         "cs-fix": "@php ./vendor/bin/php-cs-fixer fix",
         "test": "@php ./vendor/bin/phpunit"
     },

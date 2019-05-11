@@ -25,7 +25,7 @@ final class SymfonyCache implements Storage
     /**
      * {@inheritdoc}
      */
-    public function saveTransaction($service, Transaction $transaction)
+    public function saveTransaction(string $service, Transaction $transaction): bool
     {
         $key = $this->getKey($service);
 
@@ -35,12 +35,16 @@ final class SymfonyCache implements Storage
     /**
      * {@inheritdoc}
      */
-    public function getTransaction($service)
+    public function getTransaction(string $service): Transaction
     {
         $key = $this->getKey($service);
 
         if ($this->hasTransaction($service)) {
-            return $this->symfonyCache->get($key);
+            $transaction = $this->symfonyCache->get($key);
+
+            if ($transaction instanceof Transaction) {
+                return $transaction;
+            }
         }
 
         throw new TransactionNotFound();
@@ -49,7 +53,7 @@ final class SymfonyCache implements Storage
     /**
      * {@inheritdoc}
      */
-    public function hasTransaction($service)
+    public function hasTransaction(string $service): bool
     {
         $key = $this->getKey($service);
 
@@ -59,7 +63,7 @@ final class SymfonyCache implements Storage
     /**
      * {@inheritdoc}
      */
-    public function clear()
+    public function clear(): bool
     {
         return $this->symfonyCache->clear();
     }
@@ -71,7 +75,7 @@ final class SymfonyCache implements Storage
      *
      * @return string the transaction unique identifier
      */
-    private function getKey($service)
+    private function getKey(string $service): string
     {
         return md5($service);
     }

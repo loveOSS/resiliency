@@ -9,7 +9,7 @@ final class HalfOpenPlace extends AbstractPlace
     /**
      * {@inheritdoc}
      */
-    public function getState()
+    public function getState(): string
     {
         return States::HALF_OPEN_STATE;
     }

@@ -15,7 +15,7 @@ final class InvalidPlace extends Exception implements ResiliencyException
      *
      * @return self
      */
-    public static function invalidSettings($failures, $timeout, $threshold)
+    public static function invalidSettings($failures, $timeout, $threshold): self
     {
         $exceptionMessage = 'Invalid settings for Place' . PHP_EOL .
             ErrorFormatter::format('failures', $failures, 'isPositiveInteger', 'a positive integer') .

@@ -1,7 +1,10 @@
 <?xml version="1.0"?>
 <psalm
     name="Psalm configuration for the Resiliency library"
-    totallyTyped="false"
+    totallyTyped="true"
+    strictBinaryOperands="true"
+    allowPhpStormGenerics="true"
+    allowStringToStandInForClass="false"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config file:///vendor/vimeo/psalm/config.xsd"
@@ -16,6 +19,11 @@
 
     <issueHandlers>
         <LessSpecificReturnType errorLevel="info" />
+        <MixedAssignment>
+            <errorLevel type="suppress">
+                <directory name="src/Storages" />
+            </errorLevel>
+        </MixedAssignment>
 
         <!-- level 3 issues - slightly lazy code writing, but provably low false-negatives -->
 
