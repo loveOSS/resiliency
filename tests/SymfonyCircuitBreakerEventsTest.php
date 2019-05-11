@@ -41,10 +41,10 @@ class SymfonyCircuitBreakerEventsTest extends CircuitBreakerTestCase
         $invocations = $this->spy->getInvocations();
         $this->assertCount(4, $invocations);
 
-        $this->assertSame('INITIATING', $invocations[0]->getParameters()[0]);
-        $this->assertSame('TRIAL', $invocations[1]->getParameters()[0]);
-        $this->assertSame('TRIAL', $invocations[2]->getParameters()[0]);
-        $this->assertSame('OPENING', $invocations[3]->getParameters()[0]);
+        $this->assertSame('resiliency.initiating', $invocations[0]->getParameters()[0]);
+        $this->assertSame('resiliency.trial', $invocations[1]->getParameters()[0]);
+        $this->assertSame('resiliency.trial', $invocations[2]->getParameters()[0]);
+        $this->assertSame('resiliency.opening', $invocations[3]->getParameters()[0]);
     }
 
     private function createCircuitBreaker(): SymfonyCircuitBreaker

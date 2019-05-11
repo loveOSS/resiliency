@@ -120,7 +120,7 @@ final class SymfonyCircuitBreaker extends PartialCircuitBreaker
 
         return $this->eventDispatcher
             ->dispatch(
-                $eventName,
+                'resiliency.' . strtolower($eventName),
                 $event
             )
         ;
