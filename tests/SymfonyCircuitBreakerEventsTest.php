@@ -2,16 +2,12 @@
 
 namespace Tests\Resiliency;
 
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Cache\Simple\ArrayCache;
+use Symfony\Component\EventDispatcher\Event;
 use PHPUnit\Framework\MockObject\Matcher\AnyInvokedCount;
 use Resiliency\SymfonyCircuitBreaker;
 use Resiliency\Storages\SymfonyCache;
-use Resiliency\Places\HalfOpenPlace;
-use Resiliency\Systems\MainSystem;
-use Resiliency\Places\ClosedPlace;
-use Resiliency\Places\OpenPlace;
-use Symfony\Component\Cache\Simple\ArrayCache;
 
 class SymfonyCircuitBreakerEventsTest extends CircuitBreakerTestCase
 {
@@ -53,11 +49,7 @@ class SymfonyCircuitBreakerEventsTest extends CircuitBreakerTestCase
 
     private function createCircuitBreaker(): SymfonyCircuitBreaker
     {
-        $system = new MainSystem(
-            new ClosedPlace(2, 0.2, 0.0),
-            new HalfOpenPlace(0, 0.2, 0.0),
-            new OpenPlace(0, 0.0, 1.0)
-        );
+        $system = $this->getSystem();
 
         $symfonyCache = new SymfonyCache(new ArrayCache());
         $eventDispatcherS = $this->createMock(EventDispatcher::class);

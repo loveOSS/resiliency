@@ -72,21 +72,12 @@ composer test
 ## Code quality
 
 ```
-composer cs-fix && composer phpstan
+composer cs-fix && composer phpstan && composer psalm
 ```
 
 We also use [PHPQA](https://github.com/EdgedesignCZ/phpqa#phpqa) to check the Code quality
-during the CI management of the contributions.
-
-If you want to use it (using Docker):
+during the CI management of the contributions:
 
 ```
-docker run --rm -u $UID -v $(pwd):/app eko3alpha/docker-phpqa --report --ignoredDirs vendor
-```
-
-If you want to use it (using Composer):
-
-```
-composer global require edgedesign/phpqa=v1.20.0 --update-no-dev
-phpqa --report --ignoredDirs vendor
+composer phpqa
 ```

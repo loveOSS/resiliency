@@ -2,9 +2,8 @@
 
 namespace Resiliency;
 
-use Resiliency\Contracts\Place;
+use Resiliency\Contracts\System;
 use Resiliency\Contracts\Client;
-use Resiliency\Systems\MainSystem;
 use Resiliency\Storages\SimpleArray;
 use Resiliency\Exceptions\UnavailableService;
 
@@ -13,14 +12,8 @@ use Resiliency\Exceptions\UnavailableService;
  */
 final class SimpleCircuitBreaker extends PartialCircuitBreaker
 {
-    public function __construct(
-        Place $openPlace,
-        Place $halfOpenPlace,
-        Place $closedPlace,
-        Client $client
-    ) {
-        $system = new MainSystem($closedPlace, $halfOpenPlace, $openPlace);
-
+    public function __construct(System $system, Client $client)
+    {
         parent::__construct($system, $client, new SimpleArray());
     }
 

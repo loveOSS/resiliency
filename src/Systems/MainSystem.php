@@ -4,6 +4,9 @@ namespace Resiliency\Systems;
 
 use Resiliency\Contracts\Place;
 use Resiliency\Contracts\System;
+use Resiliency\Places\ClosedPlace;
+use Resiliency\Places\HalfOpenPlace;
+use Resiliency\Places\OpenPlace;
 use Resiliency\States;
 
 /**
@@ -46,5 +49,19 @@ final class MainSystem implements System
     public function getPlaces(): array
     {
         return $this->places;
+    }
+
+    /**
+     * @param array $settings the settings for the Places
+     *
+     * @return self
+     */
+    public static function createFromArray(array $settings): self
+    {
+        $openPlace = OpenPlace::fromArray((array) $settings['open']);
+        $halfOpenPlace = HalfOpenPlace::fromArray((array) $settings['half_open']);
+        $closedPlace = ClosedPlace::fromArray((array) $settings['closed']);
+
+        return new self($closedPlace, $halfOpenPlace, $openPlace);
     }
 }
