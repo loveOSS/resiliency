@@ -9,7 +9,7 @@ final class OpenPlace extends AbstractPlace
     /**
      * {@inheritdoc}
      */
-    public function getState()
+    public function getState(): string
     {
         return States::OPEN_STATE;
     }

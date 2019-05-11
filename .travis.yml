@@ -18,10 +18,15 @@ cache:
     - $HOME/.composer/cache
 
 before_script:
+  - composer validate --strict
   - composer install -n
 
 script:
   - composer test -- --coverage-clover=coverage.xml
+  - composer cs-fix
+  - composer phpstan
+  - composer psalm
+  - ./vendor/bin/phpqa --report --ignoredDirs vendor
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)

@@ -9,7 +9,7 @@ final class ClosedPlace extends AbstractPlace
     /**
      * {@inheritdoc}
      */
-    public function getState()
+    public function getState(): string
     {
         return States::CLOSED_STATE;
     }

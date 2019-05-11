@@ -37,9 +37,9 @@ final class SimpleTransaction implements Transaction
      * @param string $service the service URI
      * @param int $failures the allowed failures
      * @param string $state the circuit breaker state/place
-     * @param int $threshold the place threshold
+     * @param float $threshold the place threshold
      */
-    public function __construct($service, $failures, $state, $threshold)
+    public function __construct(string $service, int $failures, string $state, float $threshold)
     {
         $this->validate($service, $failures, $state, $threshold);
 
@@ -52,7 +52,7 @@ final class SimpleTransaction implements Transaction
     /**
      * {@inheritdoc}
      */
-    public function getService()
+    public function getService(): string
     {
         return $this->service;
     }
@@ -60,7 +60,7 @@ final class SimpleTransaction implements Transaction
     /**
      * {@inheritdoc}
      */
-    public function getFailures()
+    public function getFailures(): int
     {
         return $this->failures;
     }
@@ -68,7 +68,7 @@ final class SimpleTransaction implements Transaction
     /**
      * {@inheritdoc}
      */
-    public function getState()
+    public function getState(): string
     {
         return $this->state;
     }
@@ -76,7 +76,7 @@ final class SimpleTransaction implements Transaction
     /**
      * {@inheritdoc}
      */
-    public function getThresholdDateTime()
+    public function getThresholdDateTime(): DateTime
     {
         return $this->thresholdDateTime;
     }
@@ -84,7 +84,7 @@ final class SimpleTransaction implements Transaction
     /**
      * {@inheritdoc}
      */
-    public function incrementFailures()
+    public function incrementFailures(): bool
     {
         ++$this->failures;
 
@@ -99,7 +99,7 @@ final class SimpleTransaction implements Transaction
      *
      * @return self
      */
-    public static function createFromPlace(Place $place, $service)
+    public static function createFromPlace(Place $place, $service): self
     {
         $threshold = $place->getThreshold();
 
@@ -114,11 +114,11 @@ final class SimpleTransaction implements Transaction
     /**
      * Set the right DateTime from the threshold value.
      *
-     * @param int $threshold the Transaction threshold
+     * @param float $threshold the Transaction threshold
      *
-     * @return void
+     * @throws \Exception
      */
-    private function initThresholdDateTime($threshold)
+    private function initThresholdDateTime(float $threshold): void
     {
         $thresholdDateTime = new DateTime();
         $thresholdDateTime->modify("+$threshold second");
@@ -127,23 +127,23 @@ final class SimpleTransaction implements Transaction
     }
 
     /**
-     * Ensure the transaction is valid (PHP5 is permissive).
+     * Ensure the transaction is valid.
      *
      * @param string $service the service URI
      * @param int $failures the failures should be a positive value
      * @param string $state the Circuit Breaker state
-     * @param int $threshold the threshold should be a positive value
+     * @param float $threshold the threshold should be a positive value
+     *
+     * @return bool
      *
      * @throws InvalidTransaction
-     *
-     * @return bool true if valid
      */
-    private function validate($service, $failures, $state, $threshold)
+    private function validate($service, $failures, $state, $threshold): bool
     {
         $assertionsAreValid = Assert::isURI($service)
             && Assert::isPositiveInteger($failures)
             && Assert::isString($state)
-            && Assert::isPositiveInteger($threshold)
+            && Assert::isPositiveValue($threshold)
         ;
 
         if ($assertionsAreValid) {

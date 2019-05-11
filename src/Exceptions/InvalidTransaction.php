@@ -16,7 +16,7 @@ final class InvalidTransaction extends Exception implements ResiliencyException
      *
      * @return self
      */
-    public static function invalidParameters($service, $failures, $state, $threshold)
+    public static function invalidParameters($service, $failures, $state, $threshold): self
     {
         $exceptionMessage = 'Invalid parameters for Transaction' . PHP_EOL .
             ErrorFormatter::format('service', $service, 'isURI', 'an URI') .

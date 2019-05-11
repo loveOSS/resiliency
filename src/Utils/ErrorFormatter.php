@@ -22,7 +22,7 @@ final class ErrorFormatter
     public static function format($parameter, $value, $function, $expectedType)
     {
         $errorMessage = '';
-        $isValid = Assert::$function($value);
+        $isValid = (bool) Assert::$function($value);
         $type = \gettype($value);
         $hasStringValue = \in_array($type, ['integer', 'float', 'string'], true);
 

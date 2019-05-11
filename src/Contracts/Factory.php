@@ -12,5 +12,5 @@ interface Factory
      *
      * @return CircuitBreaker
      */
-    public function create(array $settings);
+    public function create(array $settings): CircuitBreaker;
 }

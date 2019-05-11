@@ -47,12 +47,12 @@ abstract class PartialCircuitBreaker implements CircuitBreaker
     /**
      * {@inheritdoc}
      */
-    abstract public function call($service, callable $fallback, $serviceParameters = []);
+    abstract public function call(string $service, callable $fallback, array $serviceParameters = []): string;
 
     /**
      * {@inheritdoc}
      */
-    public function getState()
+    public function getState(): string
     {
         return $this->currentPlace->getState();
     }
@@ -60,7 +60,7 @@ abstract class PartialCircuitBreaker implements CircuitBreaker
     /**
      * {@inheritdoc}
      */
-    public function isOpened()
+    public function isOpened(): bool
     {
         return States::OPEN_STATE === $this->currentPlace->getState();
     }
@@ -68,7 +68,7 @@ abstract class PartialCircuitBreaker implements CircuitBreaker
     /**
      * {@inheritdoc}
      */
-    public function isHalfOpened()
+    public function isHalfOpened(): bool
     {
         return States::HALF_OPEN_STATE === $this->currentPlace->getState();
     }
@@ -76,7 +76,7 @@ abstract class PartialCircuitBreaker implements CircuitBreaker
     /**
      * {@inheritdoc}
      */
-    public function isClosed()
+    public function isClosed(): bool
     {
         return States::CLOSED_STATE === $this->currentPlace->getState();
     }
@@ -87,7 +87,7 @@ abstract class PartialCircuitBreaker implements CircuitBreaker
      *
      * @return bool
      */
-    protected function moveStateTo($state, $service)
+    protected function moveStateTo($state, $service): bool
     {
         $this->currentPlace = $this->places[$state];
         $transaction = SimpleTransaction::createFromPlace(
@@ -103,7 +103,7 @@ abstract class PartialCircuitBreaker implements CircuitBreaker
      *
      * @return Transaction
      */
-    protected function initTransaction($service)
+    protected function initTransaction(string $service): Transaction
     {
         if ($this->storage->hasTransaction($service)) {
             $transaction = $this->storage->getTransaction($service);
@@ -124,7 +124,7 @@ abstract class PartialCircuitBreaker implements CircuitBreaker
      *
      * @return bool
      */
-    protected function isAllowedToRetry(Transaction $transaction)
+    protected function isAllowedToRetry(Transaction $transaction): bool
     {
         return $transaction->getFailures() < $this->currentPlace->getFailures();
     }
@@ -134,7 +134,7 @@ abstract class PartialCircuitBreaker implements CircuitBreaker
      *
      * @return bool
      */
-    protected function canAccessService(Transaction $transaction)
+    protected function canAccessService(Transaction $transaction): bool
     {
         return $transaction->getThresholdDateTime() < new DateTime();
     }
@@ -147,7 +147,7 @@ abstract class PartialCircuitBreaker implements CircuitBreaker
      *
      * @return string
      */
-    protected function request($service, array $parameters = [])
+    protected function request(string $service, array $parameters = []): string
     {
         return $this->client->request(
             $service,

@@ -2,6 +2,7 @@
 
 namespace Resiliency;
 
+use Resiliency\Contracts\CircuitBreaker;
 use Resiliency\Contracts\Factory;
 use Resiliency\Places\ClosedPlace;
 use Resiliency\Places\HalfOpenPlace;
@@ -17,13 +18,13 @@ final class SimpleCircuitBreakerFactory implements Factory
     /**
      * {@inheritdoc}
      */
-    public function create(array $settings)
+    public function create(array $settings): CircuitBreaker
     {
-        $openPlace = OpenPlace::fromArray($settings['open']);
-        $halfOpenPlace = HalfOpenPlace::fromArray($settings['half_open']);
-        $closedPlace = ClosedPlace::fromArray($settings['closed']);
+        $openPlace = OpenPlace::fromArray((array) $settings['open']);
+        $halfOpenPlace = HalfOpenPlace::fromArray((array) $settings['half_open']);
+        $closedPlace = ClosedPlace::fromArray((array) $settings['closed']);
 
-        $clientSettings = array_key_exists('client', $settings) ? $settings['client'] : [];
+        $clientSettings = array_key_exists('client', $settings) ? (array) $settings['client'] : [];
         $client = new GuzzleClient($clientSettings);
 
         return new SimpleCircuitBreaker(

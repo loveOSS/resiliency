@@ -13,43 +13,37 @@ interface Storage
     /**
      * Save the CircuitBreaker transaction.
      *
-     * @var string The service name
-     * @var Transaction $transaction the transaction
+     * @param string $service The service name
+     * @param Transaction $transaction the transaction
      *
      * @return bool
-     *
-     * @param mixed $service
      */
-    public function saveTransaction($service, Transaction $transaction);
+    public function saveTransaction(string $service, Transaction $transaction): bool;
 
     /**
      * Retrieve the CircuitBreaker transaction for a specific service.
      *
-     * @var string the service name
+     * @param string $service the service name
      *
      * @throws TransactionNotFound
      *
      * @return Transaction
-     *
-     * @param mixed $service
      */
-    public function getTransaction($service);
+    public function getTransaction(string $service): Transaction;
 
     /**
      * Checks if the transaction exists.
      *
-     * @var string the service name
+     * @param string $service the service name
      *
      * @return bool
-     *
-     * @param mixed $service
      */
-    public function hasTransaction($service);
+    public function hasTransaction(string $service): bool;
 
     /**
      * Clear the Circuit Breaker storage.
      *
      * @return bool
      */
-    public function clear();
+    public function clear(): bool;
 }

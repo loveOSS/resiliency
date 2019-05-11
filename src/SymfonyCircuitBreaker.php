@@ -5,6 +5,7 @@ namespace Resiliency;
 use Resiliency\Contracts\Client;
 use Resiliency\Contracts\System;
 use Resiliency\Contracts\Storage;
+use Resiliency\Contracts\Transaction;
 use Resiliency\Events\TransitionEvent;
 use Resiliency\Exceptions\UnavailableService;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -33,7 +34,7 @@ final class SymfonyCircuitBreaker extends PartialCircuitBreaker
     /**
      * {@inheritdoc}
      */
-    public function call($service, callable $fallback, $serviceParameters = [])
+    public function call(string $service, callable $fallback, array $serviceParameters = []): string
     {
         $transaction = $this->initTransaction($service);
 
@@ -48,7 +49,7 @@ final class SymfonyCircuitBreaker extends PartialCircuitBreaker
                     );
                 }
 
-                return \call_user_func($fallback);
+                return (string) $fallback();
             }
 
             $response = $this->request($service, $serviceParameters);
@@ -75,7 +76,7 @@ final class SymfonyCircuitBreaker extends PartialCircuitBreaker
 
                 $this->dispatch($transition, $service, $serviceParameters);
 
-                return \call_user_func($fallback);
+                return (string) $fallback();
             }
 
             return $this->call($service, $fallback, $serviceParameters);
@@ -85,7 +86,7 @@ final class SymfonyCircuitBreaker extends PartialCircuitBreaker
     /**
      * {@inheritdoc}
      */
-    protected function initTransaction($service)
+    protected function initTransaction(string $service): Transaction
     {
         if (!$this->storage->hasTransaction($service)) {
             $this->dispatch(Transitions::INITIATING_TRANSITION, $service, []);
@@ -97,7 +98,7 @@ final class SymfonyCircuitBreaker extends PartialCircuitBreaker
     /**
      * {@inheritdoc}
      */
-    protected function request($service, array $parameters = [])
+    protected function request(string $service, array $parameters = []): string
     {
         $this->dispatch(Transitions::TRIAL_TRANSITION, $service, $parameters);
 
@@ -113,7 +114,7 @@ final class SymfonyCircuitBreaker extends PartialCircuitBreaker
      *
      * @return object the passed $event object
      */
-    private function dispatch($eventName, $service, array $parameters)
+    private function dispatch($eventName, $service, array $parameters): object
     {
         $event = new TransitionEvent($eventName, $service, $parameters);
 
