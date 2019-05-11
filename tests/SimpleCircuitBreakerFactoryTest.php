@@ -11,7 +11,7 @@ class SimpleCircuitBreakerFactoryTest extends TestCase
     /**
      * @return void
      */
-    public function testCreation()
+    public function testCreation(): void
     {
         $factory = new SimpleCircuitBreakerFactory();
 
@@ -26,7 +26,7 @@ class SimpleCircuitBreakerFactoryTest extends TestCase
      *
      * @return void
      */
-    public function testCircuitBreakerCreation(array $settings)
+    public function testCircuitBreakerCreation(array $settings): void
     {
         $factory = new SimpleCircuitBreakerFactory();
         $circuitBreaker = $factory->create($settings);
@@ -37,7 +37,7 @@ class SimpleCircuitBreakerFactoryTest extends TestCase
     /**
      * @return array
      */
-    public function getSettings()
+    public function getSettings(): array
     {
         return [
             [

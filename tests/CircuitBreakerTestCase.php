@@ -3,6 +3,7 @@
 namespace Tests\Resiliency;
 
 use Resiliency\Clients\GuzzleClient;
+use Resiliency\Systems\MainSystem;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Handler\MockHandler;
 use PHPUnit\Framework\TestCase;
@@ -21,7 +22,7 @@ abstract class CircuitBreakerTestCase extends TestCase
      *
      * @return GuzzleClient
      */
-    protected function getTestClient()
+    protected function getTestClient() : GuzzleClient
     {
         $mock = new MockHandler([
             new RequestException('Service unavailable', new Request('GET', 'test')),
@@ -32,5 +33,31 @@ abstract class CircuitBreakerTestCase extends TestCase
         $handler = HandlerStack::create($mock);
 
         return new GuzzleClient(['handler' => $handler]);
+    }
+
+    /**
+     * Returns an instance of Main system shared by all the circuit breakers.
+     *
+     * @return MainSystem
+     */
+    protected function getSystem(): MainSystem
+    {
+        return MainSystem::createFromArray(
+            [
+                'open' => [0, 0.0, 1.0], // threshold 1.0s
+                'half_open' => [0, 0.2, 0.0], // timeout 0.2s to test the service
+                'closed' => [2, 0.2, 0.0], // 2 failures allowed, 0.2s timeout
+            ]
+        );
+    }
+
+    /**
+     * Will wait for X seconds, functional wrapper for sleep function.
+     *
+     * @param int $seconds The number of seconds
+     */
+    protected function waitFor(int $seconds): void
+    {
+        sleep($seconds);
     }
 }
