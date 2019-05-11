@@ -18,15 +18,15 @@ cache:
     - $HOME/.composer/cache
 
 before_script:
+  - composer validate --strict
   - composer install -n
-  - composer global require edgedesign/phpqa=v1.20.0 --update-no-dev
 
 script:
   - composer test -- --coverage-clover=coverage.xml
   - composer cs-fix
   - composer phpstan
   - composer psalm
-  - phpqa --report --ignoredDirs vendor
+  - ./vendor/bin/phpqa --report --ignoredDirs vendor
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)

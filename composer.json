@@ -17,11 +17,14 @@
         "php": "^7.2"
     },
     "require-dev": {
-        "guzzlehttp/guzzle": "^6.3",
+        "edgedesign/phpqa": "v1.21.1",
         "friendsofphp/php-cs-fixer": "^2.12",
+        "guzzlehttp/guzzle": "^6.3",
+        "jakub-onderka/php-parallel-lint": "^1.0",
         "phpstan/phpstan": "^0.11.5",
         "phpstan/phpstan-phpunit": "^0.11.0",
         "phpunit/phpunit": "^8.0",
+        "sensiolabs/security-checker": "^5.0",
         "symfony/cache": "^3.4.0|^4.2.0",
         "symfony/event-dispatcher": "^3.4|^4.2.0",
         "vimeo/psalm": "^3.2"
@@ -45,13 +48,15 @@
         "phpstan": "@php ./vendor/bin/phpstan analyse src tests -l 7 -c extension.neon",
         "psalm": "@php ./vendor/bin/psalm --threads=8 --diff --diff-methods",
         "cs-fix": "@php ./vendor/bin/php-cs-fixer fix",
-        "test": "@php ./vendor/bin/phpunit"
+        "test": "@php ./vendor/bin/phpunit",
+        "phpqa": "@php ./vendor/bin/phpqa --report --tools phpcs:0,phpmd:0,phpcpd:0,phpmetrics,phploc,pdepend,security-checker:0,parallel-lint:0 --ignoredDirs vendor"
     },
     "scripts-descriptions": {
-        "phpstan": "Execute PHPStan on PHP7.0+, you need to install it",
-        "psalm": "Execute Psalm on PHP7.0+, you need to install it",
+        "phpstan": "Execute PHPStan analysis",
+        "psalm": "Execute Psalm analysis",
         "cs-fix": "Check and fix coding styles using PHP CS Fixer",
-        "test": "Launch PHPUnit test suite"
+        "test": "Launch PHPUnit test suite",
+        "phpqa": "Execute PHQA toolsuite analysis"
     },
     "config": {
         "sort-packages": true
