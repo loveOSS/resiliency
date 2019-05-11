@@ -6,7 +6,7 @@
 
 ![circuit breaker](https://user-images.githubusercontent.com/1247388/49721725-438bd700-fc63-11e8-8498-82ca681b15fb.png)
 
-This library is compatible with PHP 7.1+.
+This library is compatible with PHP 7.2+.
 
 ## Installation
 
