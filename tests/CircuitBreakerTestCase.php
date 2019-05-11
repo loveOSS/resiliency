@@ -22,7 +22,7 @@ abstract class CircuitBreakerTestCase extends TestCase
      *
      * @return GuzzleClient
      */
-    protected function getTestClient() : GuzzleClient
+    protected function getTestClient(): GuzzleClient
     {
         $mock = new MockHandler([
             new RequestException('Service unavailable', new Request('GET', 'test')),
