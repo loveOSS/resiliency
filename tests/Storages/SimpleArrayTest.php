@@ -15,7 +15,7 @@ class SimpleArrayTest extends TestCase
     protected function setUp(): void
     {
         $simpleArray = new SimpleArray();
-        $simpleArray::$transactions = [];
+        $simpleArray->transactions = [];
     }
 
     /**
@@ -25,7 +25,7 @@ class SimpleArrayTest extends TestCase
     {
         $simpleArray = new SimpleArray();
 
-        $this->assertCount(0, $simpleArray::$transactions);
+        $this->assertCount(0, $simpleArray->transactions);
         $this->assertInstanceOf(SimpleArray::class, $simpleArray);
     }
 
@@ -42,7 +42,7 @@ class SimpleArrayTest extends TestCase
             $this->createMock(Transaction::class)
         );
         $this->assertTrue($operation);
-        $this->assertCount(1, $simpleArray::$transactions);
+        $this->assertCount(1, $simpleArray->transactions);
     }
 
     /**
@@ -107,7 +107,7 @@ class SimpleArrayTest extends TestCase
 
         // We have stored 2 transactions
         $simpleArray->clear();
-        $transactions = $simpleArray::$transactions;
+        $transactions = $simpleArray->transactions;
         $this->assertEmpty($transactions);
     }
 }
