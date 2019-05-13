@@ -26,7 +26,7 @@ script:
   - composer cs-fix
   - composer phpstan
   - composer psalm
-  - ./vendor/bin/phpqa --report --ignoredDirs vendor
+  - composer phpqa
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)

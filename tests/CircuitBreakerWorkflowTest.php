@@ -2,14 +2,16 @@
 
 namespace Tests\Resiliency;
 
+use Resiliency\TransitionDispatchers\SimpleDispatcher;
+use Resiliency\TransitionDispatchers\SymfonyDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Cache\Simple\ArrayCache;
+use Symfony\Component\EventDispatcher\Event;
 use Resiliency\Contracts\CircuitBreaker;
 use Resiliency\Storages\SymfonyCache;
 use Resiliency\Storages\SimpleArray;
-use Resiliency\SymfonyCircuitBreaker;
-use Resiliency\SimpleCircuitBreaker;
-use Symfony\Component\EventDispatcher\Event;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Cache\Simple\ArrayCache;
+use Resiliency\MainCircuitBreaker;
+use org\bovigo\vfs\vfsStream;
 
 class CircuitBreakerWorkflowTest extends CircuitBreakerTestCase
 {
@@ -112,21 +114,28 @@ class CircuitBreakerWorkflowTest extends CircuitBreakerTestCase
     }
 
     /**
-     * @return SimpleCircuitBreaker the circuit breaker for testing purposes
+     * @return MainCircuitBreaker the circuit breaker for testing purposes
      */
-    private function createSimpleCircuitBreaker(): SimpleCircuitBreaker
+    private function createSimpleCircuitBreaker(): MainCircuitBreaker
     {
-        return new SimpleCircuitBreaker(
+        $root = vfsStream::setup();
+        $file = vfsStream::newFile('logs.txt', 0644)
+            ->withContent('')
+            ->at($root)
+        ;
+
+        return new MainCircuitBreaker(
             $this->getSystem(),
             $this->getTestClient(),
-            new SimpleArray()
+            new SimpleArray(),
+            new SimpleDispatcher($file->url())
         );
     }
 
     /**
-     * @return SymfonyCircuitBreaker the circuit breaker for testing purposes
+     * @return MainCircuitBreaker the circuit breaker for testing purposes
      */
-    private function createSymfonyCircuitBreaker(): SymfonyCircuitBreaker
+    private function createSymfonyCircuitBreaker(): MainCircuitBreaker
     {
         $symfonyCache = new SymfonyCache(new ArrayCache());
         $eventDispatcherS = $this->createMock(EventDispatcher::class);
@@ -135,11 +144,11 @@ class CircuitBreakerWorkflowTest extends CircuitBreakerTestCase
             ->willReturn($this->createMock(Event::class))
         ;
 
-        return new SymfonyCircuitBreaker(
+        return new MainCircuitBreaker(
             $this->getSystem(),
             $this->getTestClient(),
             $symfonyCache,
-            $eventDispatcherS
+            new SymfonyDispatcher($eventDispatcherS)
         );
     }
 
