@@ -4,6 +4,7 @@ namespace Tests\Resiliency;
 
 use Resiliency\Contracts\CircuitBreaker;
 use Resiliency\Storages\SymfonyCache;
+use Resiliency\Storages\SimpleArray;
 use Resiliency\SymfonyCircuitBreaker;
 use Resiliency\SimpleCircuitBreaker;
 use Symfony\Component\EventDispatcher\Event;
@@ -137,7 +138,7 @@ class CircuitBreakerWorkflowTest extends CircuitBreakerTestCase
     public function getCircuitBreakers(): array
     {
         return [
-             'simple' => [$this->createSimpleCircuitBreaker()],
+            'simple' => [$this->createSimpleCircuitBreaker()],
             'symfony' => [$this->createSymfonyCircuitBreaker()],
         ];
     }
@@ -147,7 +148,11 @@ class CircuitBreakerWorkflowTest extends CircuitBreakerTestCase
      */
     private function createSimpleCircuitBreaker(): SimpleCircuitBreaker
     {
-        return new SimpleCircuitBreaker($this->getSystem(), $this->getTestClient());
+        return new SimpleCircuitBreaker(
+            $this->getSystem(),
+            $this->getTestClient(),
+            new SimpleArray()
+        );
     }
 
     /**

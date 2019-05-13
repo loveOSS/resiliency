@@ -14,7 +14,7 @@ final class SimpleArray implements Storage
     /**
      * @var array the circuit breaker transactions
      */
-    public static $transactions = [];
+    public $transactions = [];
 
     /**
      * {@inheritdoc}
@@ -23,7 +23,7 @@ final class SimpleArray implements Storage
     {
         $key = $this->getKey($service);
 
-        self::$transactions[$key] = $transaction;
+        $this->transactions[$key] = $transaction;
 
         return true;
     }
@@ -36,7 +36,7 @@ final class SimpleArray implements Storage
         $key = $this->getKey($service);
 
         if ($this->hasTransaction($service)) {
-            $transaction = self::$transactions[$key];
+            $transaction = $this->transactions[$key];
 
             if ($transaction instanceof Transaction) {
                 return $transaction;
@@ -53,7 +53,7 @@ final class SimpleArray implements Storage
     {
         $key = $this->getKey($service);
 
-        return array_key_exists($key, self::$transactions);
+        return array_key_exists($key, $this->transactions);
     }
 
     /**
@@ -61,7 +61,7 @@ final class SimpleArray implements Storage
      */
     public function clear(): bool
     {
-        self::$transactions = [];
+        $this->transactions = [];
 
         return true;
     }

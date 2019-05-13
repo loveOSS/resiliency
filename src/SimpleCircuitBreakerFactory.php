@@ -6,6 +6,7 @@ use Resiliency\Contracts\CircuitBreaker;
 use Resiliency\Contracts\Factory;
 use Resiliency\Clients\GuzzleClient;
 use Resiliency\Systems\MainSystem;
+use Resiliency\Storages\SimpleArray;
 
 /**
  * Main implementation of Circuit Breaker Factory
@@ -25,7 +26,8 @@ final class SimpleCircuitBreakerFactory implements Factory
 
         return new SimpleCircuitBreaker(
             $mainSystem,
-            $client
+            $client,
+            new SimpleArray()
         );
     }
 }
