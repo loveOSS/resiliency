@@ -85,9 +85,9 @@ abstract class PartialCircuitBreaker implements CircuitBreaker
      * @param string $state the Place state
      * @param string $service the service URI
      *
-     * @return bool
+     * @return Transaction
      */
-    protected function moveStateTo($state, $service): bool
+    protected function moveStateTo($state, $service): Transaction
     {
         $this->currentPlace = $this->places[$state];
         $transaction = SimpleTransaction::createFromPlace(
@@ -95,7 +95,9 @@ abstract class PartialCircuitBreaker implements CircuitBreaker
             $service
         );
 
-        return $this->storage->saveTransaction($service, $transaction);
+        $this->storage->saveTransaction($service, $transaction);
+
+        return $transaction;
     }
 
     /**

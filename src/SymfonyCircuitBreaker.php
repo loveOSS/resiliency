@@ -38,20 +38,20 @@ final class SymfonyCircuitBreaker extends PartialCircuitBreaker
     {
         $transaction = $this->initTransaction($service);
 
-        try {
-            if ($this->isOpened()) {
-                if ($this->canAccessService($transaction)) {
-                    $this->moveStateTo(States::HALF_OPEN_STATE, $service);
-                    $this->dispatch(
-                        Transitions::CHECKING_AVAILABILITY_TRANSITION,
-                        $service,
-                        $serviceParameters
-                    );
-                }
-
+        if ($this->isOpened()) {
+            if (!$this->canAccessService($transaction)) {
                 return (string) $fallback();
             }
 
+            $transaction = $this->moveStateTo(States::HALF_OPEN_STATE, $service);
+            $this->dispatch(
+                Transitions::CHECKING_AVAILABILITY_TRANSITION,
+                $service,
+                $serviceParameters
+            );
+        }
+
+        try {
             $response = $this->request($service, $serviceParameters);
             $this->moveStateTo(States::CLOSED_STATE, $service);
             $this->dispatch(

@@ -45,7 +45,7 @@ abstract class CircuitBreakerTestCase extends TestCase
         return MainSystem::createFromArray(
             [
                 'open' => [0, 0.0, 1.0], // threshold 1.0s
-                'half_open' => [0, 0.2, 0.0], // timeout 0.2s to test the service
+                'half_open' => [1, 0.4, 0.0], // timeout 0.4s to test the service with a better timeout
                 'closed' => [2, 0.2, 0.0], // 2 failures allowed, 0.2s timeout
             ]
         );
