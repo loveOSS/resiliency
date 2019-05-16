@@ -2,15 +2,16 @@
 
 namespace Resiliency;
 
+use Resiliency\TransitionDispatchers\SimpleDispatcher;
 use Resiliency\Contracts\CircuitBreaker;
-use Resiliency\Contracts\Factory;
+use Resiliency\Storages\SimpleArray;
 use Resiliency\Clients\GuzzleClient;
 use Resiliency\Systems\MainSystem;
-use Resiliency\Storages\SimpleArray;
+use Resiliency\Contracts\Factory;
 
 /**
  * Main implementation of Circuit Breaker Factory
- * Used to create a SimpleCircuitBreaker instance.
+ * Used to create a basic CircuitBreaker instance.
  */
 final class SimpleCircuitBreakerFactory implements Factory
 {
@@ -24,10 +25,11 @@ final class SimpleCircuitBreakerFactory implements Factory
         $clientSettings = array_key_exists('client', $settings) ? (array) $settings['client'] : [];
         $client = new GuzzleClient($clientSettings);
 
-        return new SimpleCircuitBreaker(
+        return new MainCircuitBreaker(
             $mainSystem,
             $client,
-            new SimpleArray()
+            new SimpleArray(),
+            new SimpleDispatcher('php://stdout')
         );
     }
 }

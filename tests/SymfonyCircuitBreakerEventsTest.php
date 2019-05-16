@@ -2,13 +2,18 @@
 
 namespace Tests\Resiliency;
 
+use PHPUnit\Framework\MockObject\Matcher\AnyInvokedCount;
+use Resiliency\TransitionDispatchers\SymfonyDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Cache\Simple\ArrayCache;
 use Symfony\Component\EventDispatcher\Event;
-use PHPUnit\Framework\MockObject\Matcher\AnyInvokedCount;
-use Resiliency\SymfonyCircuitBreaker;
+use Resiliency\Contracts\CircuitBreaker;
 use Resiliency\Storages\SymfonyCache;
+use Resiliency\MainCircuitBreaker;
 
+/**
+ * Validates that the right events are dispatched.
+ */
 class SymfonyCircuitBreakerEventsTest extends CircuitBreakerTestCase
 {
     /**
@@ -27,7 +32,7 @@ class SymfonyCircuitBreakerEventsTest extends CircuitBreakerTestCase
         $circuitBreaker = $this->createCircuitBreaker();
 
         $circuitBreaker->call(
-            'https://httpbin.org/get/foo',
+            'https://httpbin.org/get/foobar',
             function () {
                 return '{}';
             }
@@ -47,7 +52,7 @@ class SymfonyCircuitBreakerEventsTest extends CircuitBreakerTestCase
         $this->assertSame('resiliency.opening', $invocations[3]->getParameters()[0]);
     }
 
-    private function createCircuitBreaker(): SymfonyCircuitBreaker
+    private function createCircuitBreaker(): CircuitBreaker
     {
         $system = $this->getSystem();
 
@@ -58,11 +63,11 @@ class SymfonyCircuitBreakerEventsTest extends CircuitBreakerTestCase
             ->willReturn($this->createMock(Event::class))
         ;
 
-        return new SymfonyCircuitBreaker(
+        return new MainCircuitBreaker(
             $system,
             $this->getTestClient(),
             $symfonyCache,
-            $eventDispatcherS
+            new SymfonyDispatcher($eventDispatcherS)
         );
     }
 }

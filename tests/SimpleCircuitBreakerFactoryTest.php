@@ -3,7 +3,7 @@
 namespace Tests\Resiliency;
 
 use PHPUnit\Framework\TestCase;
-use Resiliency\SimpleCircuitBreaker;
+use Resiliency\Contracts\CircuitBreaker;
 use Resiliency\SimpleCircuitBreakerFactory;
 
 class SimpleCircuitBreakerFactoryTest extends TestCase
@@ -31,7 +31,7 @@ class SimpleCircuitBreakerFactoryTest extends TestCase
         $factory = new SimpleCircuitBreakerFactory();
         $circuitBreaker = $factory->create($settings);
 
-        $this->assertInstanceOf(SimpleCircuitBreaker::class, $circuitBreaker);
+        $this->assertInstanceOf(CircuitBreaker::class, $circuitBreaker);
     }
 
     /**

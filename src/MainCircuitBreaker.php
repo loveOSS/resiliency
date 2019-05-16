@@ -2,7 +2,9 @@
 
 namespace Resiliency;
 
+use Resiliency\Contracts\TransitionDispatcher;
 use Resiliency\Transactions\SimpleTransaction;
+use Resiliency\Exceptions\UnavailableService;
 use Resiliency\Contracts\CircuitBreaker;
 use Resiliency\Contracts\Transaction;
 use Resiliency\Contracts\Storage;
@@ -11,43 +13,100 @@ use Resiliency\Contracts\Client;
 use Resiliency\Contracts\Place;
 use DateTime;
 
-abstract class PartialCircuitBreaker implements CircuitBreaker
+/**
+ * Main implementation of the Circuit Breaker.
+ */
+final class MainCircuitBreaker implements CircuitBreaker
 {
     public function __construct(
         System $system,
         Client $client,
-        Storage $storage
+        Storage $storage,
+        TransitionDispatcher $transitionDispatcher
     ) {
         $this->currentPlace = $system->getInitialPlace();
         $this->places = $system->getPlaces();
         $this->client = $client;
         $this->storage = $storage;
+        $this->transitionDispatcher = $transitionDispatcher;
     }
 
     /**
      * @var Client the Client that consumes the service URI
      */
-    protected $client;
+    private $client;
 
     /**
      * @var Place the current Place of the Circuit Breaker
      */
-    protected $currentPlace;
+    private $currentPlace;
 
     /**
      * @var Place[] the Circuit Breaker places
      */
-    protected $places = [];
+    private $places;
 
     /**
      * @var Storage the Circuit Breaker storage
      */
-    protected $storage;
+    private $storage;
+
+    /**
+     * @var TransitionDispatcher the Circuit Breaker transition dispatcher
+     */
+    private $transitionDispatcher;
 
     /**
      * {@inheritdoc}
      */
-    abstract public function call(string $service, callable $fallback, array $serviceParameters = []): string;
+    public function call(string $service, callable $fallback, array $serviceParameters = []): string
+    {
+        $transaction = $this->initTransaction($service, $serviceParameters);
+
+        if ($this->isOpened()) {
+            if (!$this->canAccessService($transaction)) {
+                return (string) $fallback();
+            }
+
+            $transaction = $this->moveStateTo(States::HALF_OPEN_STATE, $service);
+            $this->dispatch(
+                Transitions::CHECKING_AVAILABILITY_TRANSITION,
+                $service,
+                $serviceParameters
+            );
+        }
+
+        try {
+            $response = $this->request($service, $serviceParameters);
+            $this->moveStateTo(States::CLOSED_STATE, $service);
+            $this->dispatch(
+                Transitions::CLOSING_TRANSITION,
+                $service,
+                $serviceParameters
+            );
+
+            return $response;
+        } catch (UnavailableService $exception) {
+            $transaction->incrementFailures();
+            $this->storage->saveTransaction($service, $transaction);
+
+            if (!$this->isAllowedToRetry($transaction)) {
+                $this->moveStateTo(States::OPEN_STATE, $service);
+
+                $transition = Transitions::OPENING_TRANSITION;
+
+                if ($this->isHalfOpened()) {
+                    $transition = Transitions::REOPENING_TRANSITION;
+                }
+
+                $this->dispatch($transition, $service, $serviceParameters);
+
+                return (string) $fallback();
+            }
+
+            return $this->call($service, $fallback, $serviceParameters);
+        }
+    }
 
     /**
      * {@inheritdoc}
@@ -87,7 +146,7 @@ abstract class PartialCircuitBreaker implements CircuitBreaker
      *
      * @return Transaction
      */
-    protected function moveStateTo($state, $service): Transaction
+    private function moveStateTo($state, $service): Transaction
     {
         $this->currentPlace = $this->places[$state];
         $transaction = SimpleTransaction::createFromPlace(
@@ -102,15 +161,18 @@ abstract class PartialCircuitBreaker implements CircuitBreaker
 
     /**
      * @param string $service the service URI
+     * @param array $serviceParameters the service UI parameters
      *
      * @return Transaction
      */
-    protected function initTransaction(string $service): Transaction
+    private function initTransaction(string $service, $serviceParameters): Transaction
     {
         if ($this->storage->hasTransaction($service)) {
             $transaction = $this->storage->getTransaction($service);
             $this->currentPlace = $this->places[$transaction->getState()];
         } else {
+            $this->dispatch(Transitions::INITIATING_TRANSITION, $service, $serviceParameters);
+
             $transaction = SimpleTransaction::createFromPlace(
                 $this->currentPlace,
                 $service
@@ -127,7 +189,7 @@ abstract class PartialCircuitBreaker implements CircuitBreaker
      *
      * @return bool
      */
-    protected function isAllowedToRetry(Transaction $transaction): bool
+    private function isAllowedToRetry(Transaction $transaction): bool
     {
         return $transaction->getFailures() < $this->currentPlace->getFailures();
     }
@@ -137,7 +199,7 @@ abstract class PartialCircuitBreaker implements CircuitBreaker
      *
      * @return bool
      */
-    protected function canAccessService(Transaction $transaction): bool
+    private function canAccessService(Transaction $transaction): bool
     {
         return $transaction->getThresholdDateTime() < new DateTime();
     }
@@ -150,8 +212,10 @@ abstract class PartialCircuitBreaker implements CircuitBreaker
      *
      * @return string
      */
-    protected function request(string $service, array $parameters = []): string
+    private function request(string $service, array $parameters = []): string
     {
+        $this->dispatch(Transitions::TRIAL_TRANSITION, $service, $parameters);
+
         return $this->client->request(
             $service,
             array_merge($parameters, [
@@ -159,5 +223,24 @@ abstract class PartialCircuitBreaker implements CircuitBreaker
                 'timeout' => $this->currentPlace->getTimeout(),
             ])
         );
+    }
+
+    /**
+     * Helper to dispatch transition events.
+     *
+     * @param string $transition the transition name
+     * @param string $service the URI service called
+     * @param array $parameters the service parameters
+     */
+    private function dispatch($transition, $service, array $parameters): void
+    {
+        $this->transitionDispatcher
+            ->dispatch(
+                $this,
+                $transition,
+                $service,
+                $parameters
+            )
+        ;
     }
 }
