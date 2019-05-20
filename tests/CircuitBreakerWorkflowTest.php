@@ -101,6 +101,29 @@ class CircuitBreakerWorkflowTest extends CircuitBreakerTestCase
     }
 
     /**
+     * The Circuit Breaker can be isolated, once its done it remains
+     * Open and so on only fallback responses will be sent.
+     *
+     * @dataProvider getCircuitBreakers
+     */
+    public function testOnceCircuitBreakerIsIsolatedNoTrialsAreDone(CircuitBreaker $circuitBreaker): void
+    {
+        $circuitBreaker->isolate('https://httpbin.org/get/foo');
+
+        $response = $circuitBreaker->call('https://httpbin.org/get/foo', $this->createFallbackResponse());
+        $this->assertSame('{}', $response);
+        $this->assertTrue($circuitBreaker->isIsolated());
+
+        // Let's do 10 calls!
+
+        for ($i = 0; $i < 10; ++$i) {
+            $circuitBreaker->call('https://httpbin.org/get/foo', $this->createFallbackResponse());
+            $this->assertSame('{}', $response);
+            $this->assertTrue($circuitBreaker->isIsolated());
+        }
+    }
+
+    /**
      * Return the list of supported circuit breakers
      *
      * @return array

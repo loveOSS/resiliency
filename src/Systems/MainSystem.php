@@ -2,6 +2,7 @@
 
 namespace Resiliency\Systems;
 
+use Resiliency\Places\IsolatedPlace;
 use Resiliency\States;
 use Resiliency\Contracts\Place;
 use Resiliency\Contracts\System;
@@ -39,11 +40,13 @@ final class MainSystem implements System
         $closedPlace = new ClosedPlace($failures, $timeout);
         $halfOpenPlace = new HalfOpenPlace($strippedTimeout);
         $openPlace = new OpenPlace($threshold);
+        $isolatedPlace = new IsolatedPlace();
 
         $this->places = [
             $closedPlace->getState() => $closedPlace,
             $halfOpenPlace->getState() => $halfOpenPlace,
             $openPlace->getState() => $openPlace,
+            $isolatedPlace->getState() => $isolatedPlace,
         ];
     }
 

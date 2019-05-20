@@ -36,7 +36,7 @@ class MainSystemTest extends TestCase
         $places = $mainSystem->getPlaces();
 
         $this->assertIsArray($places);
-        $this->assertCount(3, $places);
+        $this->assertCount(4, $places);
 
         foreach ($places as $place) {
             $this->assertInstanceOf(Place::class, $place);
