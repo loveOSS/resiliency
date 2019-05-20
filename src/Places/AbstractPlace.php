@@ -24,8 +24,8 @@ abstract class AbstractPlace implements Place
     private $threshold;
 
     /**
-     * @param int $failures the Place failures
-     * @param float $timeout the Place timeout
+     * @param int   $failures  the Place failures
+     * @param float $timeout   the Place timeout
      * @param float $threshold the Place threshold
      */
     public function __construct(int $failures, float $timeout, float $threshold)
@@ -81,8 +81,8 @@ abstract class AbstractPlace implements Place
     /**
      * Ensure the place is valid
      *
-     * @param int $failures the failures should be a positive value
-     * @param float $timeout the timeout should be a positive value
+     * @param int   $failures  the failures should be a positive value
+     * @param float $timeout   the timeout should be a positive value
      * @param float $threshold the threshold should be a positive value
      *
      * @throws InvalidPlace
@@ -93,8 +93,7 @@ abstract class AbstractPlace implements Place
     {
         $assertionsAreValid = Assert::isPositiveInteger($failures)
             && Assert::isPositiveValue($timeout)
-            && Assert::isPositiveValue($threshold)
-        ;
+            && Assert::isPositiveValue($threshold);
 
         if ($assertionsAreValid) {
             return true;

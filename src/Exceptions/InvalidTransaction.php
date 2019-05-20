@@ -9,9 +9,9 @@ use Resiliency\Contracts\Exception as ResiliencyException;
 final class InvalidTransaction extends Exception implements ResiliencyException
 {
     /**
-     * @param mixed $service the service URI
-     * @param mixed $failures the failures
-     * @param mixed $state the Circuit Breaker
+     * @param mixed $service   the service URI
+     * @param mixed $failures  the failures
+     * @param mixed $state     the Circuit Breaker
      * @param mixed $threshold the threshold
      *
      * @return self
@@ -22,8 +22,7 @@ final class InvalidTransaction extends Exception implements ResiliencyException
             ErrorFormatter::format('service', $service, 'isURI', 'an URI') .
             ErrorFormatter::format('failures', $failures, 'isPositiveInteger', 'a positive integer') .
             ErrorFormatter::format('state', $state, 'isString', 'a string') .
-            ErrorFormatter::format('threshold', $threshold, 'isPositiveInteger', 'a positive integer')
-        ;
+            ErrorFormatter::format('threshold', $threshold, 'isPositiveInteger', 'a positive integer');
 
         return new self($exceptionMessage);
     }

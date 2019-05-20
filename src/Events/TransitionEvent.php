@@ -28,9 +28,9 @@ class TransitionEvent extends Event
     private $parameters;
 
     /**
-     * @param string $eventName the transition name
-     * @param string $service the Service URI
-     * @param array $parameters the Service parameters
+     * @param string $eventName  the transition name
+     * @param string $service    the Service URI
+     * @param array  $parameters the Service parameters
      */
     public function __construct(CircuitBreaker $circuitBreaker, $eventName, $service, array $parameters)
     {

@@ -15,7 +15,7 @@ interface Client
 
     /**
      * @param string $resource the URI of the service to be reached
-     * @param array $options the options if needed
+     * @param array  $options  the options if needed
      *
      * @return string
      */

@@ -39,8 +39,7 @@ final class Assert
         return null !== $value
             && !is_numeric($value)
             && !\is_bool($value)
-            && false !== filter_var($value, FILTER_SANITIZE_URL)
-        ;
+            && false !== filter_var($value, FILTER_SANITIZE_URL);
     }
 
     /**

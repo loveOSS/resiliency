@@ -17,9 +17,9 @@ interface CircuitBreaker
     /**
      * The function that execute the service.
      *
-     * @param string $service the service to call
-     * @param array $serviceParameters the service parameters
-     * @param callable $fallback if the service is unavailable, rely on the fallback
+     * @param string   $service           the service to call
+     * @param array    $serviceParameters the service parameters
+     * @param callable $fallback          if the service is unavailable, rely on the fallback
      *
      * @return string
      */

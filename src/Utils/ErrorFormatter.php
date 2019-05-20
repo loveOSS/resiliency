@@ -12,9 +12,9 @@ final class ErrorFormatter
     /**
      * Format error message.
      *
-     * @param string $parameter the parameter to evaluate
-     * @param mixed $value the value to format
-     * @param string $function the validation function
+     * @param string $parameter    the parameter to evaluate
+     * @param mixed  $value        the value to format
+     * @param string $function     the validation function
      * @param string $expectedType the expected type
      *
      * @return string

@@ -23,6 +23,7 @@ the circuit breaker:
 
 * the **failures**: define how much times we try to access the service;
 * the **timeout**: define how much time we wait before consider the service unreachable;
+* the **striped timeout**: define how much time we wait before consider the service unreachable, once we're in half open state;
 * the **threshold**: define how much time we wait before trying to access again the service;
 
 We also need to define which (HTTP) client will be used to call the service.
@@ -37,9 +38,10 @@ use Resiliency\SimpleCircuitBreakerFactory;
 $circuitBreakerFactory = new SimpleCircuitBreakerFactory();
 $circuitBreaker = $circuitBreakerFactory->create(
     [
-        'closed' => [2, 0.1, 0.1],
-        'open' => [0, 0.0, 10.0],
-        'half_open' => [1, 0.2, 0.0],
+        'failures' => 2,
+        'timeout' => 0.1,
+        'stripped_timeout' => 0.2,
+        'threshold' => 10.0,
         'client' => [
             'proxy' => '192.168.16.1:10',
             'method' => 'POST',
