@@ -25,7 +25,10 @@ final class InvalidSystem extends Exception implements ResiliencyException
 
         foreach (self::REQUIRED_SETTINGS as $setting) {
             if (!array_key_exists($setting, $settings)) {
-                $exceptionMessage .= sprintf('The setting "%s" is missing from configuration', $setting);
+                $exceptionMessage .= sprintf(
+                    'The setting "%s" is missing from configuration',
+                    $setting
+                ) . PHP_EOL;
             }
         }
 

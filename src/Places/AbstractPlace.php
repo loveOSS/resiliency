@@ -67,18 +67,6 @@ abstract class AbstractPlace implements Place
     }
 
     /**
-     * Helper: create a Place from an array.
-     *
-     * @var array the failures, timeout and threshold
-     *
-     * @return self
-     */
-    public static function fromArray(array $settings): self
-    {
-        return new static((int) $settings[0], (float) $settings[1], (float) $settings[2]);
-    }
-
-    /**
      * Ensure the place is valid
      *
      * @param int $failures the failures should be a positive value
