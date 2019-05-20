@@ -93,8 +93,7 @@ abstract class AbstractPlace implements Place
     {
         $assertionsAreValid = Assert::isPositiveInteger($failures)
             && Assert::isPositiveValue($timeout)
-            && Assert::isPositiveValue($threshold)
-        ;
+            && Assert::isPositiveValue($threshold);
 
         if ($assertionsAreValid) {
             return true;

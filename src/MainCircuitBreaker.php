@@ -218,10 +218,13 @@ final class MainCircuitBreaker implements CircuitBreaker
 
         return $this->client->request(
             $service,
-            array_merge($parameters, [
-                'connect_timeout' => $this->currentPlace->getTimeout(),
-                'timeout' => $this->currentPlace->getTimeout(),
-            ])
+            array_merge(
+                $parameters,
+                [
+                    'connect_timeout' => $this->currentPlace->getTimeout(),
+                    'timeout' => $this->currentPlace->getTimeout(),
+                ]
+            )
         );
     }
 
@@ -240,7 +243,6 @@ final class MainCircuitBreaker implements CircuitBreaker
                 $transition,
                 $service,
                 $parameters
-            )
-        ;
+            );
     }
 }

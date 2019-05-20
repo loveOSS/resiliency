@@ -20,8 +20,7 @@ final class InvalidPlace extends Exception implements ResiliencyException
         $exceptionMessage = 'Invalid settings for Place' . PHP_EOL .
             ErrorFormatter::format('failures', $failures, 'isPositiveInteger', 'a positive integer') .
             ErrorFormatter::format('timeout', $timeout, 'isPositiveValue', 'a float') .
-            ErrorFormatter::format('threshold', $threshold, 'isPositiveInteger', 'a positive integer')
-        ;
+            ErrorFormatter::format('threshold', $threshold, 'isPositiveInteger', 'a positive integer');
 
         return new self($exceptionMessage);
     }

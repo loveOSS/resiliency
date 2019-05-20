@@ -22,8 +22,7 @@ final class InvalidTransaction extends Exception implements ResiliencyException
             ErrorFormatter::format('service', $service, 'isURI', 'an URI') .
             ErrorFormatter::format('failures', $failures, 'isPositiveInteger', 'a positive integer') .
             ErrorFormatter::format('state', $state, 'isString', 'a string') .
-            ErrorFormatter::format('threshold', $threshold, 'isPositiveInteger', 'a positive integer')
-        ;
+            ErrorFormatter::format('threshold', $threshold, 'isPositiveInteger', 'a positive integer');
 
         return new self($exceptionMessage);
     }
