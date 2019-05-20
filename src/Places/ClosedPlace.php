@@ -7,11 +7,10 @@ use Resiliency\States;
 final class ClosedPlace extends AbstractPlace
 {
     /**
-     * @param int   $failures  the Place failures
-     * @param float $timeout   the Place timeout
-     * @param float $threshold the Place threshold
+     * @param int $failures the Place failures
+     * @param float $timeout the Place timeout
      */
-    public function __construct(int $failures, float $timeout, float $threshold)
+    public function __construct(int $failures, float $timeout)
     {
         parent::__construct($failures, $timeout, 0.0);
     }

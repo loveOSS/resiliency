@@ -17,10 +17,11 @@ class OpenPlaceTest extends PlaceTestCase
      */
     public function testCreationWith($failures, $timeout, $threshold): void
     {
-        $closedPlace = new OpenPlace($failures, $timeout, $threshold);
+        unset($failures, $timeout);
+        $closedPlace = new OpenPlace($threshold);
 
-        $this->assertSame($failures, $closedPlace->getFailures());
-        $this->assertSame($timeout, $closedPlace->getTimeout());
+        $this->assertSame(0, $closedPlace->getFailures());
+        $this->assertSame(0.0, $closedPlace->getTimeout());
         $this->assertSame($threshold, $closedPlace->getThreshold());
     }
 
@@ -33,14 +34,16 @@ class OpenPlaceTest extends PlaceTestCase
      */
     public function testCreationWithInvalidValues($failures, $timeout, $threshold): void
     {
+        unset($failures, $timeout);
+
         $this->expectException(InvalidPlace::class);
 
-        new OpenPlace($failures, $timeout, $threshold);
+        new OpenPlace($threshold);
     }
 
     public function testGetExpectedState()
     {
-        $closedPlace = new OpenPlace(1, 1.0, 1.0);
+        $closedPlace = new OpenPlace(1.0);
 
         $this->assertSame(States::OPEN_STATE, $closedPlace->getState());
     }

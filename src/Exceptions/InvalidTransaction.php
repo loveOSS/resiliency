@@ -9,9 +9,9 @@ use Resiliency\Contracts\Exception as ResiliencyException;
 final class InvalidTransaction extends Exception implements ResiliencyException
 {
     /**
-     * @param mixed $service   the service URI
-     * @param mixed $failures  the failures
-     * @param mixed $state     the Circuit Breaker
+     * @param mixed $service the service URI
+     * @param mixed $failures the failures
+     * @param mixed $state the Circuit Breaker
      * @param mixed $threshold the threshold
      *
      * @return self

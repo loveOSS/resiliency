@@ -17,11 +17,12 @@ class HalfOpenPlaceTest extends PlaceTestCase
      */
     public function testCreationWith($failures, $timeout, $threshold): void
     {
-        $closedPlace = new HalfOpenPlace($failures, $timeout, $threshold);
+        unset($failures, $threshold);
+        $closedPlace = new HalfOpenPlace($timeout);
 
-        $this->assertSame($failures, $closedPlace->getFailures());
+        $this->assertSame(0, $closedPlace->getFailures());
         $this->assertSame($timeout, $closedPlace->getTimeout());
-        $this->assertSame($threshold, $closedPlace->getThreshold());
+        $this->assertSame(0.0, $closedPlace->getThreshold());
     }
 
     /**
@@ -33,14 +34,15 @@ class HalfOpenPlaceTest extends PlaceTestCase
      */
     public function testCreationWithInvalidValues($failures, $timeout, $threshold): void
     {
+        unset($failures, $threshold);
         $this->expectException(InvalidPlace::class);
 
-        new HalfOpenPlace($failures, $timeout, $threshold);
+        new HalfOpenPlace($timeout);
     }
 
     public function testGetExpectedState(): void
     {
-        $closedPlace = new HalfOpenPlace(1, 1.0, 1.0);
+        $closedPlace = new HalfOpenPlace(1);
 
         $this->assertSame(States::HALF_OPEN_STATE, $closedPlace->getState());
     }

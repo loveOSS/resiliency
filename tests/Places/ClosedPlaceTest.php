@@ -17,7 +17,7 @@ class ClosedPlaceTest extends PlaceTestCase
      */
     public function testCreationWith($failures, $timeout, $threshold): void
     {
-        $closedPlace = new ClosedPlace($failures, $timeout, $threshold);
+        $closedPlace = new ClosedPlace($failures, $timeout);
 
         $this->assertSame($failures, $closedPlace->getFailures());
         $this->assertSame($timeout, $closedPlace->getTimeout());
@@ -29,18 +29,17 @@ class ClosedPlaceTest extends PlaceTestCase
      *
      * @param mixed $failures
      * @param mixed $timeout
-     * @param mixed $threshold
      */
-    public function testCreationWithInvalidValues($failures, $timeout, $threshold): void
+    public function testCreationWithInvalidValues($failures, $timeout): void
     {
         $this->expectException(InvalidPlace::class);
 
-        new ClosedPlace($failures, $timeout, $threshold);
+        new ClosedPlace($failures, $timeout);
     }
 
     public function testGetExpectedState(): void
     {
-        $closedPlace = new ClosedPlace(1, 1.0, 1.0);
+        $closedPlace = new ClosedPlace(1, 1.0);
 
         $this->assertSame(States::CLOSED_STATE, $closedPlace->getState());
     }

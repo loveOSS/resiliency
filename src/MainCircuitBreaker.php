@@ -141,7 +141,7 @@ final class MainCircuitBreaker implements CircuitBreaker
     }
 
     /**
-     * @param string $state   the Place state
+     * @param string $state the Place state
      * @param string $service the service URI
      *
      * @return Transaction
@@ -160,8 +160,8 @@ final class MainCircuitBreaker implements CircuitBreaker
     }
 
     /**
-     * @param string $service           the service URI
-     * @param array  $serviceParameters the service UI parameters
+     * @param string $service the service URI
+     * @param array $serviceParameters the service UI parameters
      *
      * @return Transaction
      */
@@ -207,8 +207,8 @@ final class MainCircuitBreaker implements CircuitBreaker
     /**
      * Calls the client with the right information.
      *
-     * @param string $service    the service URI
-     * @param array  $parameters the service URI parameters
+     * @param string $service the service URI
+     * @param array $parameters the service URI parameters
      *
      * @return string
      */
@@ -232,8 +232,8 @@ final class MainCircuitBreaker implements CircuitBreaker
      * Helper to dispatch transition events.
      *
      * @param string $transition the transition name
-     * @param string $service    the URI service called
-     * @param array  $parameters the service parameters
+     * @param string $service the URI service called
+     * @param array $parameters the service parameters
      */
     private function dispatch($transition, $service, array $parameters): void
     {

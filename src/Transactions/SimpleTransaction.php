@@ -34,10 +34,10 @@ final class SimpleTransaction implements Transaction
     private $thresholdDateTime;
 
     /**
-     * @param string $service   the service URI
-     * @param int    $failures  the allowed failures
-     * @param string $state     the circuit breaker state/place
-     * @param float  $threshold the place threshold
+     * @param string $service the service URI
+     * @param int $failures the allowed failures
+     * @param string $state the circuit breaker state/place
+     * @param float $threshold the place threshold
      */
     public function __construct(string $service, int $failures, string $state, float $threshold)
     {
@@ -94,7 +94,7 @@ final class SimpleTransaction implements Transaction
     /**
      * Helper to create a transaction from the Place.
      *
-     * @param Place  $place   the Circuit Breaker place
+     * @param Place $place the Circuit Breaker place
      * @param string $service the service URI
      *
      * @return self
@@ -129,10 +129,10 @@ final class SimpleTransaction implements Transaction
     /**
      * Ensure the transaction is valid.
      *
-     * @param string $service   the service URI
-     * @param int    $failures  the failures should be a positive value
-     * @param string $state     the Circuit Breaker state
-     * @param float  $threshold the threshold should be a positive value
+     * @param string $service the service URI
+     * @param int $failures the failures should be a positive value
+     * @param string $state the Circuit Breaker state
+     * @param float $threshold the threshold should be a positive value
      *
      * @return bool
      *

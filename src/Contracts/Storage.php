@@ -13,7 +13,7 @@ interface Storage
     /**
      * Save the CircuitBreaker transaction.
      *
-     * @param string      $service     The service name
+     * @param string $service The service name
      * @param Transaction $transaction The transaction
      *
      * @return bool

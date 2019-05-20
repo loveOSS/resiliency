@@ -9,8 +9,8 @@ use Resiliency\Contracts\Exception as ResiliencyException;
 final class InvalidPlace extends Exception implements ResiliencyException
 {
     /**
-     * @param mixed $failures  the failures
-     * @param mixed $timeout   the timeout
+     * @param mixed $failures the failures
+     * @param mixed $timeout the timeout
      * @param mixed $threshold the threshold
      *
      * @return self

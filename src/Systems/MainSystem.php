@@ -20,10 +20,15 @@ use Resiliency\Exceptions\InvalidSystem;
 final class MainSystem implements System
 {
     /**
-     * @param int   $failures        the number of allowed failures
-     * @param float $timeout         the timeout in milliseconds
+     * @var Place[] the list of System places
+     */
+    private $places;
+
+    /**
+     * @param int $failures the number of allowed failures
+     * @param float $timeout the timeout in milliseconds
      * @param float $strippedTimeout the timeout in milliseconds when trying again
-     * @param float $threshold       the timeout in milliseconds before trying again
+     * @param float $threshold the timeout in milliseconds before trying again
      */
     public function __construct(
         int $failures,
@@ -31,9 +36,9 @@ final class MainSystem implements System
         float $strippedTimeout,
         float $threshold
     ) {
-        $closedPlace = new ClosedPlace($failures, $timeout, 0);
-        $halfOpenPlace = new HalfOpenPlace(0, $strippedTimeout, 0);
-        $openPlace = new OpenPlace(0, 0, $threshold);
+        $closedPlace = new ClosedPlace($failures, $timeout);
+        $halfOpenPlace = new HalfOpenPlace($strippedTimeout);
+        $openPlace = new OpenPlace($threshold);
 
         $this->places = [
             $closedPlace->getState() => $closedPlace,
@@ -71,10 +76,10 @@ final class MainSystem implements System
             && array_key_exists('threshold', $settings)
         ) {
             return new self(
-                $settings['failures'],
-                $settings['timeout'],
-                $settings['stripped_timeout'],
-                $settings['threshold']
+                (int) $settings['failures'],
+                (float) $settings['timeout'],
+                (float) $settings['stripped_timeout'],
+                (float) $settings['threshold']
             );
         }
 
