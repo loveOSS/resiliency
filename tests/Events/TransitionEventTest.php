@@ -69,4 +69,19 @@ class TransitionEventTest extends TestCase
 
         $this->assertSame($parameters, $event->getParameters());
     }
+
+    /**
+     * @depends testCreation
+     */
+    public function testGetCircuitBreaker(): void
+    {
+        $event = new TransitionEvent(
+            $this->createMock(CircuitBreaker::class),
+            'eventName',
+            'bar',
+            []
+        );
+
+        $this->assertInstanceOf(CircuitBreaker::class, $event->getCircuitBreaker());
+    }
 }

@@ -6,6 +6,7 @@ use DateTime;
 use PHPUnit\Framework\TestCase;
 use Resiliency\Contracts\Place;
 use Resiliency\Transactions\SimpleTransaction;
+use Resiliency\Exceptions\InvalidTransaction;
 
 class SimpleTransactionTest extends TestCase
 {
@@ -80,7 +81,7 @@ class SimpleTransactionTest extends TestCase
     /**
      * @depends testCreation
      */
-    public function testCreationFromPlaceHelper()
+    public function testCreationFromPlaceHelper(): void
     {
         $simpleTransactionFromHelper = SimpleTransaction::createFromPlace(
             $this->createPlaceStub(),
@@ -95,6 +96,28 @@ class SimpleTransactionTest extends TestCase
         $expectedDate = $simpleTransaction->getThresholdDateTime()->format('d/m/Y H:i:s');
 
         $this->assertSame($fromPlaceDate, $expectedDate);
+    }
+
+    /**
+     * @depends testCreation
+     */
+    public function testCreationWithInvalidSettingsWillThrowAnException(): void
+    {
+        $this->expectException(InvalidTransaction::class);
+
+        $placeStub = $this->createMock(Place::class);
+
+        $placeStub->expects($this->any())
+            ->method('getState')
+            ->willReturn('FAKE_STATE')
+        ;
+
+        $placeStub->expects($this->any())
+            ->method('getThreshold')
+            ->willReturn(-1)
+        ;
+
+        SimpleTransaction::createFromPlace($placeStub, 'http://some-uri.domain');
     }
 
     /**
