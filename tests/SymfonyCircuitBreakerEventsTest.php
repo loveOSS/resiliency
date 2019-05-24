@@ -52,6 +52,38 @@ class SymfonyCircuitBreakerEventsTest extends CircuitBreakerTestCase
         $this->assertSame('resiliency.opening', $invocations[3]->getParameters()[0]);
     }
 
+    public function testCircuitBreakerEventsOnIsolationAndResetActions(): void
+    {
+        $service = 'https://httpbin.org/get/foobaz';
+        $circuitBreaker = $this->createCircuitBreaker();
+
+        $circuitBreaker->call(
+            $service,
+            function () {
+                return '{}';
+            }
+        );
+
+        $circuitBreaker->isolate($service);
+
+        /**
+         * The circuit breaker is now isolated and
+         * the related event has been dispatched
+         */
+        $invocations = $this->spy->getInvocations();
+        $this->assertCount(5, $invocations);
+        $this->assertSame('resiliency.isolating', $invocations[4]->getParameters()[0]);
+
+        /*
+         * And now we reset the circuit breaker!
+         * The related event must be dispatched
+         */
+        $circuitBreaker->reset($service);
+        $invocations = $this->spy->getInvocations();
+        $this->assertCount(6, $invocations);
+        $this->assertSame('resiliency.resetting', $invocations[5]->getParameters()[0]);
+    }
+
     private function createCircuitBreaker(): CircuitBreaker
     {
         $system = $this->getSystem();

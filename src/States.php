@@ -30,7 +30,7 @@ final class States
 
     /**
      * Once isolated, the circuit breaker stays in OPEN state and
-     * won't accepts any requests, even when the threshold is reached.
+     * won't accept any requests, even when the threshold is reached.
      */
     const ISOLATED_STATE = 'ISOLATED';
 }

@@ -121,6 +121,10 @@ class CircuitBreakerWorkflowTest extends CircuitBreakerTestCase
             $this->assertSame('{}', $response);
             $this->assertTrue($circuitBreaker->isIsolated());
         }
+
+        $circuitBreaker->reset('https://httpbin.org/get/foo');
+
+        $this->assertTrue($circuitBreaker->isClosed());
     }
 
     /**
