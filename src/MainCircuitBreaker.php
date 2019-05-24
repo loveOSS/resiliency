@@ -63,6 +63,10 @@ final class MainCircuitBreaker implements CircuitBreaker
     {
         $transaction = $this->initTransaction($service, $serviceParameters);
 
+        if ($this->isIsolated()) {
+            return (string) $fallback();
+        }
+
         if ($this->isOpened()) {
             if (!$this->canAccessService($transaction)) {
                 return (string) $fallback();
@@ -138,6 +142,38 @@ final class MainCircuitBreaker implements CircuitBreaker
     public function isClosed(): bool
     {
         return States::CLOSED_STATE === $this->currentPlace->getState();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isIsolated(): bool
+    {
+        return States::ISOLATED_STATE === $this->currentPlace->getState();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isolate(string $service): CircuitBreaker
+    {
+        $this->currentPlace = $this->places[States::ISOLATED_STATE];
+
+        $this->dispatch(Transitions::ISOLATING_TRANSITION, $service, []);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function reset(string $service): CircuitBreaker
+    {
+        $this->currentPlace = $this->places[States::CLOSED_STATE];
+
+        $this->dispatch(Transitions::RESETTING_TRANSITION, $service, []);
+
+        return $this;
     }
 
     /**

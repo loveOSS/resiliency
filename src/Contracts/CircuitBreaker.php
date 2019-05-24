@@ -39,4 +39,28 @@ interface CircuitBreaker
      * @return bool checks if the circuit breaker is closed
      */
     public function isClosed(): bool;
+
+    /**
+     * @return bool checks if the circuit breaker is isolated
+     */
+    public function isIsolated(): bool;
+
+    /**
+     * Manually open (and hold open) the Circuit Breaker
+     * This can be used for example to take it offline for maintenance.
+     *
+     * @param string $service the service to call
+     *
+     * @return self
+     */
+    public function isolate(string $service): self;
+
+    /**
+     * Reset the breaker to closed state to start accepting actions again.
+     *
+     * @param string $service the service to call
+     *
+     * @return self
+     */
+    public function reset(string $service): self;
 }

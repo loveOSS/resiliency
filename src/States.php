@@ -27,4 +27,10 @@ final class States
      * to evaluate is done and not the alternative call.
      */
     const CLOSED_STATE = 'CLOSED';
+
+    /**
+     * Once isolated, the circuit breaker stays in OPEN state and
+     * won't accept any requests, even when the threshold is reached.
+     */
+    const ISOLATED_STATE = 'ISOLATED';
 }

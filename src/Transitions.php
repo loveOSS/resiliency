@@ -40,4 +40,14 @@ final class Transitions
      * Happened on each try to call the service.
      */
     const TRIAL_TRANSITION = 'TRIAL';
+
+    /**
+     * Happened when the Circuit Breaker is isolated.
+     */
+    const ISOLATING_TRANSITION = 'ISOLATING';
+
+    /**
+     *  Happened when the Circuit Breaker is reset.
+     */
+    const RESETTING_TRANSITION = 'RESETTING';
 }
