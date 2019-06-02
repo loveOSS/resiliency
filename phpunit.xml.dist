@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<phpunit colors="true" bootstrap="./vendor/autoload.php">
-
+<phpunit
+    executionOrder="random"
+    resolveDependencies="true"
+    colors="true"
+    bootstrap="./vendor/autoload.php"
+>
     <testsuites>
         <testsuite name="Resiliency test suite">
             <directory>./tests/</directory>
