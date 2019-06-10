@@ -114,7 +114,7 @@ class SimpleTransactionTest extends TestCase
 
         $placeStub->expects($this->any())
             ->method('getThreshold')
-            ->willReturn(-1)
+            ->willReturn(-1.0)
         ;
 
         SimpleTransaction::createFromPlace($placeStub, 'http://some-uri.domain');
@@ -154,7 +154,7 @@ class SimpleTransactionTest extends TestCase
 
         $placeStub->expects($this->any())
             ->method('getThreshold')
-            ->willReturn(2)
+            ->willReturn(2.0)
         ;
 
         return $placeStub;
