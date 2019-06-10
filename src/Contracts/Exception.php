@@ -2,9 +2,11 @@
 
 namespace Resiliency\Contracts;
 
+use Throwable;
+
 /**
  * Define any Resiliency exception.
  */
-interface Exception
+interface Exception extends Throwable
 {
 }

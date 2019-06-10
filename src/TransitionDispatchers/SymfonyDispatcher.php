@@ -2,6 +2,7 @@
 
 namespace Resiliency\TransitionDispatchers;
 
+use Resiliency\Contracts\Service;
 use Resiliency\Contracts\CircuitBreaker;
 use Resiliency\Contracts\TransitionDispatcher;
 use Resiliency\Events\TransitionEvent;
@@ -25,9 +26,9 @@ final class SymfonyDispatcher implements TransitionDispatcher
     /**
      * {@inheritdoc}
      */
-    public function dispatch(CircuitBreaker $circuitBreaker, $transition, $service, array $parameters): void
+    public function dispatch(CircuitBreaker $circuitBreaker, Service $service, string $transition): void
     {
-        $event = new TransitionEvent($circuitBreaker, $transition, $service, $parameters);
+        $event = new TransitionEvent($circuitBreaker, $transition, $service);
 
         $this->eventDispatcher->dispatch(
             'resiliency.' . strtolower($transition),

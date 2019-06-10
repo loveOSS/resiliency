@@ -3,6 +3,9 @@
 namespace Tests\Resiliency;
 
 use Resiliency\Clients\GuzzleClient;
+use Resiliency\Contracts\Service;
+use Resiliency\Exceptions\InvalidSystem;
+use Resiliency\MainService;
 use Resiliency\Systems\MainSystem;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Handler\MockHandler;
@@ -39,6 +42,8 @@ abstract class CircuitBreakerTestCase extends TestCase
      * Returns an instance of Main system shared by all the circuit breakers.
      *
      * @return MainSystem
+     *
+     * @throws InvalidSystem
      */
     protected function getSystem(): MainSystem
     {
@@ -48,8 +53,20 @@ abstract class CircuitBreakerTestCase extends TestCase
                 'timeout' => 0.2,
                 'stripped_timeout' => 0.4,
                 'threshold' => 1.0,
-            ]
+            ],
+            $this->getTestClient()
         );
+    }
+
+    /**
+     * @param string $uri
+     * @param array $parameters
+     *
+     * @return Service
+     */
+    protected function getService(string $uri, array $parameters = []): Service
+    {
+        return new MainService($uri, $parameters);
     }
 
     /**

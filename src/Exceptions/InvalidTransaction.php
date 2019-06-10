@@ -19,7 +19,7 @@ final class InvalidTransaction extends Exception implements ResiliencyException
     public static function invalidParameters($service, $failures, $state, $threshold): self
     {
         $exceptionMessage = 'Invalid parameters for Transaction' . PHP_EOL .
-            ErrorFormatter::format('service', $service, 'isURI', 'an URI') .
+            ErrorFormatter::format('service', $service, 'isAService', 'an instance of Service') .
             ErrorFormatter::format('failures', $failures, 'isPositiveInteger', 'a positive integer') .
             ErrorFormatter::format('state', $state, 'isString', 'a string') .
             ErrorFormatter::format('threshold', $threshold, 'isPositiveInteger', 'a positive integer');

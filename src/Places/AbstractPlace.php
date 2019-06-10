@@ -2,8 +2,11 @@
 
 namespace Resiliency\Places;
 
-use Resiliency\Contracts\Place;
+use Resiliency\Contracts\CircuitBreaker;
+use Resiliency\Contracts\Service;
 use Resiliency\Exceptions\InvalidPlace;
+use Resiliency\Contracts\Transaction;
+use Resiliency\Contracts\Place;
 use Resiliency\Utils\Assert;
 
 abstract class AbstractPlace implements Place
@@ -22,6 +25,11 @@ abstract class AbstractPlace implements Place
      * @var float the Place threshold
      */
     private $threshold;
+
+    /**
+     * @var CircuitBreaker the Circuit Breaker
+     */
+    protected $circuitBreaker;
 
     /**
      * @param int $failures the Place failures
@@ -64,6 +72,53 @@ abstract class AbstractPlace implements Place
     public function getThreshold(): float
     {
         return $this->threshold;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCircuitBreaker(CircuitBreaker $circuitBreaker): Place
+    {
+        $this->circuitBreaker = $circuitBreaker;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function call(Transaction $transaction, callable $fallback): string
+    {
+        $service = $transaction->getService();
+
+        return $this->circuitBreaker->call($service->getURI(), $fallback, $service->getParameters());
+    }
+
+    /**
+     * @param Transaction $transaction the Transaction
+     *
+     * @return bool
+     */
+    public function isAllowedToRetry(Transaction $transaction): bool
+    {
+        return $transaction->getFailures() < $this->failures;
+    }
+
+    /**
+     * Helper to dispatch transition events.
+     *
+     * @param string $transition the transition name
+     * @param Service $service the service
+     */
+    protected function dispatch(string $transition, Service $service): void
+    {
+        $this->circuitBreaker
+            ->getDispatcher()
+            ->dispatch(
+                $this->circuitBreaker,
+                $service,
+                $transition
+            );
     }
 
     /**

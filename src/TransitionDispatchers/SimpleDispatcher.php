@@ -2,6 +2,7 @@
 
 namespace Resiliency\TransitionDispatchers;
 
+use Resiliency\Contracts\Service;
 use Resiliency\Contracts\CircuitBreaker;
 use Resiliency\Contracts\TransitionDispatcher;
 
@@ -24,14 +25,14 @@ final class SimpleDispatcher implements TransitionDispatcher
     /**
      * {@inheritdoc}
      */
-    public function dispatch(CircuitBreaker $circuitBreaker, $transition, $service, array $parameters): void
+    public function dispatch(CircuitBreaker $circuitBreaker, Service $service, string $transition): void
     {
         $eventMessage = sprintf(
             '[%s]:"%s"_(%s)_%s',
             $transition,
-            $service,
-            $circuitBreaker->getState(),
-            json_encode($parameters)
+            $service->getURI(),
+            $circuitBreaker->getState()->getState(),
+            json_encode($service->getParameters())
         );
 
         error_log($eventMessage, 3, $this->destination);

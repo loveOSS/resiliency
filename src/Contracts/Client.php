@@ -2,6 +2,8 @@
 
 namespace Resiliency\Contracts;
 
+use Resiliency\Exceptions\UnavailableService;
+
 /**
  * In charge of calling the resource and return a response.
  * Must throw UnavailableService exception if not reachable.
@@ -14,10 +16,12 @@ interface Client
     const DEFAULT_METHOD = 'GET';
 
     /**
-     * @param string $resource the URI of the service to be reached
-     * @param array $options the options if needed
+     * @param Service $service the Service
+     * @param Place $place the place
+     *
+     * @throws UnavailableService
      *
      * @return string
      */
-    public function request($resource, array $options): string;
+    public function request(Service $service, Place $place): string;
 }

@@ -3,19 +3,20 @@
 namespace Tests\Resiliency\Transactions;
 
 use DateTime;
-use PHPUnit\Framework\TestCase;
 use Resiliency\Contracts\Place;
+use Resiliency\Contracts\Service;
 use Resiliency\Transactions\SimpleTransaction;
 use Resiliency\Exceptions\InvalidTransaction;
+use Tests\Resiliency\CircuitBreakerTestCase;
 
-class SimpleTransactionTest extends TestCase
+class SimpleTransactionTest extends CircuitBreakerTestCase
 {
     public function testCreation()
     {
         $placeStub = $this->createPlaceStub();
 
         $simpleTransaction = new SimpleTransaction(
-            'http://some-uri.domain',
+            $this->getService('http://some-uri.domain'),
             0,
             $placeStub->getState(),
             2
@@ -31,7 +32,9 @@ class SimpleTransactionTest extends TestCase
     {
         $simpleTransaction = $this->createSimpleTransaction();
 
-        $this->assertSame('http://some-uri.domain', $simpleTransaction->getService());
+        $this->assertInstanceOf(Service::class, $simpleTransaction->getService());
+        $service = $simpleTransaction->getService();
+        $this->assertSame('http://some-uri.domain', $service->getURI());
     }
 
     /**
@@ -85,7 +88,7 @@ class SimpleTransactionTest extends TestCase
     {
         $simpleTransactionFromHelper = SimpleTransaction::createFromPlace(
             $this->createPlaceStub(),
-            'http://some-uri.domain'
+            $this->getService('http://some-uri.domain')
         );
 
         $simpleTransaction = $this->createSimpleTransaction();
@@ -117,7 +120,7 @@ class SimpleTransactionTest extends TestCase
             ->willReturn(-1.0)
         ;
 
-        SimpleTransaction::createFromPlace($placeStub, 'http://some-uri.domain');
+        SimpleTransaction::createFromPlace($placeStub, $this->getService('http://some-uri.domain'));
     }
 
     /**
@@ -130,7 +133,7 @@ class SimpleTransactionTest extends TestCase
         $placeStub = $this->createPlaceStub();
 
         return new SimpleTransaction(
-            'http://some-uri.domain',
+            $this->getService('http://some-uri.domain'),
             0,
             $placeStub->getState(),
             2

@@ -2,10 +2,10 @@
 
 namespace Resiliency\Utils;
 
+use Resiliency\Contracts\Service;
+
 /**
- * Utils class to handle object validation
- * Should be deprecated for most parts once
- * the library will drop PHP5 support.
+ * Utils class to handle object validation.
  */
 final class Assert
 {
@@ -50,5 +50,15 @@ final class Assert
     public static function isString($value): bool
     {
         return !empty($value) && \is_string($value);
+    }
+
+    /**
+     * @param object $object the object to evaluate
+     *
+     * @return bool
+     */
+    public static function isAService(object $object): bool
+    {
+        return is_a($object, Service::class);
     }
 }

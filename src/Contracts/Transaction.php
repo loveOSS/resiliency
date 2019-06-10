@@ -11,9 +11,9 @@ use DateTime;
 interface Transaction
 {
     /**
-     * @return string the service name
+     * @return Service the service
      */
-    public function getService(): string;
+    public function getService(): Service;
 
     /**
      * @return int the number of failures to call the service
@@ -37,4 +37,11 @@ interface Transaction
      * @return bool
      */
     public function incrementFailures(): bool;
+
+    /**
+     * If the service is up again, reset the number of failures to 0.
+     *
+     * @return bool
+     */
+    public function clearFailures(): bool;
 }

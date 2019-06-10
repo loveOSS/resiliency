@@ -10,57 +10,59 @@ namespace Resiliency\Contracts;
 interface CircuitBreaker
 {
     /**
-     * @return string the circuit breaker state
+     * @return Place the circuit breaker state
      */
-    public function getState(): string;
+    public function getState(): Place;
 
     /**
-     * The function that execute the service.
+     * @return Storage the circuit breaker storage
+     */
+    public function getStorage(): Storage;
+
+    /**
+     * @return TransitionDispatcher the circuit breaker dispatcher
+     */
+    public function getDispatcher(): TransitionDispatcher;
+
+    /**
+     * The function that try to reach the uri.
      *
-     * @param string $service the service to call
-     * @param array $serviceParameters the service parameters
+     * @param string $uri the uri to call
+     * @param array $uriParameters the uri parameters
      * @param callable $fallback if the service is unavailable, rely on the fallback
+     *
+     * @throws Exception in case of failure, throws an exception
      *
      * @return string
      */
-    public function call(string $service, callable $fallback, array $serviceParameters = []): string;
-
-    /**
-     * @return bool checks if the circuit breaker is open
-     */
-    public function isOpened(): bool;
-
-    /**
-     * @return bool checks if the circuit breaker is half open
-     */
-    public function isHalfOpened(): bool;
-
-    /**
-     * @return bool checks if the circuit breaker is closed
-     */
-    public function isClosed(): bool;
-
-    /**
-     * @return bool checks if the circuit breaker is isolated
-     */
-    public function isIsolated(): bool;
+    public function call(string $uri, callable $fallback, array $uriParameters = []): string;
 
     /**
      * Manually open (and hold open) the Circuit Breaker
      * This can be used for example to take it offline for maintenance.
      *
-     * @param string $service the service to call
+     * @param string $serviceUri the service to call
      *
      * @return self
      */
-    public function isolate(string $service): self;
+    public function isolate(string $serviceUri): self;
 
     /**
      * Reset the breaker to closed state to start accepting actions again.
      *
-     * @param string $service the service to call
+     * @param string $serviceUri the service to call
      *
      * @return self
      */
-    public function reset(string $service): self;
+    public function reset(string $serviceUri): self;
+
+    /**
+     * Update the circuit breaker state
+     *
+     * @param string $state the Place state
+     * @param Service $service the service
+     *
+     * @return self
+     */
+    public function moveStateTo($state, Service $service): self;
 }
