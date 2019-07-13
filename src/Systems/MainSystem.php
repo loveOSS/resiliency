@@ -2,6 +2,7 @@
 
 namespace Resiliency\Systems;
 
+use Resiliency\Contracts\Client;
 use Resiliency\Places\IsolatedPlace;
 use Resiliency\States;
 use Resiliency\Contracts\Place;
@@ -26,19 +27,21 @@ final class MainSystem implements System
     private $places;
 
     /**
+     * @param Client $client the client
      * @param int $failures the number of allowed failures
      * @param float $timeout the timeout in milliseconds
      * @param float $strippedTimeout the timeout in milliseconds when trying again
      * @param float $threshold the timeout in milliseconds before trying again
      */
     public function __construct(
+        Client $client,
         int $failures,
         float $timeout,
         float $strippedTimeout,
         float $threshold
     ) {
-        $closedPlace = new ClosedPlace($failures, $timeout);
-        $halfOpenPlace = new HalfOpenPlace($strippedTimeout);
+        $closedPlace = new ClosedPlace($client, $failures, $timeout);
+        $halfOpenPlace = new HalfOpenPlace($client, $strippedTimeout);
         $openPlace = new OpenPlace($threshold);
         $isolatedPlace = new IsolatedPlace();
 
@@ -71,7 +74,7 @@ final class MainSystem implements System
      *
      * @return self
      */
-    public static function createFromArray(array $settings): self
+    public static function createFromArray(array $settings, Client $client): self
     {
         if (array_key_exists('failures', $settings)
             && array_key_exists('timeout', $settings)
@@ -79,6 +82,7 @@ final class MainSystem implements System
             && array_key_exists('threshold', $settings)
         ) {
             return new self(
+                $client,
                 (int) $settings['failures'],
                 (float) $settings['timeout'],
                 (float) $settings['stripped_timeout'],

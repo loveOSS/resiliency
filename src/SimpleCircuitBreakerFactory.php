@@ -20,14 +20,13 @@ final class SimpleCircuitBreakerFactory implements Factory
      */
     public function create(array $settings): CircuitBreaker
     {
-        $mainSystem = MainSystem::createFromArray($settings);
-
         $clientSettings = array_key_exists('client', $settings) ? (array) $settings['client'] : [];
         $client = new GuzzleClient($clientSettings);
 
+        $mainSystem = MainSystem::createFromArray($settings, $client);
+
         return new MainCircuitBreaker(
             $mainSystem,
-            $client,
             new SimpleArray(),
             new SimpleDispatcher('php://stdout')
         );

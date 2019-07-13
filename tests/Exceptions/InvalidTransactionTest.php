@@ -2,10 +2,10 @@
 
 namespace Tests\Resiliency\Exceptions;
 
-use PHPUnit\Framework\TestCase;
 use Resiliency\Exceptions\InvalidTransaction;
+use Tests\Resiliency\CircuitBreakerTestCase;
 
-class InvalidTransactionTest extends TestCase
+class InvalidTransactionTest extends CircuitBreakerTestCase
 {
     public function testCreation()
     {
@@ -39,28 +39,28 @@ class InvalidTransactionTest extends TestCase
     {
         return [
             'all_invalid_parameters' => [
-                [100, '0', null, 'toto'],
+                [new \stdClass(), '0', null, 'toto'],
                 'Invalid parameters for Transaction' . PHP_EOL .
-                'Excepted service to be an URI, got integer (100)' . PHP_EOL .
+                'Excepted service to be an instance of Service, got object' . PHP_EOL .
                 'Excepted failures to be a positive integer, got string (0)' . PHP_EOL .
                 'Excepted state to be a string, got NULL' . PHP_EOL .
                 'Excepted threshold to be a positive integer, got string (toto)' . PHP_EOL,
             ],
             '3_invalid_parameters' => [
-                ['http://www.prestashop.com', '1', null, 'toto'],
+                [$this->getService('http://www.prestashop.com'), '1', null, 'toto'],
                 'Invalid parameters for Transaction' . PHP_EOL .
                 'Excepted failures to be a positive integer, got string (1)' . PHP_EOL .
                 'Excepted state to be a string, got NULL' . PHP_EOL .
                 'Excepted threshold to be a positive integer, got string (toto)' . PHP_EOL,
             ],
             '2_invalid_parameters' => [
-                ['http://www.prestashop.com', 10, null, null],
+                [$this->getService('http://www.prestashop.com'), 10, null, null],
                 'Invalid parameters for Transaction' . PHP_EOL .
                 'Excepted state to be a string, got NULL' . PHP_EOL .
                 'Excepted threshold to be a positive integer, got NULL' . PHP_EOL,
             ],
             'none_invalid' => [
-                ['http://www.prestashop.com', 10, 'CLOSED_STATE', 1],
+                [$this->getService('http://www.prestashop.com'), 10, 'CLOSED_STATE', 1],
                 'Invalid parameters for Transaction' . PHP_EOL,
             ],
         ];

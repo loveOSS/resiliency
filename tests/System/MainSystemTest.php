@@ -3,6 +3,7 @@
 namespace Tests\Resiliency\System;
 
 use PHPUnit\Framework\TestCase;
+use Resiliency\Contracts\Client;
 use Resiliency\States;
 use Resiliency\Contracts\Place;
 use Resiliency\Systems\MainSystem;
@@ -11,7 +12,13 @@ class MainSystemTest extends TestCase
 {
     public function testCreation(): void
     {
-        $mainSystem = new MainSystem(1, 1.0, 1.0, 1.0);
+        $mainSystem = new MainSystem(
+            $this->createMock(Client::class),
+            1,
+            1.0,
+            1.0,
+            1.0
+        );
 
         $this->assertInstanceOf(MainSystem::class, $mainSystem);
     }
@@ -45,14 +52,16 @@ class MainSystemTest extends TestCase
 
     public function testCreationFromAnArray(): void
     {
+        $client = $this->createMock(Client::class);
+
         $mainSystem = MainSystem::createFromArray([
             'failures' => 2,
             'timeout' => 0.2,
             'stripped_timeout' => 0.2,
             'threshold' => 1.0,
-        ]);
+        ], $client);
 
-        $this->assertInstanceOf(MainSystem::class, $mainSystem);
+        $this->assertCount(4, $mainSystem->getPlaces());
     }
 
     /**
@@ -62,6 +71,8 @@ class MainSystemTest extends TestCase
      */
     private function createMainSystem(): MainSystem
     {
-        return new MainSystem(1, 1.0, 1.0, 1.0);
+        $client = $this->createMock(Client::class);
+
+        return new MainSystem($client, 1, 1.0, 1.0, 1.0);
     }
 }

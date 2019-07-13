@@ -4,6 +4,7 @@ namespace Tests\Resiliency\Events;
 
 use PHPUnit\Framework\TestCase;
 use Resiliency\Contracts\CircuitBreaker;
+use Resiliency\Contracts\Service;
 use Resiliency\Events\TransitionEvent;
 
 class TransitionEventTest extends TestCase
@@ -13,8 +14,7 @@ class TransitionEventTest extends TestCase
         $event = new TransitionEvent(
             $this->createMock(CircuitBreaker::class),
             'foo',
-            'bar',
-            []
+            $this->createService('bar', [])
         );
 
         $this->assertInstanceOf(TransitionEvent::class, $event);
@@ -28,11 +28,10 @@ class TransitionEventTest extends TestCase
         $event = new TransitionEvent(
             $this->createMock(CircuitBreaker::class),
             'foo',
-            'service',
-            []
+            $this->createService('service', [])
         );
 
-        $this->assertSame('service', $event->getService());
+        $this->assertSame('service', $event->getService()->getURI());
     }
 
     /**
@@ -43,31 +42,30 @@ class TransitionEventTest extends TestCase
         $event = new TransitionEvent(
             $this->createMock(CircuitBreaker::class),
             'eventName',
-            'bar',
-            []
+            $this->createService('bar', [])
         );
 
         $this->assertSame('eventName', $event->getEvent());
     }
 
     /**
-     * @depends testCreation
+     * @param string $uri
+     * @param array $parameters
+     *
+     * @return Service
      */
-    public function testGetParameters(): void
+    private function createService(string $uri, array $parameters): Service
     {
-        $parameters = [
-            'foo' => 'myFoo',
-            'bar' => true,
-        ];
+        $service = $this->createMock(Service::class);
+        $service->method('getURI')
+            ->willReturn($uri)
+        ;
 
-        $event = new TransitionEvent(
-            $this->createMock(CircuitBreaker::class),
-            'foo',
-            'bar',
-            $parameters
-        );
+        $service->method('getParameters')
+            ->willReturn($parameters)
+        ;
 
-        $this->assertSame($parameters, $event->getParameters());
+        return $service;
     }
 
     /**
@@ -78,8 +76,7 @@ class TransitionEventTest extends TestCase
         $event = new TransitionEvent(
             $this->createMock(CircuitBreaker::class),
             'eventName',
-            'bar',
-            []
+            $this->createService('foo', [])
         );
 
         $this->assertInstanceOf(CircuitBreaker::class, $event->getCircuitBreaker());

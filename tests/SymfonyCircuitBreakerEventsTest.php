@@ -44,6 +44,7 @@ class SymfonyCircuitBreakerEventsTest extends CircuitBreakerTestCase
          * then the conditions are met to open the circuit breaker
          */
         $invocations = $this->spy->getInvocations();
+        //var_dump($invocations);
         $this->assertCount(4, $invocations);
 
         $this->assertSame('resiliency.initiating', $invocations[0]->getParameters()[0]);
@@ -71,6 +72,7 @@ class SymfonyCircuitBreakerEventsTest extends CircuitBreakerTestCase
          * the related event has been dispatched
          */
         $invocations = $this->spy->getInvocations();
+
         $this->assertCount(5, $invocations);
         $this->assertSame('resiliency.isolating', $invocations[4]->getParameters()[0]);
 
@@ -97,7 +99,6 @@ class SymfonyCircuitBreakerEventsTest extends CircuitBreakerTestCase
 
         return new MainCircuitBreaker(
             $system,
-            $this->getTestClient(),
             $symfonyCache,
             new SymfonyDispatcher($eventDispatcherS)
         );

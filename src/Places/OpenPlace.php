@@ -2,7 +2,11 @@
 
 namespace Resiliency\Places;
 
+use Resiliency\Contracts\Transaction;
+use Resiliency\Contracts\Service;
+use Resiliency\Transitions;
 use Resiliency\States;
+use DateTime;
 
 /**
  * While the circuit is in an open state: every call to the service
@@ -24,5 +28,26 @@ final class OpenPlace extends AbstractPlace
     public function getState(): string
     {
         return States::OPEN_STATE;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function call(Transaction $transaction, callable $fallback): string
+    {
+        $service = $transaction->getService();
+
+        $this->dispatch(
+            Transitions::OPENING_TRANSITION,
+            $service
+        );
+
+        if (!($transaction->getThresholdDateTime() < new DateTime())) {
+            return (string) $fallback();
+        }
+
+        $this->circuitBreaker->moveStateTo(States::HALF_OPEN_STATE, $service);
+
+        return parent::call($transaction, $fallback);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Resiliency\Events;
 
+use Resiliency\Contracts\Service;
 use Resiliency\Contracts\CircuitBreaker;
 use Symfony\Component\EventDispatcher\Event;
 
@@ -18,26 +19,20 @@ class TransitionEvent extends Event
     private $eventName;
 
     /**
-     * @var string the Service URI
+     * @var Service the Service URI
      */
     private $service;
 
     /**
-     * @var array the Service parameters
-     */
-    private $parameters;
-
-    /**
+     * @param CircuitBreaker $circuitBreaker the circuit breaker
      * @param string $eventName the transition name
-     * @param string $service the Service URI
-     * @param array $parameters the Service parameters
+     * @param Service $service the Service
      */
-    public function __construct(CircuitBreaker $circuitBreaker, $eventName, $service, array $parameters)
+    public function __construct(CircuitBreaker $circuitBreaker, string $eventName, Service $service)
     {
         $this->circuitBreaker = $circuitBreaker;
         $this->eventName = $eventName;
         $this->service = $service;
-        $this->parameters = $parameters;
     }
 
     /**
@@ -57,18 +52,10 @@ class TransitionEvent extends Event
     }
 
     /**
-     * @return string the Service URI
+     * @return Service the Service
      */
-    public function getService(): string
+    public function getService(): Service
     {
         return $this->service;
-    }
-
-    /**
-     * @return array the Service parameters
-     */
-    public function getParameters(): array
-    {
-        return $this->parameters;
     }
 }

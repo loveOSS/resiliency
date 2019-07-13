@@ -2,6 +2,7 @@
 
 namespace Resiliency\Places;
 
+use Resiliency\Contracts\Transaction;
 use Resiliency\States;
 
 /**
@@ -21,5 +22,13 @@ class IsolatedPlace extends AbstractPlace
     public function getState(): string
     {
         return States::ISOLATED_STATE;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function call(Transaction $transaction, callable $fallback): string
+    {
+        return (string) $fallback();
     }
 }

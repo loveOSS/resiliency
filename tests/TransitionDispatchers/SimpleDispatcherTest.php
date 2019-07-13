@@ -3,11 +3,12 @@
 namespace Tests\Resiliency\TransitionDispatchers;
 
 use org\bovigo\vfs\vfsStream;
-use PHPUnit\Framework\TestCase;
 use Resiliency\Contracts\CircuitBreaker;
+use Resiliency\Places\OpenPlace;
 use Resiliency\TransitionDispatchers\SimpleDispatcher;
+use Tests\Resiliency\CircuitBreakerTestCase;
 
-class SimpleDispatcherTest extends TestCase
+class SimpleDispatcherTest extends CircuitBreakerTestCase
 {
     public function testCreation()
     {
@@ -22,20 +23,20 @@ class SimpleDispatcherTest extends TestCase
             ->at($root)
         ;
 
+        $openPlace = new OpenPlace(1.0);
         $circuitBreakerS = $this->createMock(CircuitBreaker::class);
         $circuitBreakerS->method('getState')
-            ->willReturn('OPEN')
+            ->willReturn($openPlace)
         ;
 
         $simpleDispatcher = new SimpleDispatcher($file->url());
         $simpleDispatcher->dispatch(
             $circuitBreakerS,
-            'INIT',
-            'http://test.org',
-            [
+            $this->getService('http://test.org', [
                 'a' => 1,
                 'b' => 'B',
-            ]
+            ]),
+            'INIT'
         );
 
         $expectedMessage = '[INIT]:"http://test.org"_(OPEN)_{"a":1,"b":"B"}';

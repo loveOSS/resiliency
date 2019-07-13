@@ -2,10 +2,12 @@
 
 namespace Resiliency\Clients;
 
-use Exception;
 use GuzzleHttp\Client as OriginalGuzzleClient;
-use Resiliency\Contracts\Client;
 use Resiliency\Exceptions\UnavailableService;
+use Resiliency\Contracts\Service;
+use Resiliency\Contracts\Client;
+use Resiliency\Contracts\Place;
+use Exception;
 
 /**
  * Guzzle implementation of client.
@@ -26,14 +28,19 @@ class GuzzleClient implements Client
     /**
      * {@inheritdoc}
      */
-    public function request($resource, array $options): string
+    public function request(Service $service, Place $place): string
     {
+        $options = [];
         try {
             $client = new OriginalGuzzleClient($this->mainOptions);
-            $method = $this->defineMethod($options);
+            $method = $this->defineMethod($service->getParameters());
             $options['http_errors'] = true;
+            $options['connect_timeout'] = $place->getTimeout();
+            $options['timeout'] = $place->getTimeout();
 
-            return (string) $client->request($method, $resource, $options)->getBody();
+            $clientParameters = array_merge($service->getParameters(), $options);
+
+            return (string) $client->request($method, $service->getURI(), $clientParameters)->getBody();
         } catch (Exception $exception) {
             throw new UnavailableService($exception->getMessage());
         }

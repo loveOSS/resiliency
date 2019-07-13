@@ -2,6 +2,10 @@
 
 namespace Resiliency\Places;
 
+use Resiliency\Contracts\Client;
+use Resiliency\Contracts\Transaction;
+use Resiliency\Exceptions\UnavailableService;
+use Resiliency\Transitions;
 use Resiliency\States;
 
 /**
@@ -17,10 +21,16 @@ use Resiliency\States;
 final class HalfOpenPlace extends AbstractPlace
 {
     /**
+     * @var Client the client
+     */
+    private $client;
+
+    /**
      * @param float $timeout the Place timeout
      */
-    public function __construct(float $timeout)
+    public function __construct(Client $client, float $timeout)
     {
+        $this->client = $client;
         parent::__construct(0, $timeout, 0.0);
     }
 
@@ -30,5 +40,35 @@ final class HalfOpenPlace extends AbstractPlace
     public function getState(): string
     {
         return States::HALF_OPEN_STATE;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function call(Transaction $transaction, callable $fallback): string
+    {
+        $service = $transaction->getService();
+
+        $this->dispatch(Transitions::CHECKING_AVAILABILITY_TRANSITION, $service);
+
+        try {
+            $response = $this->client->request($service, $this);
+            $this->dispatch(Transitions::CLOSING_TRANSITION, $service);
+            $this->circuitBreaker->moveStateTo(States::CLOSED_STATE, $service);
+            $transaction->clearFailures();
+            $this->circuitBreaker->getStorage()->saveTransaction($service->getUri(), $transaction);
+
+            return $response;
+        } catch (UnavailableService $exception) {
+            $transaction->incrementFailures();
+            $this->circuitBreaker->getStorage()->saveTransaction($service->getUri(), $transaction);
+
+            if (!$this->isAllowedToRetry($transaction)) {
+                $this->dispatch(Transitions::REOPENING_TRANSITION, $service);
+                $this->circuitBreaker->moveStateTo(States::OPEN_STATE, $service);
+            }
+
+            return parent::call($transaction, $fallback);
+        }
     }
 }

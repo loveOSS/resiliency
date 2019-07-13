@@ -2,6 +2,9 @@
 
 namespace Tests\Resiliency;
 
+use Resiliency\Places\ClosedPlace;
+use Resiliency\Places\IsolatedPlace;
+use Resiliency\Places\OpenPlace;
 use Resiliency\TransitionDispatchers\SimpleDispatcher;
 use Resiliency\TransitionDispatchers\SymfonyDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -29,7 +32,7 @@ class CircuitBreakerWorkflowTest extends CircuitBreakerTestCase
      */
     public function testCircuitBreakerIsInClosedStateAtStart(CircuitBreaker $circuitBreaker): void
     {
-        $this->assertTrue($circuitBreaker->isClosed());
+        $this->assertInstanceOf(ClosedPlace::class, $circuitBreaker->getState());
 
         $this->assertSame(
             '{}',
@@ -51,12 +54,12 @@ class CircuitBreakerWorkflowTest extends CircuitBreakerTestCase
     public function testCircuitBreakerWillBeOpenInCaseOfFailures(CircuitBreaker $circuitBreaker): void
     {
         // CLOSED
-        $this->assertTrue($circuitBreaker->isClosed());
+        $this->assertInstanceOf(ClosedPlace::class, $circuitBreaker->getState());
         $response = $circuitBreaker->call('https://httpbin.org/get/foo', $this->createFallbackResponse());
         $this->assertSame('{}', $response);
 
         //After two failed calls switch to OPEN state
-        $this->assertTrue($circuitBreaker->isOpened());
+        $this->assertInstanceOf(OpenPlace::class, $circuitBreaker->getState());
         $this->assertSame(
             '{}',
             $circuitBreaker->call(
@@ -78,18 +81,18 @@ class CircuitBreakerWorkflowTest extends CircuitBreakerTestCase
     public function testOnceInHalfOpenModeServiceIsFinallyReachable(CircuitBreaker $circuitBreaker): void
     {
         // CLOSED - first call fails (twice)
-        $this->assertTrue($circuitBreaker->isClosed());
+        $this->assertInstanceOf(ClosedPlace::class, $circuitBreaker->getState());
         $response = $circuitBreaker->call('https://httpbin.org/get/foo', $this->createFallbackResponse());
         $this->assertSame('{}', $response);
-        $this->assertTrue($circuitBreaker->isOpened());
+        $this->assertInstanceOf(OpenPlace::class, $circuitBreaker->getState());
 
         // OPEN - no call to client
         $response = $circuitBreaker->call('https://httpbin.org/get/foo', $this->createFallbackResponse());
         $this->assertSame('{}', $response);
-        $this->assertTrue($circuitBreaker->isOpened());
+        $this->assertInstanceOf(OpenPlace::class, $circuitBreaker->getState());
         $this->waitFor(2 * self::OPEN_THRESHOLD);
 
-        // SWITCH TO HALF OPEN - retry to call the service
+        // SWITCH TO HALF OPEN then CLOSED - retry to call the service
         $this->assertSame(
             '{"hello": "world"}',
             $circuitBreaker->call(
@@ -97,7 +100,7 @@ class CircuitBreakerWorkflowTest extends CircuitBreakerTestCase
                 $this->createFallbackResponse()
             )
         );
-        $this->assertTrue($circuitBreaker->isClosed());
+        $this->assertInstanceOf(ClosedPlace::class, $circuitBreaker->getState());
     }
 
     /**
@@ -105,26 +108,30 @@ class CircuitBreakerWorkflowTest extends CircuitBreakerTestCase
      * Open and so on only fallback responses will be sent.
      *
      * @dataProvider getCircuitBreakers
+     *
+     * @param CircuitBreaker $circuitBreaker
      */
     public function testOnceCircuitBreakerIsIsolatedNoTrialsAreDone(CircuitBreaker $circuitBreaker): void
     {
-        $circuitBreaker->isolate('https://httpbin.org/get/foo');
+        $uri = 'https://httpbin.org/get/foo';
+        $circuitBreaker->call($uri, $this->createFallbackResponse());
+        $circuitBreaker->isolate($uri);
 
-        $response = $circuitBreaker->call('https://httpbin.org/get/foo', $this->createFallbackResponse());
+        $response = $circuitBreaker->call($uri, $this->createFallbackResponse());
         $this->assertSame('{}', $response);
-        $this->assertTrue($circuitBreaker->isIsolated());
+        $this->assertInstanceOf(IsolatedPlace::class, $circuitBreaker->getState());
 
         // Let's do 10 calls!
 
         for ($i = 0; $i < 10; ++$i) {
-            $circuitBreaker->call('https://httpbin.org/get/foo', $this->createFallbackResponse());
+            $circuitBreaker->call($uri, $this->createFallbackResponse());
             $this->assertSame('{}', $response);
-            $this->assertTrue($circuitBreaker->isIsolated());
+            $this->assertInstanceOf(IsolatedPlace::class, $circuitBreaker->getState());
         }
 
-        $circuitBreaker->reset('https://httpbin.org/get/foo');
+        $circuitBreaker->reset($uri);
 
-        $this->assertTrue($circuitBreaker->isClosed());
+        $this->assertInstanceOf(ClosedPlace::class, $circuitBreaker->getState());
     }
 
     /**
@@ -136,7 +143,7 @@ class CircuitBreakerWorkflowTest extends CircuitBreakerTestCase
     {
         return [
             'simple' => [$this->createSimpleCircuitBreaker()],
-            'symfony' => [$this->createSymfonyCircuitBreaker()],
+            //'symfony' => [$this->createSymfonyCircuitBreaker()],
         ];
     }
 
@@ -153,7 +160,6 @@ class CircuitBreakerWorkflowTest extends CircuitBreakerTestCase
 
         return new MainCircuitBreaker(
             $this->getSystem(),
-            $this->getTestClient(),
             new SimpleArray(),
             new SimpleDispatcher($file->url())
         );
@@ -166,14 +172,12 @@ class CircuitBreakerWorkflowTest extends CircuitBreakerTestCase
     {
         $symfonyCache = new SymfonyCache(new ArrayCache());
         $eventDispatcherS = $this->createMock(EventDispatcher::class);
-        $eventDispatcherS->expects($this->any())
-            ->method('dispatch')
+        $eventDispatcherS->method('dispatch')
             ->willReturn($this->createMock(Event::class))
         ;
 
         return new MainCircuitBreaker(
             $this->getSystem(),
-            $this->getTestClient(),
             $symfonyCache,
             new SymfonyDispatcher($eventDispatcherS)
         );
