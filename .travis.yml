@@ -27,6 +27,7 @@ script:
   - composer phpstan
   - composer psalm
   - composer phpqa
+  - composer security-checker
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)
