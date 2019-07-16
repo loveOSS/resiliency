@@ -51,14 +51,16 @@
         "psalm": "@php ./vendor/bin/psalm --threads=8 --diff --diff-methods",
         "cs-fix": "@php ./vendor/bin/php-cs-fixer fix",
         "test": "@php ./vendor/bin/phpunit",
-        "phpqa": "@php ./vendor/bin/phpqa --report --tools phpcs:0,phpmd:0,phpcpd:0,phpmetrics,phploc,pdepend,security-checker:0,parallel-lint:0 --ignoredDirs tests,vendor"
+        "phpqa": "@php ./vendor/bin/phpqa --report --tools phpcs:0,phpmd:0,phpcpd:0,phpmetrics,phploc,pdepend,security-checker:0,parallel-lint:0 --ignoredDirs tests,vendor",
+        "security-checker": "@php ./vendor/bin/security-checker security:check"
     },
     "scripts-descriptions": {
         "phpstan": "Execute PHPStan analysis",
         "psalm": "Execute Psalm analysis",
         "cs-fix": "Check and fix coding styles using PHP CS Fixer",
         "test": "Launch PHPUnit test suite",
-        "phpqa": "Execute PHQA toolsuite analysis"
+        "phpqa": "Execute PHQA toolsuite analysis",
+        "security-checker": "Executes Security Checker analysis"
     },
     "config": {
         "sort-packages": true

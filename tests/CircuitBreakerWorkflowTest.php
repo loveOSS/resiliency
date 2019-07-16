@@ -92,7 +92,7 @@ class CircuitBreakerWorkflowTest extends CircuitBreakerTestCase
         $this->assertInstanceOf(OpenPlace::class, $circuitBreaker->getState());
         $this->waitFor(2 * self::OPEN_THRESHOLD);
 
-        // SWITCH TO HALF OPEN then CLOSED - retry to call the service
+        // SWITCH TO HALF OPEN and retry to call the service (still in failure)
         $this->assertSame(
             '{"hello": "world"}',
             $circuitBreaker->call(
@@ -143,7 +143,7 @@ class CircuitBreakerWorkflowTest extends CircuitBreakerTestCase
     {
         return [
             'simple' => [$this->createSimpleCircuitBreaker()],
-            //'symfony' => [$this->createSymfonyCircuitBreaker()],
+            'symfony' => [$this->createSymfonyCircuitBreaker()],
         ];
     }
 
