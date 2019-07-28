@@ -3,9 +3,9 @@
 namespace Resiliency\Places;
 
 use Resiliency\Contracts\Client;
+use Resiliency\Events\Tried;
 use Resiliency\Exceptions\UnavailableService;
 use Resiliency\Contracts\Transaction;
-use Resiliency\Transitions;
 use Resiliency\States;
 
 /**
@@ -55,7 +55,7 @@ final class ClosedPlace extends AbstractPlace
             return parent::call($transaction, $fallback);
         }
 
-        $this->dispatch(Transitions::TRIAL_TRANSITION, $service);
+        $this->dispatch(new Tried($this->circuitBreaker, $service));
 
         try {
             $response = $this->client->request($service, $this);

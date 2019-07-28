@@ -2,6 +2,8 @@
 
 namespace Resiliency\Contracts;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+
 /**
  * A circuit breaker is used to provide
  * an alternative response when a tiers service
@@ -20,9 +22,9 @@ interface CircuitBreaker
     public function getStorage(): Storage;
 
     /**
-     * @return TransitionDispatcher the circuit breaker dispatcher
+     * @return EventDispatcherInterface the circuit breaker dispatcher
      */
-    public function getDispatcher(): TransitionDispatcher;
+    public function getDispatcher(): EventDispatcherInterface;
 
     /**
      * The function that try to reach the uri.

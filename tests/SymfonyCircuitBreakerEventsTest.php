@@ -3,13 +3,17 @@
 namespace Tests\Resiliency;
 
 use PHPUnit\Framework\MockObject\Matcher\AnyInvokedCount;
-use Resiliency\TransitionDispatchers\SymfonyDispatcher;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Resiliency\Events\Initiated;
+use Resiliency\Events\Isolated;
+use Resiliency\Events\Reseted;
+use Resiliency\Events\Opened;
+use Resiliency\Events\Tried;
 use Symfony\Component\Cache\Simple\ArrayCache;
-use Symfony\Component\EventDispatcher\Event;
 use Resiliency\Contracts\CircuitBreaker;
 use Resiliency\Storages\SymfonyCache;
 use Resiliency\MainCircuitBreaker;
+use stdClass;
 
 /**
  * Validates that the right events are dispatched.
@@ -47,10 +51,10 @@ class SymfonyCircuitBreakerEventsTest extends CircuitBreakerTestCase
         //var_dump($invocations);
         $this->assertCount(4, $invocations);
 
-        $this->assertSame('resiliency.initiating', $invocations[0]->getParameters()[0]);
-        $this->assertSame('resiliency.trial', $invocations[1]->getParameters()[0]);
-        $this->assertSame('resiliency.trial', $invocations[2]->getParameters()[0]);
-        $this->assertSame('resiliency.opening', $invocations[3]->getParameters()[0]);
+        $this->assertInstanceOf(Initiated::class, $invocations[0]->getParameters()[0]);
+        $this->assertInstanceOf(Tried::class, $invocations[1]->getParameters()[0]);
+        $this->assertInstanceOf(Tried::class, $invocations[2]->getParameters()[0]);
+        $this->assertInstanceOf(Opened::class, $invocations[3]->getParameters()[0]);
     }
 
     public function testCircuitBreakerEventsOnIsolationAndResetActions(): void
@@ -74,7 +78,7 @@ class SymfonyCircuitBreakerEventsTest extends CircuitBreakerTestCase
         $invocations = $this->spy->getInvocations();
 
         $this->assertCount(5, $invocations);
-        $this->assertSame('resiliency.isolating', $invocations[4]->getParameters()[0]);
+        $this->assertInstanceOf(Isolated::class, $invocations[4]->getParameters()[0]);
 
         /*
          * And now we reset the circuit breaker!
@@ -83,7 +87,7 @@ class SymfonyCircuitBreakerEventsTest extends CircuitBreakerTestCase
         $circuitBreaker->reset($service);
         $invocations = $this->spy->getInvocations();
         $this->assertCount(6, $invocations);
-        $this->assertSame('resiliency.resetting', $invocations[5]->getParameters()[0]);
+        $this->assertInstanceOf(Reseted::class, $invocations[5]->getParameters()[0]);
     }
 
     private function createCircuitBreaker(): CircuitBreaker
@@ -91,16 +95,16 @@ class SymfonyCircuitBreakerEventsTest extends CircuitBreakerTestCase
         $system = $this->getSystem();
 
         $symfonyCache = new SymfonyCache(new ArrayCache());
-        $eventDispatcherS = $this->createMock(EventDispatcher::class);
+        $eventDispatcherS = $this->createMock(EventDispatcherInterface::class);
         $eventDispatcherS->expects($this->spy = $this->any())
             ->method('dispatch')
-            ->willReturn($this->createMock(Event::class))
+            ->willReturn($this->createMock(stdClass::class))
         ;
 
         return new MainCircuitBreaker(
             $system,
             $symfonyCache,
-            new SymfonyDispatcher($eventDispatcherS)
+            $eventDispatcherS
         );
     }
 }

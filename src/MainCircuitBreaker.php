@@ -2,7 +2,10 @@
 
 namespace Resiliency;
 
-use Resiliency\Contracts\TransitionDispatcher;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Resiliency\Events\Initiated;
+use Resiliency\Events\Isolated;
+use Resiliency\Events\Reseted;
 use Resiliency\Transactions\SimpleTransaction;
 use Resiliency\Contracts\CircuitBreaker;
 use Resiliency\Contracts\Transaction;
@@ -19,13 +22,13 @@ final class MainCircuitBreaker implements CircuitBreaker
     public function __construct(
         System $system,
         Storage $storage,
-        TransitionDispatcher $transitionDispatcher
+        EventDispatcherInterface $dispatcher
     ) {
         $this->currentPlace = $system->getInitialPlace();
         $this->currentPlace->setCircuitBreaker($this);
         $this->places = $system->getPlaces();
         $this->storage = $storage;
-        $this->transitionDispatcher = $transitionDispatcher;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -44,9 +47,9 @@ final class MainCircuitBreaker implements CircuitBreaker
     private $storage;
 
     /**
-     * @var TransitionDispatcher the Circuit Breaker transition dispatcher
+     * @var EventDispatcherInterface the Circuit Breaker transition dispatcher
      */
-    private $transitionDispatcher;
+    private $dispatcher;
 
     /**
      * {@inheritdoc}
@@ -78,9 +81,9 @@ final class MainCircuitBreaker implements CircuitBreaker
     /**
      * {@inheritdoc}
      */
-    public function getDispatcher(): TransitionDispatcher
+    public function getDispatcher(): EventDispatcherInterface
     {
-        return $this->transitionDispatcher;
+        return $this->dispatcher;
     }
 
     /**
@@ -93,7 +96,7 @@ final class MainCircuitBreaker implements CircuitBreaker
             ->getService()
         ;
 
-        $this->dispatch(Transitions::ISOLATING_TRANSITION, $service);
+        $this->dispatcher->dispatch(new Isolated($this, $service));
         $this->moveStateTo(States::ISOLATED_STATE, $service);
 
         return $this;
@@ -109,7 +112,7 @@ final class MainCircuitBreaker implements CircuitBreaker
             ->getService()
         ;
 
-        $this->dispatch(Transitions::RESETTING_TRANSITION, $service);
+        $this->dispatcher->dispatch(new Reseted($this, $service));
         $this->moveStateTo(States::CLOSED_STATE, $service);
 
         return $this;
@@ -151,27 +154,10 @@ final class MainCircuitBreaker implements CircuitBreaker
                 $service
             );
 
-            $this->dispatch(Transitions::INITIATING_TRANSITION, $service);
-
+            $this->dispatcher->dispatch(new Initiated($this, $service));
             $this->storage->saveTransaction($service->getURI(), $transaction);
         }
 
         return $transaction;
-    }
-
-    /**
-     * Helper to dispatch transition events.
-     *
-     * @param string $transition the transition name
-     * @param Service $service the service
-     */
-    private function dispatch(string $transition, Service $service): void
-    {
-        $this->transitionDispatcher
-            ->dispatch(
-                $this,
-                $service,
-                $transition
-            );
     }
 }

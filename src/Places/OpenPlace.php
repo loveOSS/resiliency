@@ -3,8 +3,7 @@
 namespace Resiliency\Places;
 
 use Resiliency\Contracts\Transaction;
-use Resiliency\Contracts\Service;
-use Resiliency\Transitions;
+use Resiliency\Events\Opened;
 use Resiliency\States;
 use DateTime;
 
@@ -36,11 +35,7 @@ final class OpenPlace extends AbstractPlace
     public function call(Transaction $transaction, callable $fallback): string
     {
         $service = $transaction->getService();
-
-        $this->dispatch(
-            Transitions::OPENING_TRANSITION,
-            $service
-        );
+        $this->dispatch(new Opened($this->circuitBreaker, $service));
 
         if (!($transaction->getThresholdDateTime() < new DateTime())) {
             return (string) $fallback();
