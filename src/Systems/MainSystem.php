@@ -2,22 +2,23 @@
 
 namespace Resiliency\Systems;
 
-use Resiliency\Contracts\Client;
-use Resiliency\Places\IsolatedPlace;
 use Resiliency\States;
+use Resiliency\Contracts\Client;
 use Resiliency\Contracts\Place;
 use Resiliency\Contracts\System;
-use Resiliency\Places\OpenPlace;
-use Resiliency\Places\ClosedPlace;
-use Resiliency\Places\HalfOpenPlace;
 use Resiliency\Exceptions\InvalidSystem;
+use Resiliency\Places\Opened;
+use Resiliency\Places\Closed;
+use Resiliency\Places\Isolated;
+use Resiliency\Places\HalfOpened;
 
 /**
  * Implement the system described by the documentation.
- * The main system is built with 3 places:
+ * The main system is built with 4 places:
  * - A Closed place
- * - A Half Open Place
- * - An Open Place
+ * - A Half Opened Place
+ * - An Opened Place
+ * - An Isolated Place
  */
 final class MainSystem implements System
 {
@@ -40,10 +41,10 @@ final class MainSystem implements System
         float $strippedTimeout,
         float $threshold
     ) {
-        $closedPlace = new ClosedPlace($client, $failures, $timeout);
-        $halfOpenPlace = new HalfOpenPlace($client, $strippedTimeout);
-        $openPlace = new OpenPlace($threshold);
-        $isolatedPlace = new IsolatedPlace();
+        $closedPlace = new Closed($client, $failures, $timeout);
+        $halfOpenPlace = new HalfOpened($client, $strippedTimeout);
+        $openPlace = new Opened($threshold);
+        $isolatedPlace = new Isolated();
 
         $this->places = [
             $closedPlace->getState() => $closedPlace,

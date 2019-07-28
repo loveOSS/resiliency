@@ -4,10 +4,10 @@ namespace Tests\Resiliency\Places;
 
 use Resiliency\Contracts\Client;
 use Resiliency\Exceptions\InvalidPlace;
-use Resiliency\Places\HalfOpenPlace;
+use Resiliency\Places\HalfOpened;
 use Resiliency\States;
 
-class HalfOpenPlaceTest extends PlaceTestCase
+class HalfOpenedTest extends PlaceTestCase
 {
     /**
      * @dataProvider getFixtures
@@ -20,7 +20,7 @@ class HalfOpenPlaceTest extends PlaceTestCase
     {
         unset($failures, $threshold);
         $client = $this->createMock(Client::class);
-        $halfOpenPlace = new HalfOpenPlace($client, $timeout);
+        $halfOpenPlace = new HalfOpened($client, $timeout);
 
         $this->assertSame(0, $halfOpenPlace->getFailures());
         $this->assertSame($timeout, $halfOpenPlace->getTimeout());
@@ -40,13 +40,13 @@ class HalfOpenPlaceTest extends PlaceTestCase
         $this->expectException(InvalidPlace::class);
 
         $client = $this->createMock(Client::class);
-        new HalfOpenPlace($client, $timeout);
+        new HalfOpened($client, $timeout);
     }
 
     public function testGetExpectedState(): void
     {
         $client = $this->createMock(Client::class);
-        $halfOpenPlace = new HalfOpenPlace($client, 1);
+        $halfOpenPlace = new HalfOpened($client, 1);
 
         $this->assertSame(States::HALF_OPEN_STATE, $halfOpenPlace->getState());
     }

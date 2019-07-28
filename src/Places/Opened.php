@@ -3,7 +3,7 @@
 namespace Resiliency\Places;
 
 use Resiliency\Contracts\Transaction;
-use Resiliency\Events\Opened;
+use Resiliency\Events\Opened as OpenedEvent;
 use Resiliency\States;
 use DateTime;
 
@@ -11,7 +11,7 @@ use DateTime;
  * While the circuit is in an open state: every call to the service
  * won't be executed and the fallback callback is executed.
  */
-final class OpenPlace extends AbstractPlace
+final class Opened extends AbstractPlace
 {
     /**
      * @param float $threshold the Place threshold
@@ -35,7 +35,7 @@ final class OpenPlace extends AbstractPlace
     public function call(Transaction $transaction, callable $fallback): string
     {
         $service = $transaction->getService();
-        $this->dispatch(new Opened($this->circuitBreaker, $service));
+        $this->dispatch(new OpenedEvent($this->circuitBreaker, $service));
 
         if (!($transaction->getThresholdDateTime() < new DateTime())) {
             return (string) $fallback();

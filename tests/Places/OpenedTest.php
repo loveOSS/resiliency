@@ -3,10 +3,10 @@
 namespace Tests\Resiliency\Places;
 
 use Resiliency\Exceptions\InvalidPlace;
-use Resiliency\Places\OpenPlace;
+use Resiliency\Places\Opened;
 use Resiliency\States;
 
-class OpenPlaceTest extends PlaceTestCase
+class OpenedTest extends PlaceTestCase
 {
     /**
      * @dataProvider getFixtures
@@ -18,7 +18,7 @@ class OpenPlaceTest extends PlaceTestCase
     public function testCreationWith($failures, $timeout, $threshold): void
     {
         unset($failures, $timeout);
-        $closedPlace = new OpenPlace($threshold);
+        $closedPlace = new Opened($threshold);
 
         $this->assertSame(0, $closedPlace->getFailures());
         $this->assertSame(0.0, $closedPlace->getTimeout());
@@ -38,12 +38,12 @@ class OpenPlaceTest extends PlaceTestCase
 
         $this->expectException(InvalidPlace::class);
 
-        new OpenPlace($threshold);
+        new Opened($threshold);
     }
 
     public function testGetExpectedState()
     {
-        $closedPlace = new OpenPlace(1.0);
+        $closedPlace = new Opened(1.0);
 
         $this->assertSame(States::OPEN_STATE, $closedPlace->getState());
     }
