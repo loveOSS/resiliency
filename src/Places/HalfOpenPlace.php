@@ -4,6 +4,9 @@ namespace Resiliency\Places;
 
 use Resiliency\Contracts\Client;
 use Resiliency\Contracts\Transaction;
+use Resiliency\Events\AvailabilityChecked;
+use Resiliency\Events\Closed;
+use Resiliency\Events\ReOpened;
 use Resiliency\Exceptions\UnavailableService;
 use Resiliency\Transitions;
 use Resiliency\States;
@@ -48,12 +51,12 @@ final class HalfOpenPlace extends AbstractPlace
     public function call(Transaction $transaction, callable $fallback): string
     {
         $service = $transaction->getService();
-
-        $this->dispatch(Transitions::CHECKING_AVAILABILITY_TRANSITION, $service);
+        $this->dispatch(new AvailabilityChecked($this->circuitBreaker, $service));
 
         try {
             $response = $this->client->request($service, $this);
-            $this->dispatch(Transitions::CLOSING_TRANSITION, $service);
+
+            $this->dispatch(new Closed($this->circuitBreaker, $service));
             $this->circuitBreaker->moveStateTo(States::CLOSED_STATE, $service);
             $transaction->clearFailures();
             $this->circuitBreaker->getStorage()->saveTransaction($service->getUri(), $transaction);
@@ -64,7 +67,7 @@ final class HalfOpenPlace extends AbstractPlace
             $this->circuitBreaker->getStorage()->saveTransaction($service->getUri(), $transaction);
 
             if (!$this->isAllowedToRetry($transaction)) {
-                $this->dispatch(Transitions::REOPENING_TRANSITION, $service);
+                $this->dispatch(new ReOpened($this->circuitBreaker, $service));
                 $this->circuitBreaker->moveStateTo(States::OPEN_STATE, $service);
             }
 

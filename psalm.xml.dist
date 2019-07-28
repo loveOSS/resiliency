@@ -19,23 +19,6 @@
 
     <issueHandlers>
         <DeprecatedClass errorLevel="info" />
-        <!-- Manage gracefully BC breaks of Symfony 4.3 -->
-        <DeprecatedClass>
-            <errorLevel type="suppress">
-                <file name="src/Events/TransitionEvent.php" />
-            </errorLevel>
-        </DeprecatedClass>
-        <TooManyArguments>
-            <errorLevel type="suppress">
-                <file name="src/TransitionDispatchers/SymfonyDispatcher.php" />
-            </errorLevel>
-        </TooManyArguments>
-        <InvalidArgument>
-            <errorLevel type="suppress">
-                <file name="src/TransitionDispatchers/SymfonyDispatcher.php" />
-            </errorLevel>
-        </InvalidArgument>
-        <!-- End of Symfony 4.3 management -->
         <LessSpecificReturnType errorLevel="info" />
         <MixedAssignment>
             <errorLevel type="suppress">

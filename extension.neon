@@ -1,9 +1,3 @@
 includes:
 	- vendor/phpstan/phpstan-phpunit/extension.neon
 	- vendor/phpstan/phpstan-phpunit/rules.neon
-
-parameters:
-	ignoreErrors:
-		# To be removed once we remove the support of Symfony 3.4 cause of a BC break introduced in Symfony 4.3
-		# See https://symfony.com/blog/new-in-symfony-4-3-simpler-event-dispatching
-		- '/Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface/'

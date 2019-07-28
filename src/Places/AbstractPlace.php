@@ -3,10 +3,11 @@
 namespace Resiliency\Places;
 
 use Resiliency\Contracts\CircuitBreaker;
-use Resiliency\Contracts\Service;
-use Resiliency\Exceptions\InvalidPlace;
 use Resiliency\Contracts\Transaction;
+use Resiliency\Contracts\Service;
 use Resiliency\Contracts\Place;
+use Resiliency\Contracts\Event;
+use Resiliency\Exceptions\InvalidPlace;
 use Resiliency\Utils\Assert;
 
 abstract class AbstractPlace implements Place
@@ -107,18 +108,14 @@ abstract class AbstractPlace implements Place
     /**
      * Helper to dispatch transition events.
      *
-     * @param string $transition the transition name
-     * @param Service $service the service
+     * @param Event $event the circuit breaker event
      */
-    protected function dispatch(string $transition, Service $service): void
+    protected function dispatch(Event $event): void
     {
         $this->circuitBreaker
             ->getDispatcher()
-            ->dispatch(
-                $this->circuitBreaker,
-                $service,
-                $transition
-            );
+            ->dispatch($event)
+        ;
     }
 
     /**
