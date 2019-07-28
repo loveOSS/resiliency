@@ -86,10 +86,10 @@ final class MainCircuitBreaker implements CircuitBreaker
     /**
      * {@inheritdoc}
      */
-    public function isolate(string $serviceUri): CircuitBreaker
+    public function isolate(string $uri): CircuitBreaker
     {
         $service = $this->storage
-            ->getTransaction($serviceUri)
+            ->getTransaction($uri)
             ->getService()
         ;
 
@@ -102,10 +102,10 @@ final class MainCircuitBreaker implements CircuitBreaker
     /**
      * {@inheritdoc}
      */
-    public function reset(string $serviceUri): CircuitBreaker
+    public function reset(string $uri): CircuitBreaker
     {
         $service = $this->storage
-            ->getTransaction($serviceUri)
+            ->getTransaction($uri)
             ->getService()
         ;
 
