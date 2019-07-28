@@ -5,9 +5,9 @@ namespace Tests\Resiliency;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Resiliency\Exceptions\InvalidSystem;
 use Resiliency\Contracts\Exception;
-use Resiliency\Places\ClosedPlace;
-use Resiliency\Places\IsolatedPlace;
-use Resiliency\Places\OpenPlace;
+use Resiliency\Places\Closed;
+use Resiliency\Places\Isolated;
+use Resiliency\Places\Opened;
 use Symfony\Component\Cache\Simple\ArrayCache;
 use Resiliency\Contracts\CircuitBreaker;
 use Resiliency\Storages\SymfonyCache;
@@ -32,7 +32,7 @@ class CircuitBreakerWorkflowTest extends CircuitBreakerTestCase
      */
     public function testCircuitBreakerIsInClosedStateAtStart(): void
     {
-        $this->assertInstanceOf(ClosedPlace::class, $this->circuitBreaker->getState());
+        $this->assertInstanceOf(Closed::class, $this->circuitBreaker->getState());
 
         $this->assertSame(
             '{}',
@@ -52,12 +52,12 @@ class CircuitBreakerWorkflowTest extends CircuitBreakerTestCase
     public function testCircuitBreakerWillBeOpenInCaseOfFailures(): void
     {
         // CLOSED
-        $this->assertInstanceOf(ClosedPlace::class, $this->circuitBreaker->getState());
+        $this->assertInstanceOf(Closed::class, $this->circuitBreaker->getState());
         $response = $this->circuitBreaker->call('https://httpbin.org/get/foo', $this->createFallbackResponse());
         $this->assertSame('{}', $response);
 
         //After two failed calls switch to OPEN state
-        $this->assertInstanceOf(OpenPlace::class, $this->circuitBreaker->getState());
+        $this->assertInstanceOf(Opened::class, $this->circuitBreaker->getState());
         $this->assertSame(
             '{}',
             $this->circuitBreaker->call(
@@ -79,15 +79,15 @@ class CircuitBreakerWorkflowTest extends CircuitBreakerTestCase
     public function testOnceInHalfOpenModeServiceIsFinallyReachable(): void
     {
         // CLOSED - first call fails (twice)
-        $this->assertInstanceOf(ClosedPlace::class, $this->circuitBreaker->getState());
+        $this->assertInstanceOf(Closed::class, $this->circuitBreaker->getState());
         $response = $this->circuitBreaker->call('https://httpbin.org/get/foo', $this->createFallbackResponse());
         $this->assertSame('{}', $response);
-        $this->assertInstanceOf(OpenPlace::class, $this->circuitBreaker->getState());
+        $this->assertInstanceOf(Opened::class, $this->circuitBreaker->getState());
 
         // OPEN - no call to client
         $response = $this->circuitBreaker->call('https://httpbin.org/get/foo', $this->createFallbackResponse());
         $this->assertSame('{}', $response);
-        $this->assertInstanceOf(OpenPlace::class, $this->circuitBreaker->getState());
+        $this->assertInstanceOf(Opened::class, $this->circuitBreaker->getState());
         $this->waitFor(2 * self::OPEN_THRESHOLD);
 
         // SWITCH TO HALF OPEN and retry to call the service (still in failure)
@@ -98,7 +98,7 @@ class CircuitBreakerWorkflowTest extends CircuitBreakerTestCase
                 $this->createFallbackResponse()
             )
         );
-        $this->assertInstanceOf(ClosedPlace::class, $this->circuitBreaker->getState());
+        $this->assertInstanceOf(Closed::class, $this->circuitBreaker->getState());
     }
 
     /**
@@ -115,19 +115,19 @@ class CircuitBreakerWorkflowTest extends CircuitBreakerTestCase
 
         $response = $this->circuitBreaker->call($uri, $this->createFallbackResponse());
         $this->assertSame('{}', $response);
-        $this->assertInstanceOf(IsolatedPlace::class, $this->circuitBreaker->getState());
+        $this->assertInstanceOf(Isolated::class, $this->circuitBreaker->getState());
 
         // Let's do 5 calls!
 
         for ($i = 0; $i < 5; ++$i) {
             $this->circuitBreaker->call($uri, $this->createFallbackResponse());
             $this->assertSame('{}', $response);
-            $this->assertInstanceOf(IsolatedPlace::class, $this->circuitBreaker->getState());
+            $this->assertInstanceOf(Isolated::class, $this->circuitBreaker->getState());
         }
 
         $this->circuitBreaker->reset($uri);
 
-        $this->assertInstanceOf(ClosedPlace::class, $this->circuitBreaker->getState());
+        $this->assertInstanceOf(Closed::class, $this->circuitBreaker->getState());
     }
 
     /**

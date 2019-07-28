@@ -4,7 +4,6 @@ namespace Resiliency\Places;
 
 use Resiliency\Contracts\CircuitBreaker;
 use Resiliency\Contracts\Transaction;
-use Resiliency\Contracts\Service;
 use Resiliency\Contracts\Place;
 use Resiliency\Contracts\Event;
 use Resiliency\Exceptions\InvalidPlace;

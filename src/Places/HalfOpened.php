@@ -8,11 +8,10 @@ use Resiliency\Events\AvailabilityChecked;
 use Resiliency\Events\Closed;
 use Resiliency\Events\ReOpened;
 use Resiliency\Exceptions\UnavailableService;
-use Resiliency\Transitions;
 use Resiliency\States;
 
 /**
- * When the circuit is half-open:
+ * When the circuit is half-opened:
  *
  * the next action will be treated as a trial, to determine the circuit's health.
  *
@@ -21,7 +20,7 @@ use Resiliency\States;
  *
  * If the call throws no exception, the circuit transitions back to closed.
  */
-final class HalfOpenPlace extends AbstractPlace
+final class HalfOpened extends AbstractPlace
 {
     /**
      * @var Client the client

@@ -4,10 +4,10 @@ namespace Tests\Resiliency\Places;
 
 use Resiliency\Contracts\Client;
 use Resiliency\Exceptions\InvalidPlace;
-use Resiliency\Places\ClosedPlace;
+use Resiliency\Places\Closed;
 use Resiliency\States;
 
-class ClosedPlaceTest extends PlaceTestCase
+class ClosedTest extends PlaceTestCase
 {
     /**
      * @dataProvider getFixtures
@@ -19,7 +19,7 @@ class ClosedPlaceTest extends PlaceTestCase
     public function testCreationWith($failures, $timeout, $threshold): void
     {
         $client = $this->createMock(Client::class);
-        $closedPlace = new ClosedPlace($client, $failures, $timeout);
+        $closedPlace = new Closed($client, $failures, $timeout);
 
         $this->assertSame($failures, $closedPlace->getFailures());
         $this->assertSame($timeout, $closedPlace->getTimeout());
@@ -37,13 +37,13 @@ class ClosedPlaceTest extends PlaceTestCase
         $this->expectException(InvalidPlace::class);
         $client = $this->createMock(Client::class);
 
-        new ClosedPlace($client, $failures, $timeout);
+        new Closed($client, $failures, $timeout);
     }
 
     public function testGetExpectedState(): void
     {
         $client = $this->createMock(Client::class);
-        $closedPlace = new ClosedPlace($client, 1, 1.0);
+        $closedPlace = new Closed($client, 1, 1.0);
 
         $this->assertSame(States::CLOSED_STATE, $closedPlace->getState());
     }
