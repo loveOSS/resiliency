@@ -41,20 +41,20 @@ interface CircuitBreaker
      * Manually open (and hold open) the Circuit Breaker
      * This can be used for example to take it offline for maintenance.
      *
-     * @param string $serviceUri the service to call
+     * @param string $uri the service URI to call
      *
      * @return self
      */
-    public function isolate(string $serviceUri): self;
+    public function isolate(string $uri): self;
 
     /**
      * Reset the breaker to closed state to start accepting actions again.
      *
-     * @param string $serviceUri the service to call
+     * @param string $uri the service URI to call
      *
      * @return self
      */
-    public function reset(string $serviceUri): self;
+    public function reset(string $uri): self;
 
     /**
      * Update the circuit breaker state

@@ -19,9 +19,9 @@ final class SimpleArray implements Storage
     /**
      * {@inheritdoc}
      */
-    public function saveTransaction(string $service, Transaction $transaction): bool
+    public function saveTransaction(string $serviceUri, Transaction $transaction): bool
     {
-        $key = $this->getKey($service);
+        $key = $this->getKey($serviceUri);
 
         $this->transactions[$key] = $transaction;
 
@@ -31,11 +31,11 @@ final class SimpleArray implements Storage
     /**
      * {@inheritdoc}
      */
-    public function getTransaction(string $service): Transaction
+    public function getTransaction(string $serviceUri): Transaction
     {
-        $key = $this->getKey($service);
+        $key = $this->getKey($serviceUri);
 
-        if ($this->hasTransaction($service)) {
+        if ($this->hasTransaction($serviceUri)) {
             $transaction = $this->transactions[$key];
 
             if ($transaction instanceof Transaction) {
@@ -49,9 +49,9 @@ final class SimpleArray implements Storage
     /**
      * {@inheritdoc}
      */
-    public function hasTransaction(string $service): bool
+    public function hasTransaction(string $serviceUri): bool
     {
-        $key = $this->getKey($service);
+        $key = $this->getKey($serviceUri);
 
         return array_key_exists($key, $this->transactions);
     }
