@@ -5,7 +5,6 @@ namespace Resiliency\Places;
 use Resiliency\Contracts\Transaction;
 use Resiliency\Events\Opened as OpenedEvent;
 use Resiliency\States;
-use DateTime;
 
 /**
  * While the circuit is in an open state: every call to the service
@@ -37,8 +36,8 @@ final class Opened extends AbstractPlace
         $service = $transaction->getService();
         $this->dispatch(new OpenedEvent($this->circuitBreaker, $service));
 
-        if (!($transaction->getThresholdDateTime() < new DateTime())) {
-            return (string) $fallback();
+        if (!$this->haveWaitedLongEnough($transaction)) {
+            return $this->useFallback($transaction, $fallback);
         }
 
         $this->circuitBreaker->moveStateTo(States::HALF_OPEN_STATE, $service);

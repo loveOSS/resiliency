@@ -29,6 +29,6 @@ class Isolated extends AbstractPlace
      */
     public function call(Transaction $transaction, callable $fallback): string
     {
-        return (string) $fallback();
+        return $this->useFallback($transaction, $fallback);
     }
 }

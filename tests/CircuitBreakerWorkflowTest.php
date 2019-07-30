@@ -35,7 +35,7 @@ class CircuitBreakerWorkflowTest extends CircuitBreakerTestCase
         $this->assertInstanceOf(Closed::class, $this->circuitBreaker->getState());
 
         $this->assertSame(
-            '{}',
+            '{"uri": https://httpbin.org/get/foo"}',
             $this->circuitBreaker->call(
                 'https://httpbin.org/get/foo',
                 $this->createFallbackResponse()
@@ -54,12 +54,12 @@ class CircuitBreakerWorkflowTest extends CircuitBreakerTestCase
         // CLOSED
         $this->assertInstanceOf(Closed::class, $this->circuitBreaker->getState());
         $response = $this->circuitBreaker->call('https://httpbin.org/get/foo', $this->createFallbackResponse());
-        $this->assertSame('{}', $response);
+        $this->assertSame('{"uri": https://httpbin.org/get/foo"}', $response);
 
         //After two failed calls switch to OPEN state
         $this->assertInstanceOf(Opened::class, $this->circuitBreaker->getState());
         $this->assertSame(
-            '{}',
+            '{"uri": https://httpbin.org/get/foo"}',
             $this->circuitBreaker->call(
                 'https://httpbin.org/get/foo',
                 $this->createFallbackResponse()
@@ -81,12 +81,12 @@ class CircuitBreakerWorkflowTest extends CircuitBreakerTestCase
         // CLOSED - first call fails (twice)
         $this->assertInstanceOf(Closed::class, $this->circuitBreaker->getState());
         $response = $this->circuitBreaker->call('https://httpbin.org/get/foo', $this->createFallbackResponse());
-        $this->assertSame('{}', $response);
+        $this->assertSame('{"uri": https://httpbin.org/get/foo"}', $response);
         $this->assertInstanceOf(Opened::class, $this->circuitBreaker->getState());
 
         // OPEN - no call to client
         $response = $this->circuitBreaker->call('https://httpbin.org/get/foo', $this->createFallbackResponse());
-        $this->assertSame('{}', $response);
+        $this->assertSame('{"uri": https://httpbin.org/get/foo"}', $response);
         $this->assertInstanceOf(Opened::class, $this->circuitBreaker->getState());
         $this->waitFor(2 * self::OPEN_THRESHOLD);
 
@@ -114,14 +114,14 @@ class CircuitBreakerWorkflowTest extends CircuitBreakerTestCase
         $this->circuitBreaker->isolate($uri);
 
         $response = $this->circuitBreaker->call($uri, $this->createFallbackResponse());
-        $this->assertSame('{}', $response);
+        $this->assertSame('{"uri": https://httpbin.org/get/foo"}', $response);
         $this->assertInstanceOf(Isolated::class, $this->circuitBreaker->getState());
 
         // Let's do 5 calls!
 
         for ($i = 0; $i < 5; ++$i) {
             $this->circuitBreaker->call($uri, $this->createFallbackResponse());
-            $this->assertSame('{}', $response);
+            $this->assertSame('{"uri": https://httpbin.org/get/foo"}', $response);
             $this->assertInstanceOf(Isolated::class, $this->circuitBreaker->getState());
         }
 
@@ -163,8 +163,8 @@ class CircuitBreakerWorkflowTest extends CircuitBreakerTestCase
      */
     private function createFallbackResponse(): callable
     {
-        return function () {
-            return '{}';
+        return function ($service) {
+            return '{"uri": ' . $service->getUri() . '"}';
         };
     }
 }

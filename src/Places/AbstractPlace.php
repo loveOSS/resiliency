@@ -8,6 +8,7 @@ use Resiliency\Contracts\Place;
 use Resiliency\Contracts\Event;
 use Resiliency\Exceptions\InvalidPlace;
 use Resiliency\Utils\Assert;
+use DateTime;
 
 abstract class AbstractPlace implements Place
 {
@@ -105,6 +106,16 @@ abstract class AbstractPlace implements Place
     }
 
     /**
+     * @param Transaction $transaction the Transaction
+     *
+     * @return bool
+     */
+    public function haveWaitedLongEnough(Transaction $transaction): bool
+    {
+        return $transaction->getThresholdDateTime() < new DateTime();
+    }
+
+    /**
      * Helper to dispatch transition events.
      *
      * @param Event $event the circuit breaker event
@@ -115,6 +126,18 @@ abstract class AbstractPlace implements Place
             ->getDispatcher()
             ->dispatch($event)
         ;
+    }
+
+    /**
+     * Helper to return the fallback Response.
+     *
+     * @return string the configurated fallback
+     */
+    protected function useFallback(Transaction $transaction, callable $fallback): string
+    {
+        $service = $transaction->getService();
+
+        return (string) $fallback($service);
     }
 
     /**

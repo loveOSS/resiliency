@@ -56,7 +56,10 @@ $circuitBreaker = new MainCircuitBreaker(
     $dispatcher
 );
 
-$fallbackResponse = function () {
+/**
+ * @var Service $service
+ */
+$fallbackResponse = function ($service) {
     return '{}';
 };
 
