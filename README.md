@@ -16,37 +16,44 @@ composer require love-oss/resiliency
 
 ## Use
 
-You can use the factory to create a simple circuit breaker.
-
-By default, you need to define 3 parameters for each "state/place" of
-the circuit breaker:
+You need to configure a system for the Circuit Breaker:
 
 * the **failures**: define how much times we try to access the service;
-* the **timeout**: define how much time we wait before consider the service unreachable;
-* the **striped timeout**: define how much time we wait before consider the service unreachable, once we're in half open state;
-* the **threshold**: define how much time we wait before trying to access again the service;
-
-We also need to define which (HTTP) client will be used to call the service.
-
-The **fallback** callback will be used if the distant service is unreachable when the Circuit Breaker is Open (means "is used"). 
+* the **timeout**: define how long we wait before consider the service unreachable;
+* the **striped timeout**: define how long we wait before consider the service unreachable, once we're in half open state;
+* the **threshold**: define how long we wait before trying to access again the service;
+* the (HTTP|HTTPS) **client** that will be used to reach the services;
+* the **fallback** callback will be used if the distant service is unreachable when the Circuit Breaker is Open (means "is used"). 
 
 > You'd better return the same type of response expected from your distant call.
 
 ```php
-use Resiliency\SimpleCircuitBreakerFactory;
+use Resiliency\MainCircuitBreaker;
+use Resiliency\Systems\MainSystem;
+use Resiliency\Storages\SimpleArray;
+use Resiliency\Clients\GuzzleClient;
 
-$circuitBreakerFactory = new SimpleCircuitBreakerFactory();
-$circuitBreaker = $circuitBreakerFactory->create(
-    [
-        'failures' => 2,
-        'timeout' => 0.1,
-        'stripped_timeout' => 0.2,
-        'threshold' => 10.0,
-        'client' => [
-            'proxy' => '192.168.16.1:10',
-            'method' => 'POST',
-        ],
-    ]
+$client = new GuzzleClient([
+    'proxy' => '192.168.16.1:10',
+    'method' => 'POST',
+]);
+
+$mainSystem = MainSystem::createFromArray([
+    'failures' => 2,
+    'timeout' => 0.1,
+    'stripped_timeout' => 0.2,
+    'threshold' => 10.0,
+], $client);
+
+$storage = new SimpleArray();
+
+// Any PSR-13 Event Dispatcher implementation.
+$dispatcher = new Symfony\Component\EventDispatcher\EventDispatcher;
+
+$circuitBreaker = new MainCircuitBreaker(
+    $mainSystem,
+    $storage,
+    $dispatcher
 );
 
 $fallbackResponse = function () {
