@@ -13,7 +13,6 @@ use Resiliency\Places\Isolated;
 use Resiliency\Places\HalfOpened;
 
 /**
- * Implement the system described by the documentation.
  * The main system is built with 4 places:
  * - A Closed place
  * - A Half Opened Place
@@ -74,14 +73,12 @@ final class MainSystem implements System
      * @param array $settings the settings for the Places
      *
      * @return self
+     *
+     * @throws InvalidSystem
      */
     public static function createFromArray(array $settings, Client $client): self
     {
-        if (array_key_exists('failures', $settings)
-            && array_key_exists('timeout', $settings)
-            && array_key_exists('stripped_timeout', $settings)
-            && array_key_exists('threshold', $settings)
-        ) {
+        if (self::validate($settings)) {
             return new self(
                 $client,
                 (int) $settings['failures'],
@@ -92,5 +89,21 @@ final class MainSystem implements System
         }
 
         throw InvalidSystem::missingSettings($settings);
+    }
+
+    /**
+     * Ensure the system is valid.
+     *
+     * @param array $settings the system settings
+     *
+     * @return bool
+     */
+    private static function validate(array $settings)
+    {
+        return array_key_exists('failures', $settings)
+            && array_key_exists('timeout', $settings)
+            && array_key_exists('stripped_timeout', $settings)
+            && array_key_exists('threshold', $settings)
+        ;
     }
 }
