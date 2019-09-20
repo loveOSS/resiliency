@@ -19,15 +19,17 @@ class SimpleMonitorTest extends TestCase
     }
 
     /**
+     * @covers SimpleMonitor::collect
      * @return void
      */
     public function testCollect()
     {
+        self::expectNotToPerformAssertions();
         $eventMock = $this->createMock(Event::class);
 
         $simpleMonitor = new SimpleMonitor();
 
-        self::assertNull($simpleMonitor->collect($eventMock));
+        $simpleMonitor->collect($eventMock);
     }
 
     /**
