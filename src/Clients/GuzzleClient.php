@@ -5,7 +5,6 @@ namespace Resiliency\Clients;
 use GuzzleHttp\Client as OriginalGuzzleClient;
 use Resiliency\Exceptions\UnavailableService;
 use Resiliency\Contracts\Service;
-use Resiliency\Contracts\Client;
 use Resiliency\Contracts\Place;
 use Exception;
 
@@ -13,18 +12,8 @@ use Exception;
  * Guzzle implementation of client.
  * The possibility of extending this client is intended.
  */
-class GuzzleClient implements Client
+class GuzzleClient extends ClientHelper
 {
-    /**
-     * @var array the Client main options
-     */
-    private $mainOptions;
-
-    public function __construct(array $mainOptions = [])
-    {
-        $this->mainOptions = $mainOptions;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -48,23 +37,5 @@ class GuzzleClient implements Client
                 $exception
             );
         }
-    }
-
-    /**
-     * @param array $options the list of options
-     *
-     * @return string the method
-     */
-    private function defineMethod(array $options): string
-    {
-        if (isset($this->mainOptions['method'])) {
-            return (string) $this->mainOptions['method'];
-        }
-
-        if (isset($options['method'])) {
-            return (string) $options['method'];
-        }
-
-        return self::DEFAULT_METHOD;
     }
 }

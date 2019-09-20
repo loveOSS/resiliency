@@ -10,7 +10,7 @@ use Resiliency\Exceptions\InvalidPlace;
 use Resiliency\Utils\Assert;
 use DateTime;
 
-abstract class AbstractPlace implements Place
+abstract class PlaceHelper implements Place
 {
     /**
      * @var int the Place failures

@@ -9,7 +9,7 @@ use Resiliency\States;
  * This state is manually triggered to ensure the Circuit Breaker
  * remains open until we reset it.
  */
-class Isolated extends AbstractPlace
+class Isolated extends PlaceHelper
 {
     public function __construct()
     {

@@ -10,7 +10,7 @@ use Resiliency\States;
  * While the circuit is in an open state: every call to the service
  * won't be executed and the fallback callback is executed.
  */
-final class Opened extends AbstractPlace
+final class Opened extends PlaceHelper
 {
     /**
      * @param float $threshold the Place threshold

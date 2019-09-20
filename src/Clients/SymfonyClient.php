@@ -6,7 +6,6 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Resiliency\Exceptions\UnavailableService;
 use Resiliency\Contracts\Service;
-use Resiliency\Contracts\Client;
 use Resiliency\Contracts\Place;
 
 /**
@@ -14,13 +13,8 @@ use Resiliency\Contracts\Place;
  * The possibility of extending this client is intended.
  * /!\ The HttpClient of Symfony is experimental.
  */
-class SymfonyClient implements Client
+class SymfonyClient extends ClientHelper
 {
-    /**
-     * @var array the Client main options
-     */
-    private $mainOptions;
-
     /**
      * @var HttpClientInterface the Symfony HTTP client
      */
@@ -31,7 +25,7 @@ class SymfonyClient implements Client
         array $mainOptions = []
     ) {
         $this->httpClient = $httpClient;
-        $this->mainOptions = $mainOptions;
+        parent::__construct($mainOptions);
     }
 
     /**
@@ -47,7 +41,7 @@ class SymfonyClient implements Client
             $clientParameters = array_merge($service->getParameters(), $options);
             unset($clientParameters['method']);
 
-            return (string) $this->httpClient->request($method, $service->getURI(), $clientParameters)->getContent();
+            return $this->httpClient->request($method, $service->getURI(), $clientParameters)->getContent();
         } catch (TransportExceptionInterface $exception) {
             throw new UnavailableService(
                 $exception->getMessage(),
@@ -55,23 +49,5 @@ class SymfonyClient implements Client
                 $exception
             );
         }
-    }
-
-    /**
-     * @param array $options the list of options
-     *
-     * @return string the method
-     */
-    private function defineMethod(array $options): string
-    {
-        if (isset($this->mainOptions['method'])) {
-            return (string) $this->mainOptions['method'];
-        }
-
-        if (isset($options['method'])) {
-            return (string) $options['method'];
-        }
-
-        return self::DEFAULT_METHOD;
     }
 }
