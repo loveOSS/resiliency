@@ -2,9 +2,9 @@
 
 namespace Resiliency\Monitors;
 
-use Resiliency\Contracts\ReportEntry;
-use Resiliency\Contracts\Monitor;
-use Resiliency\Contracts\Report;
+use Resiliency\Contracts\Monitoring\ReportEntry;
+use Resiliency\Contracts\Monitoring\Monitor;
+use Resiliency\Contracts\Monitoring\Report;
 
 final class SimpleMonitor implements Monitor
 {

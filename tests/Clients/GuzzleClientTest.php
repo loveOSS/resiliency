@@ -14,7 +14,7 @@ class GuzzleClientTest extends CircuitBreakerTestCase
         $client = new GuzzleClient();
         $service = $this->getService('https://www.google.com', ['method' => 'GET']);
 
-        $this->assertNotNull($client->request($service, $this->createMock(Place::class)));
+        self::assertNotNull($client->request($service, $this->createMock(Place::class)));
     }
 
     public function testWrongRequestThrowsAnException()
@@ -35,7 +35,7 @@ class GuzzleClientTest extends CircuitBreakerTestCase
 
         $service = $this->getService('https://www.google.fr');
 
-        $this->assertEmpty(
+        self::assertEmpty(
             $client->request(
                 $service,
                 $this->createMock(Place::class)

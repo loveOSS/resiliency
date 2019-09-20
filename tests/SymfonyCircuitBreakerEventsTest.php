@@ -49,12 +49,12 @@ class SymfonyCircuitBreakerEventsTest extends CircuitBreakerTestCase
          */
         $invocations = $this->spy->getInvocations();
         //var_dump($invocations);
-        $this->assertCount(4, $invocations);
+        self::assertCount(4, $invocations);
 
-        $this->assertInstanceOf(Initiated::class, $invocations[0]->getParameters()[0]);
-        $this->assertInstanceOf(Tried::class, $invocations[1]->getParameters()[0]);
-        $this->assertInstanceOf(Tried::class, $invocations[2]->getParameters()[0]);
-        $this->assertInstanceOf(Opened::class, $invocations[3]->getParameters()[0]);
+        self::assertInstanceOf(Initiated::class, $invocations[0]->getParameters()[0]);
+        self::assertInstanceOf(Tried::class, $invocations[1]->getParameters()[0]);
+        self::assertInstanceOf(Tried::class, $invocations[2]->getParameters()[0]);
+        self::assertInstanceOf(Opened::class, $invocations[3]->getParameters()[0]);
     }
 
     public function testCircuitBreakerEventsOnIsolationAndResetActions(): void
@@ -77,8 +77,8 @@ class SymfonyCircuitBreakerEventsTest extends CircuitBreakerTestCase
          */
         $invocations = $this->spy->getInvocations();
 
-        $this->assertCount(5, $invocations);
-        $this->assertInstanceOf(Isolated::class, $invocations[4]->getParameters()[0]);
+        self::assertCount(5, $invocations);
+        self::assertInstanceOf(Isolated::class, $invocations[4]->getParameters()[0]);
 
         /*
          * And now we reset the circuit breaker!
@@ -86,8 +86,8 @@ class SymfonyCircuitBreakerEventsTest extends CircuitBreakerTestCase
          */
         $circuitBreaker->reset($service);
         $invocations = $this->spy->getInvocations();
-        $this->assertCount(6, $invocations);
-        $this->assertInstanceOf(Reseted::class, $invocations[5]->getParameters()[0]);
+        self::assertCount(6, $invocations);
+        self::assertInstanceOf(Reseted::class, $invocations[5]->getParameters()[0]);
     }
 
     private function createCircuitBreaker(): CircuitBreaker
@@ -96,7 +96,7 @@ class SymfonyCircuitBreakerEventsTest extends CircuitBreakerTestCase
 
         $symfonyCache = new SymfonyCache(new ArrayCache());
         $eventDispatcherS = $this->createMock(EventDispatcherInterface::class);
-        $eventDispatcherS->expects($this->spy = $this->any())
+        $eventDispatcherS->expects($this->spy = self::any())
             ->method('dispatch')
             ->willReturn($this->createMock(stdClass::class))
         ;

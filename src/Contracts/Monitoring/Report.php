@@ -1,6 +1,6 @@
 <?php
 
-namespace Resiliency\Contracts;
+namespace Resiliency\Contracts\Monitoring;
 
 /**
  * The Monitor report
@@ -16,7 +16,6 @@ interface Report
 
     /**
      * @return array the list of report entries
-     * @return array
      */
     public function all(): array;
 }

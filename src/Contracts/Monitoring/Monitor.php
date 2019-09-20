@@ -1,6 +1,6 @@
 <?php
 
-namespace Resiliency\Contracts;
+namespace Resiliency\Contracts\Monitoring;
 
 /**
  * If you need to monitor and collect information about the circuit breaker

@@ -3,7 +3,7 @@
 namespace Resiliency\Monitors;
 
 use Resiliency\Contracts\CircuitBreaker;
-use Resiliency\Contracts\ReportEntry;
+use Resiliency\Contracts\Monitoring\ReportEntry;
 use Resiliency\Contracts\Service;
 
 final class SimpleReportEntry implements ReportEntry

@@ -2,8 +2,8 @@
 
 namespace Resiliency\Monitors;
 
-use Resiliency\Contracts\Report;
-use Resiliency\Contracts\ReportEntry;
+use Resiliency\Contracts\Monitoring\Report;
+use Resiliency\Contracts\Monitoring\ReportEntry;
 
 final class SimpleReport implements Report
 {

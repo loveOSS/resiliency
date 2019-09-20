@@ -11,7 +11,7 @@ class InvalidTransactionTest extends CircuitBreakerTestCase
     {
         $invalidPlace = new InvalidTransaction();
 
-        $this->assertInstanceOf(InvalidTransaction::class, $invalidPlace);
+        self::assertInstanceOf(InvalidTransaction::class, $invalidPlace);
     }
 
     /**
@@ -29,7 +29,7 @@ class InvalidTransactionTest extends CircuitBreakerTestCase
             $parameters[3]  // threshold
         );
 
-        $this->assertSame($invalidPlace->getMessage(), $expectedExceptionMessage);
+        self::assertSame($invalidPlace->getMessage(), $expectedExceptionMessage);
     }
 
     /**

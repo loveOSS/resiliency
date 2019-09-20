@@ -1,6 +1,9 @@
 <?php
 
-namespace Resiliency\Contracts;
+namespace Resiliency\Contracts\Monitoring;
+
+use Resiliency\Contracts\CircuitBreaker;
+use Resiliency\Contracts\Service;
 
 /**
  * A report entry store information used to generate a report

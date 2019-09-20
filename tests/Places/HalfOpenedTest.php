@@ -22,9 +22,9 @@ class HalfOpenedTest extends PlaceTestCase
         $client = $this->createMock(Client::class);
         $halfOpenPlace = new HalfOpened($client, $timeout);
 
-        $this->assertSame(0, $halfOpenPlace->getFailures());
-        $this->assertSame($timeout, $halfOpenPlace->getTimeout());
-        $this->assertSame(0.0, $halfOpenPlace->getThreshold());
+        self::assertSame(0, $halfOpenPlace->getFailures());
+        self::assertSame($timeout, $halfOpenPlace->getTimeout());
+        self::assertSame(0.0, $halfOpenPlace->getThreshold());
     }
 
     /**
@@ -48,6 +48,6 @@ class HalfOpenedTest extends PlaceTestCase
         $client = $this->createMock(Client::class);
         $halfOpenPlace = new HalfOpened($client, 1);
 
-        $this->assertSame(States::HALF_OPEN_STATE, $halfOpenPlace->getState());
+        self::assertSame(States::HALF_OPEN_STATE, $halfOpenPlace->getState());
     }
 }

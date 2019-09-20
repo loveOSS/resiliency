@@ -16,9 +16,9 @@ class TransitionEventTestCase extends TestCase
             $this->createService('bar', [])
         );
 
-        $this->assertInstanceOf(Event::class, $event);
-        $this->assertInstanceOf(Service::class, $event->getService());
-        $this->assertInstanceOf(CircuitBreaker::class, $event->getCircuitBreaker());
+        self::assertInstanceOf(Event::class, $event);
+        self::assertInstanceOf(Service::class, $event->getService());
+        self::assertInstanceOf(CircuitBreaker::class, $event->getCircuitBreaker());
     }
 
     /**
