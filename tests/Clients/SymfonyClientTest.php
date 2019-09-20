@@ -11,7 +11,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class SymfonyClientTest extends CircuitBreakerTestCase
 {
-    public function testRequestWorksAsExpected()
+    public function testRequestWorksAsExpected(): void
     {
         $client = new SymfonyClient($this->getClient());
         $service = $this->getService('https://www.google.com', ['method' => 'GET']);
@@ -19,7 +19,7 @@ class SymfonyClientTest extends CircuitBreakerTestCase
         self::assertNotNull($client->request($service, $this->getPlace()));
     }
 
-    public function testWrongRequestThrowsAnException()
+    public function testWrongRequestThrowsAnException(): void
     {
         $this->expectException(UnavailableService::class);
 
@@ -29,7 +29,7 @@ class SymfonyClientTest extends CircuitBreakerTestCase
         $client->request($service, $this->getPlace());
     }
 
-    public function testTheClientAcceptsHttpMethodOverride()
+    public function testTheClientAcceptsHttpMethodOverride(): void
     {
         $client = new SymfonyClient($this->getClient(), [
             'method' => 'HEAD',
@@ -45,21 +45,15 @@ class SymfonyClientTest extends CircuitBreakerTestCase
         );
     }
 
-    /**
-     * @return HttpClientInterface
-     */
-    private function getClient()
+    private function getClient(): HttpClientInterface
     {
         return HttpClient::create();
     }
 
-    /**
-     * @return Place
-     */
-    private function getPlace()
+    private function getPlace(): Place
     {
         $placeMock = $this->createMock(Place::class);
-        $placeMock->method('getTimeout')->willReturn(1.0);
+        $placeMock->method('getTimeout')->willReturn(30.0);
 
         return $placeMock;
     }
