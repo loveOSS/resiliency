@@ -65,7 +65,9 @@ $circuitBreaker->call(
     'https://api.domain.com',
     $fallbackResponse,
     [
-        '_token' => '123456789',
+        'query' => [
+            '_token' => '123456789',
+        ]
     ]
 );
 ```
