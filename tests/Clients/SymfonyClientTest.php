@@ -6,8 +6,9 @@ use Resiliency\Contracts\Place;
 use Resiliency\Clients\SymfonyClient;
 use Tests\Resiliency\CircuitBreakerTestCase;
 use Resiliency\Exceptions\UnavailableService;
-use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Component\HttpClient\Response\MockResponse;
 
 class SymfonyClientTest extends CircuitBreakerTestCase
 {
@@ -35,9 +36,10 @@ class SymfonyClientTest extends CircuitBreakerTestCase
             'method' => 'HEAD',
         ]);
 
-        $service = $this->getService('https://www.google.fr');
+        $service = $this->getService('https://www.google.com');
 
-        self::assertEmpty(
+        self::assertSame(
+            '',
             $client->request(
                 $service,
                 $this->getPlace()
@@ -47,13 +49,25 @@ class SymfonyClientTest extends CircuitBreakerTestCase
 
     private function getClient(): HttpClientInterface
     {
-        return HttpClient::create();
+        $callback = function ($method, $url, $options) {
+            if ($url === 'http://not-even-a-valid-domain.xxx/') {
+                return new MockResponse('', ['error' => 'Unavailable']);
+            }
+
+            if ($method === 'HEAD') {
+                return new MockResponse('');
+            }
+
+            return new MockResponse('mocked');
+        };
+
+        return new MockHttpClient($callback);
     }
 
     private function getPlace(): Place
     {
         $placeMock = $this->createMock(Place::class);
-        $placeMock->method('getTimeout')->willReturn(30.0);
+        $placeMock->method('getTimeout')->willReturn(2.0);
 
         return $placeMock;
     }
