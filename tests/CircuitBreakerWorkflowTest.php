@@ -92,6 +92,20 @@ class CircuitBreakerWorkflowTest extends CircuitBreakerTestCase
 
         // SWITCH TO HALF OPEN and retry to call the service (still in failure)
         self::assertSame(
+            '{"uri": https://httpbin.org/get/foo"}',
+            $this->circuitBreaker->call(
+                'https://httpbin.org/get/foo',
+                $this->createFallbackResponse()
+            )
+        );
+
+        // SWITCH BACK TO OPENED
+        self::assertInstanceOf(Opened::class, $this->circuitBreaker->getState());
+
+        $this->waitFor(2 * self::OPEN_THRESHOLD);
+
+        // FINALLY, THE RESPONSE IS AVAILABLE
+        self::assertSame(
             '{"hello": "world"}',
             $this->circuitBreaker->call(
                 'https://httpbin.org/get/foo',
