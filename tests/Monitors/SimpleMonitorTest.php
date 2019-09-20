@@ -23,12 +23,11 @@ class SimpleMonitorTest extends TestCase
      */
     public function testCollect()
     {
-        self::expectNotToPerformAssertions();
-
         $eventMock = $this->createMock(Event::class);
 
         $simpleMonitor = new SimpleMonitor();
-        $simpleMonitor->collect($eventMock);
+
+        self::assertNull($simpleMonitor->collect($eventMock));
     }
 
     /**
