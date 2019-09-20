@@ -33,6 +33,7 @@ return PhpCsFixer\Config::create()
         'yoda_style' => null,
         'non_printable_character' => true,
         'phpdoc_no_empty_return' => false,
+        'php_unit_test_case_static_method_calls' => ['call_type' => 'self'],
     ])
     ->setFinder($finder)
     ->setCacheFile(__DIR__.'/.php_cs.cache')

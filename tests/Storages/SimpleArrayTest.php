@@ -10,23 +10,14 @@ use Resiliency\Storages\SimpleArray;
 class SimpleArrayTest extends TestCase
 {
     /**
-     * {@inheritdoc}
-     */
-    protected function setUp(): void
-    {
-        $simpleArray = new SimpleArray();
-        $simpleArray->transactions = [];
-    }
-
-    /**
      * @return void
      */
     public function testCreation()
     {
         $simpleArray = new SimpleArray();
 
-        $this->assertCount(0, $simpleArray->transactions);
-        $this->assertInstanceOf(SimpleArray::class, $simpleArray);
+        self::assertCount(0, $simpleArray->transactions);
+        self::assertInstanceOf(SimpleArray::class, $simpleArray);
     }
 
     /**
@@ -41,8 +32,8 @@ class SimpleArrayTest extends TestCase
             'http://test.com',
             $this->createMock(Transaction::class)
         );
-        $this->assertTrue($operation);
-        $this->assertCount(1, $simpleArray->transactions);
+        self::assertTrue($operation);
+        self::assertCount(1, $simpleArray->transactions);
     }
 
     /**
@@ -56,7 +47,7 @@ class SimpleArrayTest extends TestCase
         $simpleArray = new SimpleArray();
         $simpleArray->saveTransaction('http://test.com', $this->createMock(Transaction::class));
 
-        $this->assertTrue($simpleArray->hasTransaction('http://test.com'));
+        self::assertTrue($simpleArray->hasTransaction('http://test.com'));
     }
 
     /**
@@ -74,7 +65,7 @@ class SimpleArrayTest extends TestCase
 
         $transaction = $simpleArray->getTransaction('http://test.com');
 
-        $this->assertSame($transaction, $translationStub);
+        self::assertSame($transaction, $translationStub);
     }
 
     /**
@@ -108,6 +99,6 @@ class SimpleArrayTest extends TestCase
         // We have stored 2 transactions
         $simpleArray->clear();
         $transactions = $simpleArray->transactions;
-        $this->assertEmpty($transactions);
+        self::assertEmpty($transactions);
     }
 }

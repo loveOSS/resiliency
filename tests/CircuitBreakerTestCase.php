@@ -29,7 +29,8 @@ abstract class CircuitBreakerTestCase extends TestCase
     {
         $mock = new MockHandler([
             new RequestException('Service unavailable', new Request('GET', 'test')),
-            new RequestException('Service unavailable', new Request('GET', 'test')),
+            new RequestException('Service unavailable', new Request('GET', 'test1')),
+            new RequestException('Service unavailable', new Request('GET', 'test2')),
             new Response(200, [], '{"hello": "world"}'),
         ]);
 

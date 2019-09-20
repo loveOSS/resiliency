@@ -21,9 +21,9 @@ class ClosedTest extends PlaceTestCase
         $client = $this->createMock(Client::class);
         $closedPlace = new Closed($client, $failures, $timeout);
 
-        $this->assertSame($failures, $closedPlace->getFailures());
-        $this->assertSame($timeout, $closedPlace->getTimeout());
-        $this->assertSame($threshold, $closedPlace->getThreshold());
+        self::assertSame($failures, $closedPlace->getFailures());
+        self::assertSame($timeout, $closedPlace->getTimeout());
+        self::assertSame($threshold, $closedPlace->getThreshold());
     }
 
     /**
@@ -45,6 +45,6 @@ class ClosedTest extends PlaceTestCase
         $client = $this->createMock(Client::class);
         $closedPlace = new Closed($client, 1, 1.0);
 
-        $this->assertSame(States::CLOSED_STATE, $closedPlace->getState());
+        self::assertSame(States::CLOSED_STATE, $closedPlace->getState());
     }
 }

@@ -15,7 +15,7 @@ class AssertTest extends TestCase
      */
     public function testIsPositiveValue($value, $expected)
     {
-        $this->assertSame($expected, Assert::isPositiveValue($value));
+        self::assertSame($expected, Assert::isPositiveValue($value));
     }
 
     /**
@@ -26,7 +26,7 @@ class AssertTest extends TestCase
      */
     public function testIsURI($value, $expected)
     {
-        $this->assertSame($expected, Assert::isURI($value));
+        self::assertSame($expected, Assert::isURI($value));
     }
 
     /**
@@ -37,7 +37,7 @@ class AssertTest extends TestCase
      */
     public function testIsString($value, $expected)
     {
-        $this->assertSame($expected, Assert::isString($value));
+        self::assertSame($expected, Assert::isString($value));
     }
 
     /**

@@ -11,7 +11,7 @@ class InvalidSystemTest extends TestCase
     {
         $invalidPlace = new InvalidSystem();
 
-        $this->assertInstanceOf(InvalidSystem::class, $invalidPlace);
+        self::assertInstanceOf(InvalidSystem::class, $invalidPlace);
     }
 
     /**
@@ -24,7 +24,7 @@ class InvalidSystemTest extends TestCase
     {
         $invalidSystem = InvalidSystem::missingSettings($settings);
 
-        $this->assertSame($invalidSystem->getMessage(), $expectedExceptionMessage);
+        self::assertSame($invalidSystem->getMessage(), $expectedExceptionMessage);
     }
 
     /**

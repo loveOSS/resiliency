@@ -22,7 +22,7 @@ class SimpleTransactionTest extends CircuitBreakerTestCase
             2
         );
 
-        $this->assertInstanceOf(SimpleTransaction::class, $simpleTransaction);
+        self::assertInstanceOf(SimpleTransaction::class, $simpleTransaction);
     }
 
     /**
@@ -32,9 +32,9 @@ class SimpleTransactionTest extends CircuitBreakerTestCase
     {
         $simpleTransaction = $this->createSimpleTransaction();
 
-        $this->assertInstanceOf(Service::class, $simpleTransaction->getService());
+        self::assertInstanceOf(Service::class, $simpleTransaction->getService());
         $service = $simpleTransaction->getService();
-        $this->assertSame('http://some-uri.domain', $service->getURI());
+        self::assertSame('http://some-uri.domain', $service->getURI());
     }
 
     /**
@@ -44,7 +44,7 @@ class SimpleTransactionTest extends CircuitBreakerTestCase
     {
         $simpleTransaction = $this->createSimpleTransaction();
 
-        $this->assertSame(0, $simpleTransaction->getFailures());
+        self::assertSame(0, $simpleTransaction->getFailures());
     }
 
     /**
@@ -54,7 +54,7 @@ class SimpleTransactionTest extends CircuitBreakerTestCase
     {
         $simpleTransaction = $this->createSimpleTransaction();
 
-        $this->assertSame('FAKE_STATE', $simpleTransaction->getState());
+        self::assertSame('FAKE_STATE', $simpleTransaction->getState());
     }
 
     /**
@@ -66,7 +66,7 @@ class SimpleTransactionTest extends CircuitBreakerTestCase
         $expectedDateTime = (new DateTime('+2 second'))->format('d/m/Y H:i:s');
         $simpleTransactionDateTime = $simpleTransaction->getThresholdDateTime()->format('d/m/Y H:i:s');
 
-        $this->assertSame($expectedDateTime, $simpleTransactionDateTime);
+        self::assertSame($expectedDateTime, $simpleTransactionDateTime);
     }
 
     /**
@@ -78,7 +78,7 @@ class SimpleTransactionTest extends CircuitBreakerTestCase
         $simpleTransaction = $this->createSimpleTransaction();
         $simpleTransaction->incrementFailures();
 
-        $this->assertSame(1, $simpleTransaction->getFailures());
+        self::assertSame(1, $simpleTransaction->getFailures());
     }
 
     /**
@@ -93,12 +93,12 @@ class SimpleTransactionTest extends CircuitBreakerTestCase
 
         $simpleTransaction = $this->createSimpleTransaction();
 
-        $this->assertSame($simpleTransactionFromHelper->getState(), $simpleTransaction->getState());
-        $this->assertSame($simpleTransactionFromHelper->getFailures(), $simpleTransaction->getFailures());
+        self::assertSame($simpleTransactionFromHelper->getState(), $simpleTransaction->getState());
+        self::assertSame($simpleTransactionFromHelper->getFailures(), $simpleTransaction->getFailures());
         $fromPlaceDate = $simpleTransactionFromHelper->getThresholdDateTime()->format('d/m/Y H:i:s');
         $expectedDate = $simpleTransaction->getThresholdDateTime()->format('d/m/Y H:i:s');
 
-        $this->assertSame($fromPlaceDate, $expectedDate);
+        self::assertSame($fromPlaceDate, $expectedDate);
     }
 
     /**
@@ -110,12 +110,12 @@ class SimpleTransactionTest extends CircuitBreakerTestCase
 
         $placeStub = $this->createMock(Place::class);
 
-        $placeStub->expects($this->any())
+        $placeStub->expects(self::any())
             ->method('getState')
             ->willReturn('FAKE_STATE')
         ;
 
-        $placeStub->expects($this->any())
+        $placeStub->expects(self::any())
             ->method('getThreshold')
             ->willReturn(-1.0)
         ;
@@ -150,12 +150,12 @@ class SimpleTransactionTest extends CircuitBreakerTestCase
     {
         $placeStub = $this->createMock(Place::class);
 
-        $placeStub->expects($this->any())
+        $placeStub->expects(self::any())
             ->method('getState')
             ->willReturn('FAKE_STATE')
         ;
 
-        $placeStub->expects($this->any())
+        $placeStub->expects(self::any())
             ->method('getThreshold')
             ->willReturn(2.0)
         ;

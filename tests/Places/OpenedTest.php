@@ -20,9 +20,9 @@ class OpenedTest extends PlaceTestCase
         unset($failures, $timeout);
         $closedPlace = new Opened($threshold);
 
-        $this->assertSame(0, $closedPlace->getFailures());
-        $this->assertSame(0.0, $closedPlace->getTimeout());
-        $this->assertSame($threshold, $closedPlace->getThreshold());
+        self::assertSame(0, $closedPlace->getFailures());
+        self::assertSame(0.0, $closedPlace->getTimeout());
+        self::assertSame($threshold, $closedPlace->getThreshold());
     }
 
     /**
@@ -45,6 +45,6 @@ class OpenedTest extends PlaceTestCase
     {
         $closedPlace = new Opened(1.0);
 
-        $this->assertSame(States::OPEN_STATE, $closedPlace->getState());
+        self::assertSame(States::OPEN_STATE, $closedPlace->getState());
     }
 }

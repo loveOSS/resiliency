@@ -11,7 +11,7 @@ class InvalidPlaceTest extends TestCase
     {
         $invalidPlace = new InvalidPlace();
 
-        $this->assertInstanceOf(InvalidPlace::class, $invalidPlace);
+        self::assertInstanceOf(InvalidPlace::class, $invalidPlace);
     }
 
     /**
@@ -28,7 +28,7 @@ class InvalidPlaceTest extends TestCase
             $settings[2]  // threshold
         );
 
-        $this->assertSame($invalidPlace->getMessage(), $expectedExceptionMessage);
+        self::assertSame($invalidPlace->getMessage(), $expectedExceptionMessage);
     }
 
     /**

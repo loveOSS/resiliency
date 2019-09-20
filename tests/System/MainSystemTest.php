@@ -20,7 +20,7 @@ class MainSystemTest extends TestCase
             1.0
         );
 
-        $this->assertInstanceOf(MainSystem::class, $mainSystem);
+        self::assertInstanceOf(MainSystem::class, $mainSystem);
     }
 
     /**
@@ -31,7 +31,7 @@ class MainSystemTest extends TestCase
         $mainSystem = $this->createMainSystem();
         $initialPlace = $mainSystem->getInitialPlace();
 
-        $this->assertSame(States::CLOSED_STATE, $initialPlace->getState());
+        self::assertSame(States::CLOSED_STATE, $initialPlace->getState());
     }
 
     /**
@@ -42,11 +42,11 @@ class MainSystemTest extends TestCase
         $mainSystem = $this->createMainSystem();
         $places = $mainSystem->getPlaces();
 
-        $this->assertIsArray($places);
-        $this->assertCount(4, $places);
+        self::assertIsArray($places);
+        self::assertCount(4, $places);
 
         foreach ($places as $place) {
-            $this->assertInstanceOf(Place::class, $place);
+            self::assertInstanceOf(Place::class, $place);
         }
     }
 
@@ -61,7 +61,7 @@ class MainSystemTest extends TestCase
             'threshold' => 1.0,
         ], $client);
 
-        $this->assertCount(4, $mainSystem->getPlaces());
+        self::assertCount(4, $mainSystem->getPlaces());
     }
 
     /**
