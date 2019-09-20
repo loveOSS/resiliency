@@ -47,7 +47,7 @@ $mainSystem = MainSystem::createFromArray([
 
 $storage = new SimpleArray();
 
-// Any PSR-13 Event Dispatcher implementation.
+// Any PSR-14 Event Dispatcher implementation.
 $dispatcher = new Symfony\Component\EventDispatcher\EventDispatcher;
 
 $circuitBreaker = new MainCircuitBreaker(
@@ -74,6 +74,23 @@ $circuitBreaker->call(
 
 > For the Guzzle implementation, the Client options are described
 > in the [HttpGuzzle documentation](http://docs.guzzlephp.org/en/stable/index.html).
+
+### Monitoring
+
+This library is shipped with a minimalist system to help you monitor your circuits.
+
+```php
+$monitor = new SimpleMonitor();
+
+// on some circuit breaker events...
+function listener(Event $event) {
+    $monitor->add($event);
+};
+
+// retrieve a complete report for analysis or storage
+$report = $monitor->getReport();
+
+```
 
 ## Tests
 

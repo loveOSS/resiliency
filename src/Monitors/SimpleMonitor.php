@@ -2,9 +2,9 @@
 
 namespace Resiliency\Monitors;
 
-use Resiliency\Contracts\Monitoring\ReportEntry;
 use Resiliency\Contracts\Monitoring\Monitor;
 use Resiliency\Contracts\Monitoring\Report;
+use Resiliency\Contracts\Event;
 
 final class SimpleMonitor implements Monitor
 {
@@ -21,8 +21,14 @@ final class SimpleMonitor implements Monitor
     /**
      * {@inheritdoc}
      */
-    public function collect(ReportEntry $reportEntry): void
+    public function collect(Event $event): void
     {
+        $reportEntry = new SimpleReportEntry(
+            $event->getService(),
+            $event->getCircuitBreaker(),
+            get_class($event)
+        );
+
         $this->report->add($reportEntry);
     }
 

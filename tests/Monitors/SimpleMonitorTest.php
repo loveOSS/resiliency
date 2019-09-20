@@ -3,10 +3,10 @@
 namespace Tests\Resiliency\Monitors;
 
 use PHPUnit\Framework\TestCase;
+use Resiliency\Contracts\Event;
+use Resiliency\Monitors\SimpleMonitor;
 use Resiliency\Contracts\Monitoring\Report;
 use Resiliency\Contracts\Monitoring\Monitor;
-use Resiliency\Contracts\Monitoring\ReportEntry;
-use Resiliency\Monitors\SimpleMonitor;
 
 class SimpleMonitorTest extends TestCase
 {
@@ -25,10 +25,10 @@ class SimpleMonitorTest extends TestCase
     {
         self::expectNotToPerformAssertions();
 
-        $reportEntryMock = $this->createMock(ReportEntry::class);
+        $eventMock = $this->createMock(Event::class);
 
         $simpleMonitor = new SimpleMonitor();
-        $simpleMonitor->collect($reportEntryMock);
+        $simpleMonitor->collect($eventMock);
     }
 
     /**

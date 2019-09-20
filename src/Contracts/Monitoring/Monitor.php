@@ -2,6 +2,8 @@
 
 namespace Resiliency\Contracts\Monitoring;
 
+use Resiliency\Contracts\Event;
+
 /**
  * If you need to monitor and collect information about the circuit breaker
  * use the monitor to collect the information when events are dispatched.
@@ -9,9 +11,9 @@ namespace Resiliency\Contracts\Monitoring;
 interface Monitor
 {
     /**
-     * @param ReportEntry $reportEntry the Report Entry
+     * @param Event $event the dispatched event
      */
-    public function collect(ReportEntry $reportEntry): void;
+    public function collect(Event $event): void;
 
     /**
      * @return Report the Monitor Report
