@@ -9,7 +9,7 @@ use Tests\Resiliency\CircuitBreakerTestCase;
 
 class GuzzleClientTest extends CircuitBreakerTestCase
 {
-    public function testRequestWorksAsExpected()
+    public function testRequestWorksAsExpected(): void
     {
         $client = new GuzzleClient();
         $service = $this->getService('https://www.google.com', ['method' => 'GET']);
@@ -17,7 +17,7 @@ class GuzzleClientTest extends CircuitBreakerTestCase
         self::assertNotNull($client->request($service, $this->createMock(Place::class)));
     }
 
-    public function testWrongRequestThrowsAnException()
+    public function testWrongRequestThrowsAnException(): void
     {
         $this->expectException(UnavailableService::class);
 
@@ -27,7 +27,7 @@ class GuzzleClientTest extends CircuitBreakerTestCase
         $client->request($service, $this->createMock(Place::class));
     }
 
-    public function testTheClientAcceptsHttpMethodOverride()
+    public function testTheClientAcceptsHttpMethodOverride(): void
     {
         $client = new GuzzleClient([
             'method' => 'HEAD',

@@ -20,7 +20,7 @@ use Resiliency\States;
  *
  * If the call throws no exception, the circuit transitions back to closed.
  */
-final class HalfOpened extends AbstractPlace
+final class HalfOpened extends PlaceHelper
 {
     /**
      * @var Client the client

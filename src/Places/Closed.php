@@ -14,7 +14,7 @@ use Resiliency\States;
  * The circuit-breaker executes actions placed through it, measuring the failures and successes of those actions.
  * If the failures exceed a certain threshold, the circuit will break (open).
  */
-final class Closed extends AbstractPlace
+final class Closed extends PlaceHelper
 {
     /**
      * @var Client the client

@@ -31,12 +31,10 @@ You need to configure a system for the Circuit Breaker:
 use Resiliency\MainCircuitBreaker;
 use Resiliency\Systems\MainSystem;
 use Resiliency\Storages\SimpleArray;
-use Resiliency\Clients\GuzzleClient;
+use Resiliency\Clients\SymfonyClient;
+use Symfony\Component\HttpClient\HttpClient;
 
-$client = new GuzzleClient([
-    'proxy' => '192.168.16.1:10',
-    'method' => 'POST',
-]);
+$client = new SymfonyClient(HttpClient::create());
 
 $mainSystem = MainSystem::createFromArray([
     'failures' => 2,
@@ -72,8 +70,15 @@ $circuitBreaker->call(
 );
 ```
 
+### Clients
+
+Since v0.6, Resiliency library supports both Guzzle 6 and HttpClient Component from Symfony.
+
 > For the Guzzle implementation, the Client options are described
 > in the [HttpGuzzle documentation](http://docs.guzzlephp.org/en/stable/index.html).
+
+> For the Symfony implementation, the Client options are described
+> in the [HttpClient Component documentation](https://symfony.com/doc/current/components/http_client.html).
 
 ### Monitoring
 
@@ -82,14 +87,14 @@ This library is shipped with a minimalist system to help you monitor your circui
 ```php
 $monitor = new SimpleMonitor();
 
-// on some circuit breaker events...
+// Collect information while listening
+// to some circuit breaker events...
 function listener(Event $event) {
     $monitor->add($event);
 };
 
-// retrieve a complete report for analysis or storage
+// Retrieve a complete report for analysis or storage
 $report = $monitor->getReport();
-
 ```
 
 ## Tests
@@ -99,6 +104,8 @@ composer test
 ```
 
 ## Code quality
+
+This library have high quality standards:
 
 ```
 composer cs-fix && composer phpstan && composer psalm
