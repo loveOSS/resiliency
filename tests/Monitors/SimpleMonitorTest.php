@@ -19,7 +19,8 @@ class SimpleMonitorTest extends TestCase
     }
 
     /**
-     * @covers SimpleMonitor::collect
+     * @covers \SimpleMonitor::collect
+     *
      * @return void
      */
     public function testCollect()
