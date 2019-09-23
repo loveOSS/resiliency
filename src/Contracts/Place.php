@@ -2,6 +2,8 @@
 
 namespace Resiliency\Contracts;
 
+use Psr\Http\Message\ResponseInterface;
+
 /**
  * A circuit breaker can be in 4 places: closed, half open, open or isolated.
  * Each place have its own properties and behaviors.
@@ -38,9 +40,9 @@ interface Place
      *
      * @throws Exception in case of failure, throws an exception
      *
-     * @return string
+     * @return ResponseInterface
      */
-    public function call(Transaction $transaction, callable $fallback): string;
+    public function call(Transaction $transaction, callable $fallback): ResponseInterface;
 
     /**
      * Set the Circuit Breaker to the place.

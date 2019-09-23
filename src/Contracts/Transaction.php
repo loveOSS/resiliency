@@ -2,18 +2,19 @@
 
 namespace Resiliency\Contracts;
 
+use Psr\Http\Message\RequestInterface;
 use DateTime;
 
 /**
- * Once the circuit breaker call a service,
+ * Once the circuit breaker make a request,
  * a transaction is initialized and stored.
  */
 interface Transaction
 {
     /**
-     * @return Service the service
+     * @return RequestInterface the request
      */
-    public function getService(): Service;
+    public function getRequest(): RequestInterface;
 
     /**
      * @return int the number of failures to call the service

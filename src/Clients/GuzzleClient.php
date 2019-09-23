@@ -4,6 +4,7 @@ namespace Resiliency\Clients;
 
 use GuzzleHttp\Client as OriginalGuzzleClient;
 use Resiliency\Exceptions\UnavailableService;
+use Psr\Http\Message\ResponseInterface;
 use Resiliency\Contracts\Service;
 use Resiliency\Contracts\Place;
 use Exception;
@@ -17,7 +18,7 @@ class GuzzleClient extends ClientHelper
     /**
      * {@inheritdoc}
      */
-    public function request(Service $service, Place $place): string
+    public function request(Service $service, Place $place): ResponseInterface
     {
         $options = [];
         try {
@@ -29,7 +30,7 @@ class GuzzleClient extends ClientHelper
 
             $clientParameters = array_merge($service->getParameters(), $options);
 
-            return (string) $client->request($method, $service->getURI(), $clientParameters)->getBody();
+            return $client->request($method, $service->getURI(), $clientParameters);
         } catch (Exception $exception) {
             throw new UnavailableService(
                 $exception->getMessage(),

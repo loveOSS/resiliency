@@ -3,7 +3,7 @@
 namespace Resiliency\Contracts\Monitoring;
 
 use Resiliency\Contracts\CircuitBreaker;
-use Resiliency\Contracts\Service;
+use Psr\Http\Message\RequestInterface;
 
 /**
  * A report entry store information used to generate a report
@@ -12,9 +12,9 @@ use Resiliency\Contracts\Service;
 interface ReportEntry
 {
     /**
-     * @return Service the service called
+     * @return RequestInterface the executed request
      */
-    public function getService(): Service;
+    public function getRequest(): RequestInterface;
 
     /**
      * @return CircuitBreaker the circuit breaker used

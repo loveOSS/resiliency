@@ -2,6 +2,8 @@
 
 namespace Resiliency\Contracts;
 
+use Psr\Http\Message\RequestInterface;
+
 /**
  * For every transition reached, an event can be dispatched by the system.
  */
@@ -13,7 +15,7 @@ interface Event
     public function getCircuitBreaker(): CircuitBreaker;
 
     /**
-     * @return Service the Service
+     * @return Request the Request
      */
-    public function getService(): Service;
+    public function getRequest(): Request;
 }

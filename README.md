@@ -55,12 +55,13 @@ $circuitBreaker = new MainCircuitBreaker(
 );
 
 /**
- * @var Service $service
+ * @var Request $request the PSR-7 request
  */
-$fallbackResponse = function ($service) {
-    return '{}';
+$fallbackResponse = function ($request) {
+    return new Response('{}'; // will be converted to a PSR-7 response
 };
 
+// will return a PSR-7 Response
 $circuitBreaker->call(
     'https://api.domain.com',
     $fallbackResponse,

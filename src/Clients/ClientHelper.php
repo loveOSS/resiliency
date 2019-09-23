@@ -5,6 +5,7 @@ namespace Resiliency\Clients;
 use Resiliency\Contracts\Client;
 use Resiliency\Contracts\Place;
 use Resiliency\Contracts\Service;
+use Psr\Http\Message\ResponseInterface;
 
 abstract class ClientHelper implements Client
 {
@@ -39,5 +40,5 @@ abstract class ClientHelper implements Client
     /**
      * {@inheritdoc}
      */
-    abstract public function request(Service $service, Place $place): string;
+    abstract public function request(Service $service, Place $place): ResponseInterface;
 }

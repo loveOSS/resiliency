@@ -3,6 +3,7 @@
 namespace Resiliency\Contracts;
 
 use Resiliency\Exceptions\UnavailableService;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * In charge of calling the resource and return a response.
@@ -21,7 +22,7 @@ interface Client
      *
      * @throws UnavailableService
      *
-     * @return string
+     * @return ResponseInterface
      */
-    public function request(Service $service, Place $place): string;
+    public function request(Service $service, Place $place): ResponseInterface;
 }

@@ -3,6 +3,7 @@
 namespace Resiliency\Contracts;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * A circuit breaker is used to provide
@@ -35,9 +36,9 @@ interface CircuitBreaker
      *
      * @throws Exception in case of failure, throws an exception
      *
-     * @return string
+     * @return ResponseInterface
      */
-    public function call(string $uri, callable $fallback, array $uriParameters = []): string;
+    public function call(string $uri, callable $fallback, array $uriParameters = []): ResponseInterface;
 
     /**
      * Manually open (and hold open) the Circuit Breaker

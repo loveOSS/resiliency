@@ -2,9 +2,11 @@
 
 namespace Resiliency\Clients;
 
+use Resiliency\Utils\ResponseConverter;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Resiliency\Exceptions\UnavailableService;
+use Psr\Http\Message\ResponseInterface;
 use Resiliency\Contracts\Service;
 use Resiliency\Contracts\Place;
 
@@ -31,7 +33,7 @@ class SymfonyClient extends ClientHelper
     /**
      * {@inheritdoc}
      */
-    public function request(Service $service, Place $place): string
+    public function request(Service $service, Place $place): ResponseInterface
     {
         $options = [];
         try {
@@ -41,7 +43,9 @@ class SymfonyClient extends ClientHelper
             $clientParameters = array_merge($service->getParameters(), $options);
             unset($clientParameters['method']);
 
-            return $this->httpClient->request($method, $service->getURI(), $clientParameters)->getContent();
+            $symfonyResponse = $this->httpClient->request($method, $service->getURI(), $clientParameters);
+
+            return ResponseConverter::convertToPsr7($symfonyResponse);
         } catch (TransportExceptionInterface $exception) {
             throw new UnavailableService(
                 $exception->getMessage(),
