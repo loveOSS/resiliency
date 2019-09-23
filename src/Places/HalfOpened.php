@@ -49,7 +49,7 @@ final class HalfOpened extends PlaceHelper
      */
     public function call(Transaction $transaction, callable $fallback): string
     {
-        $service = $transaction->getService();
+        $service = $transaction->getRequest();
         $this->dispatch(new AvailabilityChecked($this->circuitBreaker, $service));
 
         try {

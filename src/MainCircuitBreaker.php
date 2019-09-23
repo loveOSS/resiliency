@@ -93,7 +93,7 @@ final class MainCircuitBreaker implements CircuitBreaker
     {
         $service = $this->storage
             ->getTransaction($uri)
-            ->getService()
+            ->getRequest()
         ;
 
         $this->dispatcher->dispatch(new Isolated($this, $service));
@@ -109,7 +109,7 @@ final class MainCircuitBreaker implements CircuitBreaker
     {
         $service = $this->storage
             ->getTransaction($uri)
-            ->getService()
+            ->getRequest()
         ;
 
         $this->dispatcher->dispatch(new Reseted($this, $service));

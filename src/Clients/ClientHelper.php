@@ -2,12 +2,11 @@
 
 namespace Resiliency\Clients;
 
-use Resiliency\Contracts\Client;
-use Resiliency\Contracts\Place;
-use Resiliency\Contracts\Service;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-abstract class ClientHelper implements Client
+abstract class ClientHelper implements ClientInterface
 {
     /**
      * @var array the Client main options
@@ -20,25 +19,7 @@ abstract class ClientHelper implements Client
     }
 
     /**
-     * @param array $options the list of options
-     *
-     * @return string the method
-     */
-    protected function defineMethod(array $options): string
-    {
-        if (isset($this->mainOptions['method'])) {
-            return (string) $this->mainOptions['method'];
-        }
-
-        if (isset($options['method'])) {
-            return (string) $options['method'];
-        }
-
-        return self::DEFAULT_METHOD;
-    }
-
-    /**
      * {@inheritdoc}
      */
-    abstract public function request(Service $service, Place $place): ResponseInterface;
+    abstract public function sendRequest(RequestInterface $request): ResponseInterface;
 }

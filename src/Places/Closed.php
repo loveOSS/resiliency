@@ -45,7 +45,7 @@ final class Closed extends PlaceHelper
      */
     public function call(Transaction $transaction, callable $fallback): string
     {
-        $service = $transaction->getService();
+        $service = $transaction->getRequest();
         $storage = $this->circuitBreaker->getStorage();
 
         if (!$this->isAllowedToRetry($transaction)) {

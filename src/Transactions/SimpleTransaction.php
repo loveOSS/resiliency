@@ -3,8 +3,8 @@
 namespace Resiliency\Transactions;
 
 use DateTime;
+use Psr\Http\Message\RequestInterface;
 use Resiliency\Contracts\Place;
-use Resiliency\Contracts\Service;
 use Resiliency\Contracts\Transaction;
 use Resiliency\Exceptions\InvalidTransaction;
 use Resiliency\Utils\Assert;
@@ -15,9 +15,9 @@ use Resiliency\Utils\Assert;
 final class SimpleTransaction implements Transaction
 {
     /**
-     * @var Service the service
+     * @var RequestInterface the request
      */
-    private $service;
+    private $request;
 
     /**
      * @var int the failures when we call the service
@@ -35,18 +35,18 @@ final class SimpleTransaction implements Transaction
     private $thresholdDateTime;
 
     /**
-     * @param Service $service the service
+     * @param RequestInterface $request the request
      * @param int $failures the allowed failures
      * @param string $state the circuit breaker state/place
      * @param float $threshold the place threshold
      *
      * @throws InvalidTransaction
      */
-    public function __construct(Service $service, int $failures, string $state, float $threshold)
+    public function __construct(RequestInterface $request, int $failures, string $state, float $threshold)
     {
-        $this->validate($service, $failures, $state, $threshold);
+        $this->validate($request, $failures, $state, $threshold);
 
-        $this->service = $service;
+        $this->request = $request;
         $this->failures = $failures;
         $this->state = $state;
         $this->initThresholdDateTime($threshold);
@@ -55,9 +55,9 @@ final class SimpleTransaction implements Transaction
     /**
      * {@inheritdoc}
      */
-    public function getService(): Service
+    public function getRequest(): RequestInterface
     {
-        return $this->service;
+        return $this->request;
     }
 
     /**
@@ -114,12 +114,12 @@ final class SimpleTransaction implements Transaction
      *
      * @throws InvalidTransaction
      */
-    public static function createFromPlace(Place $place, Service $service): self
+    public static function createFromPlace(Place $place, RequestInterface $request): self
     {
         $threshold = $place->getThreshold();
 
         return new self(
-            $service,
+            $request,
             0,
             $place->getState(),
             $threshold
@@ -144,7 +144,7 @@ final class SimpleTransaction implements Transaction
     /**
      * Ensure the transaction is valid.
      *
-     * @param Service $service the service
+     * @param RequestInterface $request the request
      * @param int $failures the failures should be a positive value
      * @param string $state the Circuit Breaker state
      * @param float $threshold the threshold should be a positive value
@@ -153,9 +153,9 @@ final class SimpleTransaction implements Transaction
      *
      * @throws InvalidTransaction
      */
-    private function validate(Service $service, int $failures, string $state, float $threshold): bool
+    private function validate(RequestInterface $request, int $failures, string $state, float $threshold): bool
     {
-        $assertionsAreValid = Assert::isAService($service)
+        $assertionsAreValid = Assert::isARequest($request)
             && Assert::isPositiveInteger($failures)
             && Assert::isString($state)
             && Assert::isPositiveValue($threshold);
@@ -164,6 +164,6 @@ final class SimpleTransaction implements Transaction
             return true;
         }
 
-        throw InvalidTransaction::invalidParameters($service, $failures, $state, $threshold);
+        throw InvalidTransaction::invalidParameters($request, $failures, $state, $threshold);
     }
 }

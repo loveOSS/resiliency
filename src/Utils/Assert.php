@@ -2,6 +2,7 @@
 
 namespace Resiliency\Utils;
 
+use Psr\Http\Message\RequestInterface;
 use Resiliency\Contracts\Service;
 
 /**
@@ -57,8 +58,8 @@ final class Assert
      *
      * @return bool
      */
-    public static function isAService(object $object): bool
+    public static function isARequest(object $object): bool
     {
-        return is_a($object, Service::class);
+        return is_a($object, RequestInterface::class);
     }
 }

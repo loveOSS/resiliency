@@ -3,34 +3,35 @@
 namespace Resiliency\Clients;
 
 use GuzzleHttp\Client as OriginalGuzzleClient;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestInterface;
 use Resiliency\Exceptions\UnavailableService;
 use Psr\Http\Message\ResponseInterface;
-use Resiliency\Contracts\Service;
-use Resiliency\Contracts\Place;
 use Exception;
 
 /**
  * Guzzle implementation of client.
  * The possibility of extending this client is intended.
  */
-class GuzzleClient extends ClientHelper
+class GuzzleClient extends ClientHelper implements ClientInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function request(Service $service, Place $place): ResponseInterface
+    public function sendRequest(RequestInterface $request): ResponseInterface
     {
         $options = [];
         try {
             $client = new OriginalGuzzleClient($this->mainOptions);
-            $method = $this->defineMethod($service->getParameters());
+
+            $timeout = $request->getHeader('RS_TIMEOUT');
             $options['http_errors'] = true;
-            $options['connect_timeout'] = $place->getTimeout();
-            $options['timeout'] = $place->getTimeout();
+            $options['connect_timeout'] = $timeout;
+            $options['timeout'] = $timeout;
 
-            $clientParameters = array_merge($service->getParameters(), $options);
+            $clientParameters = array_merge($options);
 
-            return $client->request($method, $service->getURI(), $clientParameters);
+            return $client->request($request->getMethod(), $request->getURI(), $clientParameters);
         } catch (Exception $exception) {
             throw new UnavailableService(
                 $exception->getMessage(),

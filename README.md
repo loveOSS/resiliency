@@ -54,11 +54,17 @@ $circuitBreaker = new MainCircuitBreaker(
     $dispatcher
 );
 
+use Nyholm\Psr7\Factory\Psr17Factory;
+
 /**
  * @var Request $request the PSR-7 request
  */
 $fallbackResponse = function ($request) {
-    return new Response('{}'; // will be converted to a PSR-7 response
+    // This must return ResponseInterface, for instance using Nylhom implementation
+    $responseFactory = new Psr17Factory();
+    $responseBody = $responseFactory->createStream('{}');
+
+    return $responseFactory->createResponse()->withBody($responseBody);
 };
 
 // will return a PSR-7 Response

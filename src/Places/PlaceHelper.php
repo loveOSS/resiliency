@@ -2,6 +2,7 @@
 
 namespace Resiliency\Places;
 
+use Nyholm\Psr7\Request;
 use Resiliency\Contracts\CircuitBreaker;
 use Resiliency\Contracts\Transaction;
 use Resiliency\Contracts\Place;
@@ -90,7 +91,7 @@ abstract class PlaceHelper implements Place
      */
     public function call(Transaction $transaction, callable $fallback): string
     {
-        $service = $transaction->getService();
+        $service = $transaction->getRequest();
 
         return $this->circuitBreaker->call($service->getURI(), $fallback, $service->getParameters());
     }
@@ -131,11 +132,11 @@ abstract class PlaceHelper implements Place
     /**
      * Helper to return the fallback Response.
      *
-     * @return string the configurated fallback
+     * @return string the configured fallback
      */
     protected function useFallback(Transaction $transaction, callable $fallback): string
     {
-        $service = $transaction->getService();
+        $service = $transaction->getRequest();
 
         return (string) $fallback($service);
     }

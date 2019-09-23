@@ -33,7 +33,7 @@ final class Opened extends PlaceHelper
      */
     public function call(Transaction $transaction, callable $fallback): string
     {
-        $service = $transaction->getService();
+        $service = $transaction->getRequest();
         $this->dispatch(new OpenedEvent($this->circuitBreaker, $service));
 
         if (!$this->haveWaitedLongEnough($transaction)) {

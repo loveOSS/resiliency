@@ -32,8 +32,8 @@ class SimpleTransactionTest extends CircuitBreakerTestCase
     {
         $simpleTransaction = $this->createSimpleTransaction();
 
-        self::assertInstanceOf(Service::class, $simpleTransaction->getService());
-        $service = $simpleTransaction->getService();
+        self::assertInstanceOf(Service::class, $simpleTransaction->getRequest());
+        $service = $simpleTransaction->getRequest();
         self::assertSame('http://some-uri.domain', $service->getURI());
     }
 
