@@ -87,21 +87,20 @@ final class SimpleTransaction implements Transaction
     /**
      * {@inheritdoc}
      */
-    public function incrementFailures(): bool
+    public function incrementFailures(): int
     {
-        ++$this->failures;
-
-        return true;
+        return ++$this->failures;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function clearFailures(): bool
+    public function clearFailures(): int
     {
+        $res = $this->failures;
         $this->failures = 0;
 
-        return true;
+        return $res;
     }
 
     /**

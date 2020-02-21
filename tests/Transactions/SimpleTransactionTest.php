@@ -76,9 +76,22 @@ class SimpleTransactionTest extends CircuitBreakerTestCase
     public function testIncrementFailures()
     {
         $simpleTransaction = $this->createSimpleTransaction();
-        $simpleTransaction->incrementFailures();
+        self::assertSame(1, $simpleTransaction->incrementFailures());
 
         self::assertSame(1, $simpleTransaction->getFailures());
+    }
+
+    /**
+     * @depends testCreation
+     * @depends testGetFailures
+     */
+    public function testClearFailures()
+    {
+        $simpleTransaction = $this->createSimpleTransaction();
+        self::assertSame(1, $simpleTransaction->incrementFailures());
+        self::assertSame(1, $simpleTransaction->getFailures());
+        self::assertSame(1, $simpleTransaction->clearFailures());
+        self::assertSame(0, $simpleTransaction->getFailures());
     }
 
     /**

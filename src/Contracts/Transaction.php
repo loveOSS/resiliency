@@ -34,14 +34,14 @@ interface Transaction
     /**
      * Every time the service call fails, increment the number of failures.
      *
-     * @return bool
+     * @return int the number of failures (inclusive)
      */
-    public function incrementFailures(): bool;
+    public function incrementFailures(): int;
 
     /**
      * If the service is up again, reset the number of failures to 0.
      *
-     * @return bool
+     * @return int the number of failures
      */
-    public function clearFailures(): bool;
+    public function clearFailures(): int;
 }
