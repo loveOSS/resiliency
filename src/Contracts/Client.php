@@ -20,8 +20,6 @@ interface Client
      * @param Place $place the place
      *
      * @throws UnavailableService
-     *
-     * @return string
      */
     public function request(Service $service, Place $place): string;
 }

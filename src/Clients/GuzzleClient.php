@@ -2,11 +2,11 @@
 
 namespace Resiliency\Clients;
 
-use GuzzleHttp\Client as OriginalGuzzleClient;
-use Resiliency\Exceptions\UnavailableService;
-use Resiliency\Contracts\Service;
-use Resiliency\Contracts\Place;
 use Exception;
+use GuzzleHttp\Client as OriginalGuzzleClient;
+use Resiliency\Contracts\Place;
+use Resiliency\Contracts\Service;
+use Resiliency\Exceptions\UnavailableService;
 
 /**
  * Guzzle implementation of client.
@@ -31,11 +31,7 @@ class GuzzleClient extends ClientHelper
 
             return (string) $client->request($method, $service->getURI(), $clientParameters)->getBody();
         } catch (Exception $exception) {
-            throw new UnavailableService(
-                $exception->getMessage(),
-                (int) $exception->getCode(),
-                $exception
-            );
+            throw new UnavailableService($exception->getMessage(), (int) $exception->getCode(), $exception);
         }
     }
 }

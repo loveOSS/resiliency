@@ -2,13 +2,13 @@
 
 namespace Tests\Resiliency\Clients;
 
-use Resiliency\Contracts\Place;
 use Resiliency\Clients\SymfonyClient;
-use Tests\Resiliency\CircuitBreakerTestCase;
+use Resiliency\Contracts\Place;
 use Resiliency\Exceptions\UnavailableService;
 use Symfony\Component\HttpClient\MockHttpClient;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\HttpClient\Response\MockResponse;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Tests\Resiliency\CircuitBreakerTestCase;
 
 class SymfonyClientTest extends CircuitBreakerTestCase
 {

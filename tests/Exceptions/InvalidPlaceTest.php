@@ -7,7 +7,7 @@ use Resiliency\Exceptions\InvalidPlace;
 
 class InvalidPlaceTest extends TestCase
 {
-    public function testCreation()
+    public function testCreation(): void
     {
         $invalidPlace = new InvalidPlace();
 
@@ -20,7 +20,7 @@ class InvalidPlaceTest extends TestCase
      * @param array $settings
      * @param string $expectedExceptionMessage
      */
-    public function testInvalidSettings($settings, $expectedExceptionMessage)
+    public function testInvalidSettings($settings, $expectedExceptionMessage): void
     {
         $invalidPlace = InvalidPlace::invalidSettings(
             $settings[0], // failures
@@ -31,10 +31,7 @@ class InvalidPlaceTest extends TestCase
         self::assertSame($invalidPlace->getMessage(), $expectedExceptionMessage);
     }
 
-    /**
-     * @return array
-     */
-    public function getSettings()
+    public function getSettings(): array
     {
         return [
             'all_invalid_settings' => [

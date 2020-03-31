@@ -2,10 +2,10 @@
 
 namespace Resiliency\Storages;
 
+use Psr\SimpleCache\CacheInterface;
 use Resiliency\Contracts\Storage;
 use Resiliency\Contracts\Transaction;
 use Resiliency\Exceptions\TransactionNotFound;
-use Psr\SimpleCache\CacheInterface;
 
 /**
  * Implementation of Storage using the Symfony Cache Component.

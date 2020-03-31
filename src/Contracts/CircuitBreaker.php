@@ -34,8 +34,6 @@ interface CircuitBreaker
      * @param callable $fallback if the service is unavailable, rely on the fallback
      *
      * @throws Exception in case of failure, throws an exception
-     *
-     * @return string
      */
     public function call(string $uri, callable $fallback, array $uriParameters = []): string;
 
@@ -44,8 +42,6 @@ interface CircuitBreaker
      * This can be used for example to take it offline for maintenance.
      *
      * @param string $uri the service URI to call
-     *
-     * @return self
      */
     public function isolate(string $uri): self;
 
@@ -53,8 +49,6 @@ interface CircuitBreaker
      * Reset the breaker to closed state to start accepting actions again.
      *
      * @param string $uri the service URI to call
-     *
-     * @return self
      */
     public function reset(string $uri): self;
 
@@ -63,8 +57,6 @@ interface CircuitBreaker
      *
      * @param string $state the Place state
      * @param Service $service the service
-     *
-     * @return self
      */
     public function moveStateTo($state, Service $service): self;
 }

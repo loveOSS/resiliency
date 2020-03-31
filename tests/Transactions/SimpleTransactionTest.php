@@ -5,13 +5,13 @@ namespace Tests\Resiliency\Transactions;
 use DateTime;
 use Resiliency\Contracts\Place;
 use Resiliency\Contracts\Service;
-use Resiliency\Transactions\SimpleTransaction;
 use Resiliency\Exceptions\InvalidTransaction;
+use Resiliency\Transactions\SimpleTransaction;
 use Tests\Resiliency\CircuitBreakerTestCase;
 
 class SimpleTransactionTest extends CircuitBreakerTestCase
 {
-    public function testCreation()
+    public function testCreation(): void
     {
         $placeStub = $this->createPlaceStub();
 
@@ -28,7 +28,7 @@ class SimpleTransactionTest extends CircuitBreakerTestCase
     /**
      * @depends testCreation
      */
-    public function testGetService()
+    public function testGetService(): void
     {
         $simpleTransaction = $this->createSimpleTransaction();
 
@@ -40,7 +40,7 @@ class SimpleTransactionTest extends CircuitBreakerTestCase
     /**
      * @depends testCreation
      */
-    public function testGetFailures()
+    public function testGetFailures(): void
     {
         $simpleTransaction = $this->createSimpleTransaction();
 
@@ -50,7 +50,7 @@ class SimpleTransactionTest extends CircuitBreakerTestCase
     /**
      * @depends testCreation
      */
-    public function testGetState()
+    public function testGetState(): void
     {
         $simpleTransaction = $this->createSimpleTransaction();
 
@@ -60,7 +60,7 @@ class SimpleTransactionTest extends CircuitBreakerTestCase
     /**
      * @depends testCreation
      */
-    public function testGetThresholdDateTime()
+    public function testGetThresholdDateTime(): void
     {
         $simpleTransaction = $this->createSimpleTransaction();
         $expectedDateTime = (new DateTime('+2 second'))->format('d/m/Y H:i:s');
@@ -73,7 +73,7 @@ class SimpleTransactionTest extends CircuitBreakerTestCase
      * @depends testCreation
      * @depends testGetFailures
      */
-    public function testIncrementFailures()
+    public function testIncrementFailures(): void
     {
         $simpleTransaction = $this->createSimpleTransaction();
         $simpleTransaction->incrementFailures();
@@ -123,12 +123,7 @@ class SimpleTransactionTest extends CircuitBreakerTestCase
         SimpleTransaction::createFromPlace($placeStub, $this->getService('http://some-uri.domain'));
     }
 
-    /**
-     * Returns an instance of SimpleTransaction for tests.
-     *
-     * @return SimpleTransaction
-     */
-    private function createSimpleTransaction()
+    private function createSimpleTransaction(): SimpleTransaction
     {
         $placeStub = $this->createPlaceStub();
 

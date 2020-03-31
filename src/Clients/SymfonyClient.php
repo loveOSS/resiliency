@@ -2,11 +2,11 @@
 
 namespace Resiliency\Clients;
 
+use Resiliency\Contracts\Place;
+use Resiliency\Contracts\Service;
+use Resiliency\Exceptions\UnavailableService;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
-use Resiliency\Exceptions\UnavailableService;
-use Resiliency\Contracts\Service;
-use Resiliency\Contracts\Place;
 
 /**
  * Symfony implementation of client.
@@ -43,11 +43,7 @@ class SymfonyClient extends ClientHelper
 
             return $this->httpClient->request($method, $service->getURI(), $clientParameters)->getContent();
         } catch (TransportExceptionInterface $exception) {
-            throw new UnavailableService(
-                $exception->getMessage(),
-                (int) $exception->getCode(),
-                $exception
-            );
+            throw new UnavailableService($exception->getMessage(), (int) $exception->getCode(), $exception);
         }
     }
 }

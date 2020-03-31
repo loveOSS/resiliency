@@ -11,8 +11,6 @@ final class Assert
 {
     /**
      * @param mixed $value the value to evaluate
-     *
-     * @return bool
      */
     public static function isPositiveValue($value): bool
     {
@@ -21,8 +19,6 @@ final class Assert
 
     /**
      * @param mixed $value the value to evaluate
-     *
-     * @return bool
      */
     public static function isPositiveInteger($value): bool
     {
@@ -31,8 +27,6 @@ final class Assert
 
     /**
      * @param mixed $value the value to evaluate
-     *
-     * @return bool
      */
     public static function isURI($value): bool
     {
@@ -44,8 +38,6 @@ final class Assert
 
     /**
      * @param mixed $value the value to evaluate
-     *
-     * @return bool
      */
     public static function isString($value): bool
     {
@@ -54,8 +46,6 @@ final class Assert
 
     /**
      * @param object $object the object to evaluate
-     *
-     * @return bool
      */
     public static function isAService(object $object): bool
     {

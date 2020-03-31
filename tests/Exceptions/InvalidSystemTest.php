@@ -7,7 +7,7 @@ use Resiliency\Exceptions\InvalidSystem;
 
 class InvalidSystemTest extends TestCase
 {
-    public function testCreation()
+    public function testCreation(): void
     {
         $invalidPlace = new InvalidSystem();
 
@@ -20,17 +20,26 @@ class InvalidSystemTest extends TestCase
      * @param array $settings
      * @param string $expectedExceptionMessage
      */
-    public function testInvalidSettings($settings, $expectedExceptionMessage)
+    public function testInvalidSettings($settings, $expectedExceptionMessage): void
     {
         $invalidSystem = InvalidSystem::missingSettings($settings);
 
         self::assertSame($invalidSystem->getMessage(), $expectedExceptionMessage);
     }
 
-    /**
-     * @return array
-     */
-    public function getSettings()
+    public function testPhpTimeoutExceeded(): void
+    {
+        $currentPhpTimeout = (string) ini_get('max_execution_time');
+        ini_set('max_execution_time', '1');
+        $invalidSystem = InvalidSystem::phpTimeoutExceeded();
+        $expectedExceptionMessage = 'The configuration timeout exceeds the PHP timeout' . PHP_EOL;
+        $expectedExceptionMessage .= 'Configure `max_execution_time` to a higher value, got: "1s".';
+
+        self::assertSame($invalidSystem->getMessage(), $expectedExceptionMessage);
+        ini_set('max_execution_time', $currentPhpTimeout);
+    }
+
+    public function getSettings(): array
     {
         return [
             'all_missing_settings' => [

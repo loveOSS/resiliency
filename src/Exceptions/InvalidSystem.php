@@ -16,8 +16,6 @@ final class InvalidSystem extends Exception implements ResiliencyException
 
     /**
      * @param array $settings the System settings
-     *
-     * @return self
      */
     public static function missingSettings(array $settings): self
     {
@@ -31,6 +29,17 @@ final class InvalidSystem extends Exception implements ResiliencyException
                 ) . PHP_EOL;
             }
         }
+
+        return new self($exceptionMessage);
+    }
+
+    public static function phpTimeoutExceeded(): self
+    {
+        $exceptionMessage = 'The configuration timeout exceeds the PHP timeout' . PHP_EOL;
+        $exceptionMessage .= sprintf(
+            'Configure `max_execution_time` to a higher value, got: "%ss".',
+            ini_get('max_execution_time')
+        );
 
         return new self($exceptionMessage);
     }

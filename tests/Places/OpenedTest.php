@@ -41,7 +41,7 @@ class OpenedTest extends PlaceTestCase
         new Opened($threshold);
     }
 
-    public function testGetExpectedState()
+    public function testGetExpectedState(): void
     {
         $closedPlace = new Opened(1.0);
 

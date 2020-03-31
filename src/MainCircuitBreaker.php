@@ -3,16 +3,16 @@
 namespace Resiliency;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Resiliency\Contracts\CircuitBreaker;
+use Resiliency\Contracts\Place;
+use Resiliency\Contracts\Service;
+use Resiliency\Contracts\Storage;
+use Resiliency\Contracts\System;
+use Resiliency\Contracts\Transaction;
 use Resiliency\Events\Initiated;
 use Resiliency\Events\Isolated;
 use Resiliency\Events\Reseted;
 use Resiliency\Transactions\SimpleTransaction;
-use Resiliency\Contracts\CircuitBreaker;
-use Resiliency\Contracts\Transaction;
-use Resiliency\Contracts\Service;
-use Resiliency\Contracts\Storage;
-use Resiliency\Contracts\System;
-use Resiliency\Contracts\Place;
 
 /**
  * Main implementation of the Circuit Breaker.
@@ -139,8 +139,6 @@ final class MainCircuitBreaker implements CircuitBreaker
      * @todo: refactor to remove this function in favor of moveStateTo
      *
      * @param Service $service the service
-     *
-     * @return Transaction
      */
     private function initTransaction(Service $service): Transaction
     {

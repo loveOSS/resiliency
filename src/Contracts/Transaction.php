@@ -33,15 +33,11 @@ interface Transaction
 
     /**
      * Every time the service call fails, increment the number of failures.
-     *
-     * @return bool
      */
     public function incrementFailures(): bool;
 
     /**
      * If the service is up again, reset the number of failures to 0.
-     *
-     * @return bool
      */
     public function clearFailures(): bool;
 }

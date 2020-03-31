@@ -4,8 +4,8 @@ namespace Tests\Resiliency\System;
 
 use PHPUnit\Framework\TestCase;
 use Resiliency\Contracts\Client;
-use Resiliency\States;
 use Resiliency\Contracts\Place;
+use Resiliency\States;
 use Resiliency\Systems\MainSystem;
 
 class MainSystemTest extends TestCase
@@ -66,8 +66,6 @@ class MainSystemTest extends TestCase
 
     /**
      * Returns an instance of MainSystem for tests.
-     *
-     * @return MainSystem
      */
     private function createMainSystem(): MainSystem
     {

@@ -3,8 +3,8 @@
 namespace Resiliency\Exceptions;
 
 use Exception;
-use Resiliency\Utils\ErrorFormatter;
 use Resiliency\Contracts\Exception as ResiliencyException;
+use Resiliency\Utils\ErrorFormatter;
 
 final class InvalidTransaction extends Exception implements ResiliencyException
 {
@@ -13,8 +13,6 @@ final class InvalidTransaction extends Exception implements ResiliencyException
      * @param mixed $failures the failures
      * @param mixed $state the Circuit Breaker
      * @param mixed $threshold the threshold
-     *
-     * @return self
      */
     public static function invalidParameters($service, $failures, $state, $threshold): self
     {

@@ -2,13 +2,13 @@
 
 namespace Resiliency\Places;
 
+use DateTime;
 use Resiliency\Contracts\CircuitBreaker;
-use Resiliency\Contracts\Transaction;
-use Resiliency\Contracts\Place;
 use Resiliency\Contracts\Event;
+use Resiliency\Contracts\Place;
+use Resiliency\Contracts\Transaction;
 use Resiliency\Exceptions\InvalidPlace;
 use Resiliency\Utils\Assert;
-use DateTime;
 
 abstract class PlaceHelper implements Place
 {
@@ -97,8 +97,6 @@ abstract class PlaceHelper implements Place
 
     /**
      * @param Transaction $transaction the Transaction
-     *
-     * @return bool
      */
     public function isAllowedToRetry(Transaction $transaction): bool
     {
@@ -107,8 +105,6 @@ abstract class PlaceHelper implements Place
 
     /**
      * @param Transaction $transaction the Transaction
-     *
-     * @return bool
      */
     public function haveWaitedLongEnough(Transaction $transaction): bool
     {

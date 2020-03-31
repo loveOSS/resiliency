@@ -2,9 +2,9 @@
 
 namespace Resiliency\Events;
 
+use Resiliency\Contracts\CircuitBreaker;
 use Resiliency\Contracts\Event;
 use Resiliency\Contracts\Service;
-use Resiliency\Contracts\CircuitBreaker;
 
 abstract class TransitionEvent implements Event
 {

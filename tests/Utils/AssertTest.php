@@ -13,7 +13,7 @@ class AssertTest extends TestCase
      * @param mixed $value
      * @param bool $expected
      */
-    public function testIsPositiveValue($value, $expected)
+    public function testIsPositiveValue($value, $expected): void
     {
         self::assertSame($expected, Assert::isPositiveValue($value));
     }
@@ -24,7 +24,7 @@ class AssertTest extends TestCase
      * @param mixed $value
      * @param bool $expected
      */
-    public function testIsURI($value, $expected)
+    public function testIsURI($value, $expected): void
     {
         self::assertSame($expected, Assert::isURI($value));
     }
@@ -35,15 +35,12 @@ class AssertTest extends TestCase
      * @param mixed $value
      * @param bool $expected
      */
-    public function testIsString($value, $expected)
+    public function testIsString($value, $expected): void
     {
         self::assertSame($expected, Assert::isString($value));
     }
 
-    /**
-     * @return array
-     */
-    public function getValues()
+    public function getValues(): array
     {
         return [
             '0' => [0, true],
@@ -61,10 +58,7 @@ class AssertTest extends TestCase
         ];
     }
 
-    /**
-     * @return array
-     */
-    public function getURIs()
+    public function getURIs(): array
     {
         return [
             'valid' => ['http://www.prestashop.com', true],
@@ -76,7 +70,7 @@ class AssertTest extends TestCase
         ];
     }
 
-    public function getStrings()
+    public function getStrings(): array
     {
         return [
             'valid' => ['foo', true],
