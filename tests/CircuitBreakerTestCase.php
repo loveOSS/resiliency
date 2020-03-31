@@ -2,17 +2,17 @@
 
 namespace Tests\Resiliency;
 
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\TestCase;
 use Resiliency\Clients\GuzzleClient;
 use Resiliency\Contracts\Service;
 use Resiliency\Exceptions\InvalidSystem;
 use Resiliency\MainService;
 use Resiliency\Systems\MainSystem;
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Handler\MockHandler;
-use PHPUnit\Framework\TestCase;
-use GuzzleHttp\Psr7\Response;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Psr7\Request;
 
 /**
  * Helper to get a fake Guzzle client.
@@ -22,8 +22,6 @@ abstract class CircuitBreakerTestCase extends TestCase
     /**
      * Returns an instance of Client able to emulate
      * available and not available services.
-     *
-     * @return GuzzleClient
      */
     protected function getTestClient(): GuzzleClient
     {
@@ -42,8 +40,6 @@ abstract class CircuitBreakerTestCase extends TestCase
     /**
      * Returns an instance of Main system shared by all the circuit breakers.
      *
-     * @return MainSystem
-     *
      * @throws InvalidSystem
      */
     protected function getSystem(): MainSystem
@@ -59,12 +55,6 @@ abstract class CircuitBreakerTestCase extends TestCase
         );
     }
 
-    /**
-     * @param string $uri
-     * @param array $parameters
-     *
-     * @return Service
-     */
     protected function getService(string $uri, array $parameters = []): Service
     {
         return new MainService($uri, $parameters);

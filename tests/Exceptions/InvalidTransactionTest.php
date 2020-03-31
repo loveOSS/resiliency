@@ -7,7 +7,7 @@ use Tests\Resiliency\CircuitBreakerTestCase;
 
 class InvalidTransactionTest extends CircuitBreakerTestCase
 {
-    public function testCreation()
+    public function testCreation(): void
     {
         $invalidPlace = new InvalidTransaction();
 
@@ -20,7 +20,7 @@ class InvalidTransactionTest extends CircuitBreakerTestCase
      * @param array $parameters
      * @param string $expectedExceptionMessage
      */
-    public function testInvalidParameters($parameters, $expectedExceptionMessage)
+    public function testInvalidParameters($parameters, $expectedExceptionMessage): void
     {
         $invalidPlace = InvalidTransaction::invalidParameters(
             $parameters[0], // service
@@ -32,10 +32,7 @@ class InvalidTransactionTest extends CircuitBreakerTestCase
         self::assertSame($invalidPlace->getMessage(), $expectedExceptionMessage);
     }
 
-    /**
-     * @return array
-     */
-    public function getParameters()
+    public function getParameters(): array
     {
         return [
             'all_invalid_parameters' => [

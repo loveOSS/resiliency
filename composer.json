@@ -20,15 +20,15 @@
         "psr/simple-cache": "^1.0"
     },
     "require-dev": {
-        "edgedesign/phpqa": "v1.22",
-        "friendsofphp/php-cs-fixer": "^2.12",
+        "edgedesign/phpqa": "v1.23",
+        "friendsofphp/php-cs-fixer": "^2.16",
         "guzzlehttp/guzzle": "^6.3",
         "jakub-onderka/php-parallel-lint": "^1.0",
-        "phpstan/phpstan": "^0.11",
-        "phpstan/phpstan-phpunit": "^0.11.0",
+        "phpstan/phpstan": "^0.12",
+        "phpstan/phpstan-phpunit": "^0.12",
         "phpunit/phpunit": "^8.0",
         "sensiolabs/security-checker": "^5.0",
-        "symfony/cache": "~3.4|~4.3",
+        "symfony/cache": "~3.4|~4.4",
         "symfony/http-client": "^4.3",
         "vimeo/psalm": "^3.4"
     },

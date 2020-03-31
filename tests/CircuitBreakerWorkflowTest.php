@@ -3,16 +3,16 @@
 namespace Tests\Resiliency;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Resiliency\Exceptions\InvalidSystem;
+use Resiliency\Contracts\CircuitBreaker;
 use Resiliency\Contracts\Exception;
+use Resiliency\Exceptions\InvalidSystem;
+use Resiliency\MainCircuitBreaker;
 use Resiliency\Places\Closed;
 use Resiliency\Places\Isolated;
 use Resiliency\Places\Opened;
-use Symfony\Component\Cache\Simple\ArrayCache;
-use Resiliency\Contracts\CircuitBreaker;
 use Resiliency\Storages\SymfonyCache;
-use Resiliency\MainCircuitBreaker;
 use stdClass;
+use Symfony\Component\Cache\Simple\ArrayCache;
 
 class CircuitBreakerWorkflowTest extends CircuitBreakerTestCase
 {

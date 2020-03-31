@@ -110,8 +110,6 @@ final class SimpleTransaction implements Transaction
      * @param Place $place the Circuit Breaker place
      * @param Service $service the service URI
      *
-     * @return self
-     *
      * @throws InvalidTransaction
      */
     public static function createFromPlace(Place $place, Service $service): self
@@ -148,8 +146,6 @@ final class SimpleTransaction implements Transaction
      * @param int $failures the failures should be a positive value
      * @param string $state the Circuit Breaker state
      * @param float $threshold the threshold should be a positive value
-     *
-     * @return bool
      *
      * @throws InvalidTransaction
      */

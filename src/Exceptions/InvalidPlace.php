@@ -3,8 +3,8 @@
 namespace Resiliency\Exceptions;
 
 use Exception;
-use Resiliency\Utils\ErrorFormatter;
 use Resiliency\Contracts\Exception as ResiliencyException;
+use Resiliency\Utils\ErrorFormatter;
 
 final class InvalidPlace extends Exception implements ResiliencyException
 {
@@ -12,8 +12,6 @@ final class InvalidPlace extends Exception implements ResiliencyException
      * @param mixed $failures the failures
      * @param mixed $timeout the timeout
      * @param mixed $threshold the threshold
-     *
-     * @return self
      */
     public static function invalidSettings($failures, $timeout, $threshold): self
     {

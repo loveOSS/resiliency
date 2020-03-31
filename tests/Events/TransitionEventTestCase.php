@@ -4,12 +4,12 @@ namespace Tests\Resiliency\Events;
 
 use PHPUnit\Framework\TestCase;
 use Resiliency\Contracts\CircuitBreaker;
-use Resiliency\Contracts\Service;
 use Resiliency\Contracts\Event;
+use Resiliency\Contracts\Service;
 
 class TransitionEventTestCase extends TestCase
 {
-    public function checkEventIsValid($className)
+    public function checkEventIsValid(string $className): void
     {
         $event = new $className(
             $this->createMock(CircuitBreaker::class),
@@ -21,12 +21,6 @@ class TransitionEventTestCase extends TestCase
         self::assertInstanceOf(CircuitBreaker::class, $event->getCircuitBreaker());
     }
 
-    /**
-     * @param string $uri
-     * @param array $parameters
-     *
-     * @return Service
-     */
     protected function createService(string $uri, array $parameters): Service
     {
         $service = $this->createMock(Service::class);

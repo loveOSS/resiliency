@@ -3,9 +3,9 @@
 namespace Tests\Resiliency\Monitors;
 
 use PHPUnit\Framework\TestCase;
-use Resiliency\Contracts\Service;
-use Resiliency\Contracts\Monitoring\ReportEntry;
 use Resiliency\Contracts\CircuitBreaker;
+use Resiliency\Contracts\Monitoring\ReportEntry;
+use Resiliency\Contracts\Service;
 use Resiliency\Monitors\SimpleReportEntry;
 
 class SimpleReportEntryTest extends TestCase

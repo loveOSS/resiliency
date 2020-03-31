@@ -10,8 +10,6 @@ interface Place
 {
     /**
      * Return the state.
-     *
-     * @return string
      */
     public function getState(): string;
 
@@ -37,8 +35,6 @@ interface Place
      * @param callable $fallback if the service is unavailable, rely on the fallback
      *
      * @throws Exception in case of failure, throws an exception
-     *
-     * @return string
      */
     public function call(Transaction $transaction, callable $fallback): string;
 
@@ -46,8 +42,6 @@ interface Place
      * Set the Circuit Breaker to the place.
      *
      * @param CircuitBreaker $circuitBreaker the circuit breaker
-     *
-     * @return self
      */
     public function setCircuitBreaker(CircuitBreaker $circuitBreaker): self;
 }

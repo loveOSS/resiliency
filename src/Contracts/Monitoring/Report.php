@@ -9,8 +9,6 @@ interface Report
 {
     /**
      * @var ReportEntry the report entry
-     *
-     * @return self
      */
     public function add(ReportEntry $reportEntry): self;
 

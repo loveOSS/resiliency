@@ -3,9 +3,9 @@
 namespace Resiliency\Places;
 
 use Resiliency\Contracts\Client;
+use Resiliency\Contracts\Transaction;
 use Resiliency\Events\Tried;
 use Resiliency\Exceptions\UnavailableService;
-use Resiliency\Contracts\Transaction;
 use Resiliency\States;
 
 /**
