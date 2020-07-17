@@ -67,7 +67,7 @@ class SymfonyClientTest extends CircuitBreakerTestCase
     private function getPlace(): Place
     {
         $placeMock = $this->createMock(Place::class);
-        $placeMock->method('getTimeout')->willReturn(2.0);
+        $placeMock->method('getTimeout')->willReturn(2000);
 
         return $placeMock;
     }

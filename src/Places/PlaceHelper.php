@@ -18,12 +18,12 @@ abstract class PlaceHelper implements Place
     private $failures;
 
     /**
-     * @var float the Place timeout
+     * @var int the Place timeout
      */
     private $timeout;
 
     /**
-     * @var float the Place threshold
+     * @var int the Place threshold
      */
     private $threshold;
 
@@ -34,10 +34,10 @@ abstract class PlaceHelper implements Place
 
     /**
      * @param int $failures the Place failures
-     * @param float $timeout the Place timeout
-     * @param float $threshold the Place threshold
+     * @param int $timeout the Place timeout
+     * @param int $threshold the Place threshold
      */
-    public function __construct(int $failures, float $timeout, float $threshold)
+    public function __construct(int $failures, int $timeout, int $threshold)
     {
         $this->validate($failures, $timeout, $threshold);
 
@@ -62,7 +62,7 @@ abstract class PlaceHelper implements Place
     /**
      * {@inheritdoc}
      */
-    public function getTimeout(): float
+    public function getTimeout(): int
     {
         return $this->timeout;
     }
@@ -70,7 +70,7 @@ abstract class PlaceHelper implements Place
     /**
      * {@inheritdoc}
      */
-    public function getThreshold(): float
+    public function getThreshold(): int
     {
         return $this->threshold;
     }
@@ -140,18 +140,18 @@ abstract class PlaceHelper implements Place
      * Ensure the place is valid
      *
      * @param int $failures the failures should be a positive value
-     * @param float $timeout the timeout should be a positive value
-     * @param float $threshold the threshold should be a positive value
+     * @param int $timeout the timeout should be a positive value
+     * @param int $threshold the threshold should be a positive value
      *
      * @throws InvalidPlace
      *
      * @return bool true if valid
      */
-    private function validate(int $failures, float $timeout, float $threshold): bool
+    private function validate(int $failures, int $timeout, int $threshold): bool
     {
         $assertionsAreValid = Assert::isPositiveInteger($failures)
-            && Assert::isPositiveValue($timeout)
-            && Assert::isPositiveValue($threshold);
+            && Assert::isPositiveInteger($timeout)
+            && Assert::isPositiveInteger($threshold);
 
         if ($assertionsAreValid) {
             return true;

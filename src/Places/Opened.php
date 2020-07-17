@@ -13,9 +13,9 @@ use Resiliency\States;
 final class Opened extends PlaceHelper
 {
     /**
-     * @param float $threshold the Place threshold
+     * @param int $threshold the Place threshold
      */
-    public function __construct(float $threshold)
+    public function __construct(int $threshold)
     {
         parent::__construct(0, 0, $threshold);
     }

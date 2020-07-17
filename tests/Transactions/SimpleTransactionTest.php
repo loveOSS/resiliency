@@ -4,7 +4,6 @@ namespace Tests\Resiliency\Transactions;
 
 use DateTime;
 use Resiliency\Contracts\Place;
-use Resiliency\Contracts\Service;
 use Resiliency\Exceptions\InvalidTransaction;
 use Resiliency\Transactions\SimpleTransaction;
 use Tests\Resiliency\CircuitBreakerTestCase;
@@ -19,7 +18,7 @@ class SimpleTransactionTest extends CircuitBreakerTestCase
             $this->getService('http://some-uri.domain'),
             0,
             $placeStub->getState(),
-            2
+            2000
         );
 
         self::assertInstanceOf(SimpleTransaction::class, $simpleTransaction);
@@ -32,7 +31,6 @@ class SimpleTransactionTest extends CircuitBreakerTestCase
     {
         $simpleTransaction = $this->createSimpleTransaction();
 
-        self::assertInstanceOf(Service::class, $simpleTransaction->getService());
         $service = $simpleTransaction->getService();
         self::assertSame('http://some-uri.domain', $service->getURI());
     }
@@ -76,9 +74,8 @@ class SimpleTransactionTest extends CircuitBreakerTestCase
     public function testIncrementFailures(): void
     {
         $simpleTransaction = $this->createSimpleTransaction();
-        $simpleTransaction->incrementFailures();
 
-        self::assertSame(1, $simpleTransaction->getFailures());
+        self::assertSame(1, $simpleTransaction->incrementFailures());
     }
 
     /**
@@ -117,7 +114,7 @@ class SimpleTransactionTest extends CircuitBreakerTestCase
 
         $placeStub->expects(self::any())
             ->method('getThreshold')
-            ->willReturn(-1.0)
+            ->willReturn(-1000)
         ;
 
         SimpleTransaction::createFromPlace($placeStub, $this->getService('http://some-uri.domain'));
@@ -131,7 +128,7 @@ class SimpleTransactionTest extends CircuitBreakerTestCase
             $this->getService('http://some-uri.domain'),
             0,
             $placeStub->getState(),
-            2
+            2000
         );
     }
 
@@ -152,7 +149,7 @@ class SimpleTransactionTest extends CircuitBreakerTestCase
 
         $placeStub->expects(self::any())
             ->method('getThreshold')
-            ->willReturn(2.0)
+            ->willReturn(2000)
         ;
 
         return $placeStub;

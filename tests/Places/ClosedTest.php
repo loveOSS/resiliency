@@ -43,7 +43,7 @@ class ClosedTest extends PlaceTestCase
     public function testGetExpectedState(): void
     {
         $client = $this->createMock(Client::class);
-        $closedPlace = new Closed($client, 1, 1.0);
+        $closedPlace = new Closed($client, 1, 1000);
 
         self::assertSame(States::CLOSED_STATE, $closedPlace->getState());
     }

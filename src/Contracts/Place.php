@@ -19,14 +19,14 @@ interface Place
     public function getFailures(): int;
 
     /**
-     * @return float the allowed timeout before try to reach the service
+     * @return int the allowed timeout (in ms) before try to reach the service
      */
-    public function getThreshold(): float;
+    public function getThreshold(): int;
 
     /**
-     * @return float the allowed timeout
+     * @return int the allowed timeout (in ms)
      */
-    public function getTimeout(): float;
+    public function getTimeout(): int;
 
     /**
      * The function that execute the service.

@@ -28,12 +28,12 @@ final class HalfOpened extends PlaceHelper
     private $client;
 
     /**
-     * @param float $timeout the Place timeout
+     * @param int $timeout the Place timeout
      */
-    public function __construct(Client $client, float $timeout)
+    public function __construct(Client $client, int $timeout)
     {
         $this->client = $client;
-        parent::__construct(0, $timeout, 0.0);
+        parent::__construct(0, $timeout, 0);
     }
 
     /**

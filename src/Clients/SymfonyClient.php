@@ -36,7 +36,7 @@ class SymfonyClient extends ClientHelper
         $options = [];
         try {
             $method = $this->defineMethod($service->getParameters());
-            $options['timeout'] = $place->getTimeout();
+            $options['timeout'] = $this->convertToSeconds($place->getTimeout());
 
             $clientParameters = array_merge($service->getParameters(), $options);
             unset($clientParameters['method']);

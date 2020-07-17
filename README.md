@@ -19,9 +19,9 @@ composer require love-oss/resiliency
 You need to configure a system for the Circuit Breaker:
 
 * the **failures**: define how much times we try to access the service;
-* the **timeout**: define how long we wait before consider the service unreachable;
-* the **striped timeout**: define how long we wait before consider the service unreachable, once we're in half open state;
-* the **threshold**: define how long we wait before trying to access again the service;
+* the **timeout**: define how long we wait (in ms) before consider the service unreachable;
+* the **striped timeout**: define how long we wait (in ms) before consider the service unreachable, once we're in half open state;
+* the **threshold**: define how long we wait (in ms) before trying to access again the service;
 * the (HTTP|HTTPS) **client** that will be used to reach the services;
 * the **fallback** callback will be used if the distant service is unreachable when the Circuit Breaker is Open (means "is used"). 
 
@@ -38,8 +38,8 @@ $client = new SymfonyClient(HttpClient::create());
 
 $mainSystem = MainSystem::createFromArray([
     'failures' => 2,
-    'timeout' => 0.1,
-    'stripped_timeout' => 0.2,
+    'timeout' => 100,
+    'stripped_timeout' => 200,
     'threshold' => 10.0,
 ], $client);
 
@@ -84,7 +84,7 @@ Since v0.6, Resiliency library supports both Guzzle 6 and HttpClient Component f
 
 ### Monitoring
 
-This library is shipped with a minimalist system to help you monitor your circuits.
+This library provides a minimalist system to help you monitor your circuits.
 
 ```php
 $monitor = new SimpleMonitor();
@@ -107,7 +107,7 @@ composer test
 
 ## Code quality
 
-This library have high quality standards:
+This library has high quality standards:
 
 ```
 composer cs-fix && composer phpstan && composer psalm
