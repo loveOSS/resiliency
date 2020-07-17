@@ -6,7 +6,7 @@
 
 ![circuit breaker](https://user-images.githubusercontent.com/1247388/49721725-438bd700-fc63-11e8-8498-82ca681b15fb.png)
 
-This library is compatible with PHP 7.2+.
+This library is compatible with PHP 7.4+.
 
 ## Installation
 
@@ -18,7 +18,7 @@ composer require love-oss/resiliency
 
 You need to configure a system for the Circuit Breaker:
 
-* the **failures**: define how much times we try to access the service;
+* the **failures**: define how many times we try to access the service;
 * the **timeout**: define how long we wait (in ms) before consider the service unreachable;
 * the **striped timeout**: define how long we wait (in ms) before consider the service unreachable, once we're in half open state;
 * the **threshold**: define how long we wait (in ms) before trying to access again the service;
@@ -74,12 +74,12 @@ $circuitBreaker->call(
 
 ### Clients
 
-Since v0.6, Resiliency library supports both Guzzle 6 and HttpClient Component from Symfony.
+Since v2, Resiliency library supports both Guzzle (v6 & v7) and HttpClient Component from Symfony.
 
-> For the Guzzle implementation, the Client options are described
+> For the Guzzle implementation, look at the Client options
 > in the [HttpGuzzle documentation](http://docs.guzzlephp.org/en/stable/index.html).
 
-> For the Symfony implementation, the Client options are described
+> For the Symfony implementation, look at the Client options
 > in the [HttpClient Component documentation](https://symfony.com/doc/current/components/http_client.html).
 
 ### Monitoring
