@@ -15,9 +15,9 @@ class MainSystemTest extends TestCase
         $mainSystem = new MainSystem(
             $this->createMock(Client::class),
             1,
-            1.0,
-            1.0,
-            1.0
+            1000,
+            1000,
+            1000
         );
 
         self::assertInstanceOf(MainSystem::class, $mainSystem);
@@ -56,9 +56,9 @@ class MainSystemTest extends TestCase
 
         $mainSystem = MainSystem::createFromArray([
             'failures' => 2,
-            'timeout' => 0.2,
-            'stripped_timeout' => 0.2,
-            'threshold' => 1.0,
+            'timeout' => 200,
+            'stripped_timeout' => 200,
+            'threshold' => 1000,
         ], $client);
 
         self::assertCount(4, $mainSystem->getPlaces());
@@ -71,6 +71,6 @@ class MainSystemTest extends TestCase
     {
         $client = $this->createMock(Client::class);
 
-        return new MainSystem($client, 1, 1.0, 1.0, 1.0);
+        return new MainSystem($client, 1, 1000, 1000, 1000);
     }
 }

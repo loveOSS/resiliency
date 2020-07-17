@@ -14,23 +14,22 @@
         }
     ],
     "require": {
-        "php": "^7.2",
+        "php": "^7.4",
         "ext-json": "*",
-        "psr/event-dispatcher": "^1.0",
-        "psr/simple-cache": "^1.0"
+        "psr/event-dispatcher": "^1.0"
     },
     "require-dev": {
-        "edgedesign/phpqa": "v1.23",
+        "edgedesign/phpqa": "^v1.23",
         "friendsofphp/php-cs-fixer": "^2.16",
-        "guzzlehttp/guzzle": "^6.3",
-        "jakub-onderka/php-parallel-lint": "^1.0",
+        "guzzlehttp/guzzle": "^6.3|^7.0",
+        "php-parallel-lint/php-parallel-lint": "^1.0",
         "phpstan/phpstan": "^0.12",
         "phpstan/phpstan-phpunit": "^0.12",
         "phpunit/phpunit": "^8.0",
         "sensiolabs/security-checker": "^5.0",
-        "symfony/cache": "~3.4|~4.4",
-        "symfony/http-client": "^4.3",
-        "vimeo/psalm": "^3.4"
+        "symfony/cache": "~4.4|~5.1",
+        "symfony/http-client": "^4.4|~5.1",
+        "vimeo/psalm": "^3.12"
     },
     "suggest": {
         "symfony/cache": "Allows use of Symfony Cache adapters to store transactions",

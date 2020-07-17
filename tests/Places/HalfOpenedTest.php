@@ -24,7 +24,7 @@ class HalfOpenedTest extends PlaceTestCase
 
         self::assertSame(0, $halfOpenPlace->getFailures());
         self::assertSame($timeout, $halfOpenPlace->getTimeout());
-        self::assertSame(0.0, $halfOpenPlace->getThreshold());
+        self::assertSame(0, $halfOpenPlace->getThreshold());
     }
 
     /**

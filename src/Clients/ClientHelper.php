@@ -36,6 +36,11 @@ abstract class ClientHelper implements Client
         return self::DEFAULT_METHOD;
     }
 
+    protected function convertToSeconds(int $milliseconds): float
+    {
+        return $milliseconds / 1000;
+    }
+
     /**
      * {@inheritdoc}
      */

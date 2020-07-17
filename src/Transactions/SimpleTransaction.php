@@ -38,11 +38,11 @@ final class SimpleTransaction implements Transaction
      * @param Service $service the service
      * @param int $failures the allowed failures
      * @param string $state the circuit breaker state/place
-     * @param float $threshold the place threshold
+     * @param int $threshold the place threshold
      *
      * @throws InvalidTransaction
      */
-    public function __construct(Service $service, int $failures, string $state, float $threshold)
+    public function __construct(Service $service, int $failures, string $state, int $threshold)
     {
         $this->validate($service, $failures, $state, $threshold);
 
@@ -87,11 +87,11 @@ final class SimpleTransaction implements Transaction
     /**
      * {@inheritdoc}
      */
-    public function incrementFailures(): bool
+    public function incrementFailures(): int
     {
         ++$this->failures;
 
-        return true;
+        return $this->failures;
     }
 
     /**
@@ -127,14 +127,15 @@ final class SimpleTransaction implements Transaction
     /**
      * Set the right DateTime from the threshold value.
      *
-     * @param float $threshold the Transaction threshold
+     * @param int $threshold the Transaction threshold (in ms)
      *
      * @throws \Exception
      */
-    private function initThresholdDateTime(float $threshold): void
+    private function initThresholdDateTime(int $threshold): void
     {
         $thresholdDateTime = new DateTime();
-        $thresholdDateTime->modify("+$threshold second");
+        $thresholdInSeconds = $threshold / 1000;
+        $thresholdDateTime->modify("+$thresholdInSeconds second");
 
         $this->thresholdDateTime = $thresholdDateTime;
     }
@@ -145,16 +146,16 @@ final class SimpleTransaction implements Transaction
      * @param Service $service the service
      * @param int $failures the failures should be a positive value
      * @param string $state the Circuit Breaker state
-     * @param float $threshold the threshold should be a positive value
+     * @param int $threshold the threshold should be a positive value (in ms)
      *
      * @throws InvalidTransaction
      */
-    private function validate(Service $service, int $failures, string $state, float $threshold): bool
+    private function validate(Service $service, int $failures, string $state, int $threshold): bool
     {
         $assertionsAreValid = Assert::isAService($service)
             && Assert::isPositiveInteger($failures)
             && Assert::isString($state)
-            && Assert::isPositiveValue($threshold);
+            && Assert::isPositiveInteger($threshold);
 
         if ($assertionsAreValid) {
             return true;

@@ -21,7 +21,7 @@ class OpenedTest extends PlaceTestCase
         $closedPlace = new Opened($threshold);
 
         self::assertSame(0, $closedPlace->getFailures());
-        self::assertSame(0.0, $closedPlace->getTimeout());
+        self::assertSame(0, $closedPlace->getTimeout());
         self::assertSame($threshold, $closedPlace->getThreshold());
     }
 
@@ -43,7 +43,7 @@ class OpenedTest extends PlaceTestCase
 
     public function testGetExpectedState(): void
     {
-        $closedPlace = new Opened(1.0);
+        $closedPlace = new Opened(1000);
 
         self::assertSame(States::OPEN_STATE, $closedPlace->getState());
     }

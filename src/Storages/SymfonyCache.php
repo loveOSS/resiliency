@@ -2,10 +2,11 @@
 
 namespace Resiliency\Storages;
 
-use Psr\SimpleCache\CacheInterface;
 use Resiliency\Contracts\Storage;
 use Resiliency\Contracts\Transaction;
 use Resiliency\Exceptions\TransactionNotFound;
+use Symfony\Component\Cache\Adapter\AdapterInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 
 /**
  * Implementation of Storage using the Symfony Cache Component.
@@ -13,13 +14,13 @@ use Resiliency\Exceptions\TransactionNotFound;
 final class SymfonyCache implements Storage
 {
     /**
-     * @var CacheInterface the Symfony Cache
+     * @var AdapterInterface the Symfony Cache
      */
     private $symfonyCache;
 
-    public function __construct(CacheInterface $symfonyCache)
+    public function __construct(AdapterInterface $cache)
     {
-        $this->symfonyCache = $symfonyCache;
+        $this->symfonyCache = $cache;
     }
 
     /**
@@ -27,9 +28,10 @@ final class SymfonyCache implements Storage
      */
     public function saveTransaction(string $serviceUri, Transaction $transaction): bool
     {
-        $key = $this->getKey($serviceUri);
+        $item = $this->getItem($serviceUri);
+        $item->set($transaction);
 
-        return $this->symfonyCache->set($key, $transaction);
+        return $this->symfonyCache->save($item);
     }
 
     /**
@@ -37,10 +39,8 @@ final class SymfonyCache implements Storage
      */
     public function getTransaction(string $serviceUri): Transaction
     {
-        $key = $this->getKey($serviceUri);
-
         if ($this->hasTransaction($serviceUri)) {
-            $transaction = $this->symfonyCache->get($key);
+            $transaction = $this->getItem($serviceUri)->get();
 
             if ($transaction instanceof Transaction) {
                 return $transaction;
@@ -55,9 +55,9 @@ final class SymfonyCache implements Storage
      */
     public function hasTransaction(string $serviceUri): bool
     {
-        $key = $this->getKey($serviceUri);
+        $item = $this->getItem($serviceUri);
 
-        return $this->symfonyCache->has($key);
+        return $item->isHit();
     }
 
     /**
@@ -73,10 +73,10 @@ final class SymfonyCache implements Storage
      *
      * @param string $service the service URI
      *
-     * @return string the transaction unique identifier
+     * @return ItemInterface the Cache Item
      */
-    private function getKey(string $service): string
+    private function getItem(string $service): ItemInterface
     {
-        return md5($service);
+        return $this->symfonyCache->getItem(md5($service));
     }
 }

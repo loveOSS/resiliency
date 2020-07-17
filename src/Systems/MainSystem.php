@@ -29,16 +29,16 @@ final class MainSystem implements System
     /**
      * @param Client $client the client
      * @param int $failures the number of allowed failures
-     * @param float $timeout the timeout in milliseconds
-     * @param float $strippedTimeout the timeout in milliseconds when trying again
-     * @param float $threshold the timeout in milliseconds before trying again
+     * @param int $timeout the timeout in milliseconds
+     * @param int $strippedTimeout the timeout in milliseconds when trying again
+     * @param int $threshold the timeout in milliseconds before trying again
      */
     public function __construct(
         Client $client,
         int $failures,
-        float $timeout,
-        float $strippedTimeout,
-        float $threshold
+        int $timeout,
+        int $strippedTimeout,
+        int $threshold
     ) {
         $closedPlace = new Closed($client, $failures, $timeout);
         $halfOpenPlace = new HalfOpened($client, $strippedTimeout);
@@ -77,14 +77,14 @@ final class MainSystem implements System
     public static function createFromArray(array $settings, Client $client): self
     {
         if (self::validate($settings)) {
-            $timeout = (float) $settings['timeout'];
+            $timeout = (int) $settings['timeout'];
             if (self::validateTimeout($timeout)) {
                 return new self(
                     $client,
                     (int) $settings['failures'],
                     $timeout,
-                    (float) $settings['stripped_timeout'],
-                    (float) $settings['threshold']
+                    (int) $settings['stripped_timeout'],
+                    (int) $settings['threshold']
                 );
             }
 
@@ -112,12 +112,12 @@ final class MainSystem implements System
     /**
      * Ensure the configured timeout is valid.
      *
-     * @param float $timeout the system tiemout
+     * @param int $timeout the system timeout
      */
-    private static function validateTimeout(float $timeout): bool
+    private static function validateTimeout(int $timeout): bool
     {
         $maxExecutionTime = ini_get('max_execution_time');
 
-        return $maxExecutionTime == 0 || $maxExecutionTime >= $timeout;
+        return (0 === (int) $maxExecutionTime) || ($maxExecutionTime >= $timeout);
     }
 }

@@ -24,12 +24,12 @@ final class Closed extends PlaceHelper
     /**
      * @param Client $client the Client
      * @param int $failures the Place failures
-     * @param float $timeout the Place timeout
+     * @param int $timeout the Place timeout
      */
-    public function __construct(Client $client, int $failures, float $timeout)
+    public function __construct(Client $client, int $failures, int $timeout)
     {
         $this->client = $client;
-        parent::__construct($failures, $timeout, 0.0);
+        parent::__construct($failures, $timeout, 0);
     }
 
     /**

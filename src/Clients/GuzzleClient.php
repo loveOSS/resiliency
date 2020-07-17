@@ -24,8 +24,8 @@ class GuzzleClient extends ClientHelper
             $client = new OriginalGuzzleClient($this->mainOptions);
             $method = $this->defineMethod($service->getParameters());
             $options['http_errors'] = true;
-            $options['connect_timeout'] = $place->getTimeout();
-            $options['timeout'] = $place->getTimeout();
+            $options['connect_timeout'] = $this->convertToSeconds($place->getTimeout());
+            $options['timeout'] = $this->convertToSeconds($place->getTimeout());
 
             $clientParameters = array_merge($service->getParameters(), $options);
 

@@ -12,8 +12,8 @@ class PlaceTestCase extends TestCase
     public function getFixtures(): array
     {
         return [
-            '0_0_0' => [0, 0.0, 0.0],
-            '1_100_0' => [1, 100.0, 0.0],
+            '0_0_0' => [0, 0, 0],
+            '1_100_0' => [1, 100, 0],
         ];
     }
 
