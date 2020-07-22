@@ -40,7 +40,7 @@ $mainSystem = MainSystem::createFromArray([
     'failures' => 2,
     'timeout' => 100,
     'stripped_timeout' => 200,
-    'threshold' => 10.0,
+    'threshold' => 10000,
 ], $client);
 
 $storage = new SimpleArray();
@@ -74,7 +74,7 @@ $circuitBreaker->call(
 
 ### Clients
 
-Since v2, Resiliency library supports both Guzzle (v6 & v7) and HttpClient Component from Symfony.
+Since v2, Resiliency library supports both Guzzle (v6 & v7) and HttpClient Component from Symfony (v4 & v5).
 
 > For the Guzzle implementation, look at the Client options
 > in the [HttpGuzzle documentation](http://docs.guzzlephp.org/en/stable/index.html).
