@@ -16,6 +16,7 @@ use Resiliency\MainCircuitBreaker;
 use Resiliency\Storages\SymfonyCache;
 use stdClass;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
+use Symfony\Component\Cache\Psr16Cache;
 
 /**
  * Validates that the right events are dispatched.
@@ -103,7 +104,7 @@ class SymfonyCircuitBreakerEventsTest extends CircuitBreakerTestCase
     {
         $system = $this->getSystem();
 
-        $symfonyCache = new SymfonyCache(new ArrayAdapter());
+        $symfonyCache = new SymfonyCache(new Psr16Cache(new ArrayAdapter()));
         $eventDispatcherS = $this->createMock(EventDispatcherInterface::class);
         $eventDispatcherS->expects($this->spy = self::any())
             ->method('dispatch')
