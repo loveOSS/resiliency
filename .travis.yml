@@ -24,6 +24,7 @@ script:
   - composer phpstan
   - composer psalm
   - composer phpqa
+  - composer rector
   - composer security-checker
 
 after_success:

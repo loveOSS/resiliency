@@ -8,20 +8,13 @@ use Resiliency\Contracts\Service;
 
 final class SimpleReportEntry implements ReportEntry
 {
-    /**
-     * @var Service the Service called
-     */
-    private $service;
-
-    /**
-     * @var CircuitBreaker the Circuit Breaker called
-     */
-    private $circuitBreaker;
+    private Service $service;
+    private CircuitBreaker $circuitBreaker;
 
     /**
      * @var string the Circuit Breaker transition
      */
-    private $transition;
+    private string $transition;
 
     public function __construct(Service $service, CircuitBreaker $circuitBreaker, string $transition)
     {

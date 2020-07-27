@@ -8,10 +8,7 @@ use Resiliency\Contracts\Service;
 
 abstract class ClientHelper implements Client
 {
-    /**
-     * @var array the Client main options
-     */
-    protected $mainOptions;
+    protected array $mainOptions;
 
     public function __construct(array $mainOptions = [])
     {
@@ -38,7 +35,7 @@ abstract class ClientHelper implements Client
 
     protected function convertToSeconds(int $milliseconds): float
     {
-        return $milliseconds / 1000;
+        return $milliseconds / 1_000;
     }
 
     /**

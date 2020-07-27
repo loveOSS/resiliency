@@ -12,31 +12,11 @@ use Resiliency\Utils\Assert;
 
 abstract class PlaceHelper implements Place
 {
-    /**
-     * @var int the Place failures
-     */
-    private $failures;
+    private int $failures;
+    private int $timeout;
+    private int $threshold;
+    protected CircuitBreaker $circuitBreaker;
 
-    /**
-     * @var int the Place timeout
-     */
-    private $timeout;
-
-    /**
-     * @var int the Place threshold
-     */
-    private $threshold;
-
-    /**
-     * @var CircuitBreaker the Circuit Breaker
-     */
-    protected $circuitBreaker;
-
-    /**
-     * @param int $failures the Place failures
-     * @param int $timeout the Place timeout
-     * @param int $threshold the Place threshold
-     */
     public function __construct(int $failures, int $timeout, int $threshold)
     {
         $this->validate($failures, $timeout, $threshold);
@@ -126,8 +106,6 @@ abstract class PlaceHelper implements Place
 
     /**
      * Helper to return the fallback Response.
-     *
-     * @return string the configurated fallback
      */
     protected function useFallback(Transaction $transaction, callable $fallback): string
     {
@@ -139,13 +117,7 @@ abstract class PlaceHelper implements Place
     /**
      * Ensure the place is valid
      *
-     * @param int $failures the failures should be a positive value
-     * @param int $timeout the timeout should be a positive value
-     * @param int $threshold the threshold should be a positive value
-     *
      * @throws InvalidPlace
-     *
-     * @return bool true if valid
      */
     private function validate(int $failures, int $timeout, int $threshold): bool
     {

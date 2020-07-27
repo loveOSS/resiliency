@@ -24,15 +24,8 @@ final class MainSystem implements System
     /**
      * @var Place[] the list of System places
      */
-    private $places;
+    private array $places;
 
-    /**
-     * @param Client $client the client
-     * @param int $failures the number of allowed failures
-     * @param int $timeout the timeout in milliseconds
-     * @param int $strippedTimeout the timeout in milliseconds when trying again
-     * @param int $threshold the timeout in milliseconds before trying again
-     */
     public function __construct(
         Client $client,
         int $failures,
@@ -70,8 +63,6 @@ final class MainSystem implements System
     }
 
     /**
-     * @param array $settings the settings for the Places
-     *
      * @throws InvalidSystem
      */
     public static function createFromArray(array $settings, Client $client): self
@@ -94,11 +85,6 @@ final class MainSystem implements System
         throw InvalidSystem::missingSettings($settings);
     }
 
-    /**
-     * Ensure the system is valid.
-     *
-     * @param array $settings the system settings
-     */
     private static function validate(array $settings): bool
     {
         return isset(
@@ -109,11 +95,6 @@ final class MainSystem implements System
         );
     }
 
-    /**
-     * Ensure the configured timeout is valid.
-     *
-     * @param int $timeout the system timeout
-     */
     private static function validateTimeout(int $timeout): bool
     {
         $maxExecutionTime = ini_get('max_execution_time');

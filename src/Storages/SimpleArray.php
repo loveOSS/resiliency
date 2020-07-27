@@ -11,10 +11,7 @@ use Resiliency\Exceptions\TransactionNotFound;
  */
 final class SimpleArray implements Storage
 {
-    /**
-     * @var array the circuit breaker transactions
-     */
-    public $transactions = [];
+    public array $transactions = [];
 
     /**
      * {@inheritdoc}

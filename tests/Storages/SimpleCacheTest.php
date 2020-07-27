@@ -5,23 +5,20 @@ namespace Tests\Resiliency\Storages;
 use PHPUnit\Framework\TestCase;
 use Resiliency\Contracts\Transaction;
 use Resiliency\Exceptions\TransactionNotFound;
-use Resiliency\Storages\SymfonyCache;
+use Resiliency\Storages\SimpleCache;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Psr16Cache;
 
-class SymfonyCacheTest extends TestCase
+class SimpleCacheTest extends TestCase
 {
-    /**
-     * @var SymfonyCache the Symfony Cache storage
-     */
-    private $symfonyCache;
+    private ?SimpleCache $simpleCache = null;
 
     /**
      * {@inheritdoc}
      */
     protected function setUp(): void
     {
-        $this->symfonyCache = new SymfonyCache(
+        $this->simpleCache = new SimpleCache(
             new Psr16Cache(new FilesystemAdapter('ps__circuit_breaker', 20)
         ));
     }
@@ -37,11 +34,11 @@ class SymfonyCacheTest extends TestCase
 
     public function testCreation(): void
     {
-        $symfonyCache = new SymfonyCache(
+        $symfonyCache = new SimpleCache(
             new Psr16Cache(new FilesystemAdapter('ps__circuit_breaker'))
         );
 
-        self::assertInstanceOf(SymfonyCache::class, $symfonyCache);
+        self::assertInstanceOf(SimpleCache::class, $symfonyCache);
     }
 
     /**
@@ -49,7 +46,7 @@ class SymfonyCacheTest extends TestCase
      */
     public function testSaveTransaction(): void
     {
-        $operation = $this->symfonyCache->saveTransaction(
+        $operation = $this->simpleCache->saveTransaction(
             'http://test.com',
             $this->createMock(Transaction::class)
         );
@@ -63,9 +60,9 @@ class SymfonyCacheTest extends TestCase
      */
     public function testHasTransaction(): void
     {
-        $this->symfonyCache->saveTransaction('http://test.com', $this->createMock(Transaction::class));
+        $this->simpleCache->saveTransaction('http://test.com', $this->createMock(Transaction::class));
 
-        self::assertTrue($this->symfonyCache->hasTransaction('http://test.com'));
+        self::assertTrue($this->simpleCache->hasTransaction('http://test.com'));
     }
 
     /**
@@ -76,9 +73,9 @@ class SymfonyCacheTest extends TestCase
     public function testGetTransaction(): void
     {
         $translationStub = $this->createMock(Transaction::class);
-        $this->symfonyCache->saveTransaction('http://test.com', $translationStub);
+        $this->simpleCache->saveTransaction('http://test.com', $translationStub);
 
-        $transaction = $this->symfonyCache->getTransaction('http://test.com');
+        $transaction = $this->simpleCache->getTransaction('http://test.com');
 
         self::assertEquals($transaction, $translationStub);
     }
@@ -92,7 +89,7 @@ class SymfonyCacheTest extends TestCase
     {
         $this->expectException(TransactionNotFound::class);
 
-        $this->symfonyCache->getTransaction('http://test.com');
+        $this->simpleCache->getTransaction('http://test.com');
     }
 
     /**
@@ -102,13 +99,13 @@ class SymfonyCacheTest extends TestCase
     public function testClear(): void
     {
         $translationStub = $this->createMock(Transaction::class);
-        $this->symfonyCache->saveTransaction('http://a.com', $translationStub);
-        $this->symfonyCache->saveTransaction('http://b.com', $translationStub);
+        $this->simpleCache->saveTransaction('http://a.com', $translationStub);
+        $this->simpleCache->saveTransaction('http://b.com', $translationStub);
 
         // We have stored 2 transactions
-        self::assertTrue($this->symfonyCache->clear());
+        self::assertTrue($this->simpleCache->clear());
         $this->expectException(TransactionNotFound::class);
 
-        $this->symfonyCache->getTransaction('http://a.com');
+        $this->simpleCache->getTransaction('http://a.com');
     }
 }

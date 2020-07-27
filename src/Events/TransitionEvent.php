@@ -8,15 +8,8 @@ use Resiliency\Contracts\Service;
 
 abstract class TransitionEvent implements Event
 {
-    /**
-     * @var CircuitBreaker the Circuit Breaker
-     */
-    private $circuitBreaker;
-
-    /**
-     * @var Service the Service URI
-     */
-    private $service;
+    private CircuitBreaker $circuitBreaker;
+    private Service $service;
 
     /**
      * @param CircuitBreaker $circuitBreaker the circuit breaker

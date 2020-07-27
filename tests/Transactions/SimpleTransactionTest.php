@@ -18,7 +18,7 @@ class SimpleTransactionTest extends CircuitBreakerTestCase
             $this->getService('http://some-uri.domain'),
             0,
             $placeStub->getState(),
-            2000
+            2_000
         );
 
         self::assertInstanceOf(SimpleTransaction::class, $simpleTransaction);
@@ -114,7 +114,7 @@ class SimpleTransactionTest extends CircuitBreakerTestCase
 
         $placeStub->expects(self::any())
             ->method('getThreshold')
-            ->willReturn(-1000)
+            ->willReturn(-1_000)
         ;
 
         SimpleTransaction::createFromPlace($placeStub, $this->getService('http://some-uri.domain'));
@@ -128,7 +128,7 @@ class SimpleTransactionTest extends CircuitBreakerTestCase
             $this->getService('http://some-uri.domain'),
             0,
             $placeStub->getState(),
-            2000
+            2_000
         );
     }
 
@@ -149,7 +149,7 @@ class SimpleTransactionTest extends CircuitBreakerTestCase
 
         $placeStub->expects(self::any())
             ->method('getThreshold')
-            ->willReturn(2000)
+            ->willReturn(2_000)
         ;
 
         return $placeStub;

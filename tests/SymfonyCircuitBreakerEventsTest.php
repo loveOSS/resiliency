@@ -13,7 +13,7 @@ use Resiliency\Events\Opened;
 use Resiliency\Events\Reseted;
 use Resiliency\Events\Tried;
 use Resiliency\MainCircuitBreaker;
-use Resiliency\Storages\SymfonyCache;
+use Resiliency\Storages\SimpleCache;
 use stdClass;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\Cache\Psr16Cache;
@@ -25,17 +25,13 @@ class SymfonyCircuitBreakerEventsTest extends CircuitBreakerTestCase
 {
     /**
      * Used to track the dispatched events.
-     *
-     * @var AnyInvokedCount
      */
-    private $spy;
+    private ?\PHPUnit\Framework\MockObject\Rule\AnyInvokedCount $spy = null;
 
     /**
      * The list of invocations of the stubbed event dispatcher
-     *
-     * @var array
      */
-    private $invocations;
+    private array $invocations;
 
     /**
      * We should see the circuit breaker initialized,
@@ -49,9 +45,7 @@ class SymfonyCircuitBreakerEventsTest extends CircuitBreakerTestCase
 
         $circuitBreaker->call(
             'https://httpbin.org/get/foobar',
-            function () {
-                return '{}';
-            }
+            fn () => '{}'
         );
 
         /**
@@ -75,9 +69,7 @@ class SymfonyCircuitBreakerEventsTest extends CircuitBreakerTestCase
 
         $circuitBreaker->call(
             $service,
-            function () {
-                return '{}';
-            }
+            fn () => '{}'
         );
 
         $circuitBreaker->isolate($service);
@@ -104,7 +96,7 @@ class SymfonyCircuitBreakerEventsTest extends CircuitBreakerTestCase
     {
         $system = $this->getSystem();
 
-        $symfonyCache = new SymfonyCache(new Psr16Cache(new ArrayAdapter()));
+        $symfonyCache = new SimpleCache(new Psr16Cache(new ArrayAdapter()));
         $eventDispatcherS = $this->createMock(EventDispatcherInterface::class);
         $eventDispatcherS->expects($this->spy = self::any())
             ->method('dispatch')
