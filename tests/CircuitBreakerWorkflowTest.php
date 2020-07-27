@@ -13,6 +13,7 @@ use Resiliency\Places\Opened;
 use Resiliency\Storages\SymfonyCache;
 use stdClass;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
+use Symfony\Component\Cache\Psr16Cache;
 
 class CircuitBreakerWorkflowTest extends CircuitBreakerTestCase
 {
@@ -159,7 +160,7 @@ class CircuitBreakerWorkflowTest extends CircuitBreakerTestCase
      */
     private function createCircuitBreaker(): MainCircuitBreaker
     {
-        $symfonyCache = new SymfonyCache(new ArrayAdapter());
+        $symfonyCache = new SymfonyCache(new Psr16Cache(new ArrayAdapter()));
         $eventDispatcherS = $this->createMock(EventDispatcherInterface::class);
         $eventDispatcherS->method('dispatch')
             ->willReturn($this->createMock(stdClass::class))

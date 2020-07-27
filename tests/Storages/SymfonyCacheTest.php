@@ -7,6 +7,7 @@ use Resiliency\Contracts\Transaction;
 use Resiliency\Exceptions\TransactionNotFound;
 use Resiliency\Storages\SymfonyCache;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\Cache\Psr16Cache;
 
 class SymfonyCacheTest extends TestCase
 {
@@ -21,8 +22,8 @@ class SymfonyCacheTest extends TestCase
     protected function setUp(): void
     {
         $this->symfonyCache = new SymfonyCache(
-            new FilesystemAdapter('ps__circuit_breaker', 20)
-        );
+            new Psr16Cache(new FilesystemAdapter('ps__circuit_breaker', 20)
+        ));
     }
 
     /**
@@ -37,7 +38,7 @@ class SymfonyCacheTest extends TestCase
     public function testCreation(): void
     {
         $symfonyCache = new SymfonyCache(
-            new FilesystemAdapter('ps__circuit_breaker')
+            new Psr16Cache(new FilesystemAdapter('ps__circuit_breaker'))
         );
 
         self::assertInstanceOf(SymfonyCache::class, $symfonyCache);
