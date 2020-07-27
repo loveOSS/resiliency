@@ -7,22 +7,19 @@ use Resiliency\Contracts\Exception as ResiliencyException;
 
 final class InvalidSystem extends Exception implements ResiliencyException
 {
-    const REQUIRED_SETTINGS = [
+    private const REQUIRED_SETTINGS = [
         'timeout',
         'stripped_timeout',
         'failures',
         'threshold',
     ];
 
-    /**
-     * @param array $settings the System settings
-     */
-    public static function missingSettings(array $settings): self
+    public static function missingSettings(array $systemSettings): self
     {
         $exceptionMessage = 'Missing settings for System:' . PHP_EOL;
 
         foreach (self::REQUIRED_SETTINGS as $setting) {
-            if (!array_key_exists($setting, $settings)) {
+            if (!array_key_exists($setting, $systemSettings)) {
                 $exceptionMessage .= sprintf(
                     'The setting "%s" is missing from configuration',
                     $setting

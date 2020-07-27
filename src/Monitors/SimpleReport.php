@@ -7,10 +7,7 @@ use Resiliency\Contracts\Monitoring\ReportEntry;
 
 final class SimpleReport implements Report
 {
-    /**
-     * @var array the report entries
-     */
-    private $reportEntries;
+    private array $reportEntries;
 
     public function __construct()
     {

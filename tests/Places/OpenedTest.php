@@ -43,7 +43,7 @@ class OpenedTest extends PlaceTestCase
 
     public function testGetExpectedState(): void
     {
-        $closedPlace = new Opened(1000);
+        $closedPlace = new Opened(1_000);
 
         self::assertSame(States::OPEN_STATE, $closedPlace->getState());
     }

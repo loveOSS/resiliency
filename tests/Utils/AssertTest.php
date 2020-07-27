@@ -48,9 +48,7 @@ class AssertTest extends TestCase
             'float' => [0.1, true],
             'stdclass' => [new \stdClass(), false],
             'callable' => [
-                function () {
-                    return 0;
-                },
+                fn () => 0,
                 false,
             ],
             'negative' => [-1, false],

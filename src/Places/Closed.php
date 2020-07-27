@@ -16,16 +16,8 @@ use Resiliency\States;
  */
 final class Closed extends PlaceHelper
 {
-    /**
-     * @var Client the client
-     */
-    private $client;
+    private Client $client;
 
-    /**
-     * @param Client $client the Client
-     * @param int $failures the Place failures
-     * @param int $timeout the Place timeout
-     */
     public function __construct(Client $client, int $failures, int $timeout)
     {
         $this->client = $client;

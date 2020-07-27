@@ -13,17 +13,19 @@ final class ErrorFormatter
      * Format error message.
      *
      * @param string $parameter the parameter to evaluate
-     * @param mixed $value the value to format
-     * @param string $function the validation function
+     * @param mixed $valueToFormat the value to format
+     * @param string $validationFunction the validation function
      * @param string $expectedType the expected type
-     *
-     * @return string
      */
-    public static function format($parameter, $value, $function, $expectedType)
-    {
+    public static function format(
+        string $parameter,
+        $valueToFormat,
+        string $validationFunction,
+        string $expectedType
+    ): string {
         $errorMessage = '';
-        $isValid = (bool) Assert::$function($value);
-        $type = \gettype($value);
+        $isValid = (bool) Assert::$validationFunction($valueToFormat);
+        $type = \gettype($valueToFormat);
         $hasStringValue = \in_array($type, ['integer', 'float', 'string'], true);
 
         if (!$isValid) {
@@ -35,7 +37,7 @@ final class ErrorFormatter
             );
 
             if ($hasStringValue) {
-                $errorMessage .= sprintf(' (%s)', (string) $value);
+                $errorMessage .= sprintf(' (%s)', (string) $valueToFormat);
             }
 
             $errorMessage .= PHP_EOL;

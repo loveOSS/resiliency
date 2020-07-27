@@ -31,25 +31,14 @@ final class MainCircuitBreaker implements CircuitBreaker
         $this->dispatcher = $dispatcher;
     }
 
-    /**
-     * @var Place the current Place of the Circuit Breaker
-     */
-    private $currentPlace;
+    private Place $currentPlace;
 
     /**
      * @var Place[] the Circuit Breaker places
      */
-    private $places;
-
-    /**
-     * @var Storage the Circuit Breaker storage
-     */
-    private $storage;
-
-    /**
-     * @var EventDispatcherInterface the Circuit Breaker transition dispatcher
-     */
-    private $dispatcher;
+    private array $places;
+    private Storage $storage;
+    private EventDispatcherInterface $dispatcher;
 
     /**
      * {@inheritdoc}

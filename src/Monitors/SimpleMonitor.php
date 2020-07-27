@@ -8,10 +8,7 @@ use Resiliency\Contracts\Monitoring\Report;
 
 final class SimpleMonitor implements Monitor
 {
-    /**
-     * @var Report the report
-     */
-    private $report;
+    private Report $report;
 
     public function __construct()
     {

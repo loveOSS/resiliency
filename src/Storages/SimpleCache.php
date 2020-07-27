@@ -8,18 +8,15 @@ use Resiliency\Contracts\Transaction;
 use Resiliency\Exceptions\TransactionNotFound;
 
 /**
- * Implementation of Storage using the Symfony Cache Component.
+ * Implementation of Storage on PSR-16 using the Symfony Cache Component.
  */
-final class SymfonyCache implements Storage
+final class SimpleCache implements Storage
 {
-    /**
-     * @var CacheInterface the Symfony Cache
-     */
-    private $symfonyCache;
+    private CacheInterface $psr16Cache;
 
-    public function __construct(CacheInterface $symfonyCache)
+    public function __construct(CacheInterface $psr16Cache)
     {
-        $this->symfonyCache = $symfonyCache;
+        $this->psr16Cache = $psr16Cache;
     }
 
     /**
@@ -29,7 +26,7 @@ final class SymfonyCache implements Storage
     {
         $key = $this->getKey($serviceUri);
 
-        return $this->symfonyCache->set($key, $transaction);
+        return $this->psr16Cache->set($key, $transaction);
     }
 
     /**
@@ -40,7 +37,7 @@ final class SymfonyCache implements Storage
         $key = $this->getKey($serviceUri);
 
         if ($this->hasTransaction($serviceUri)) {
-            $transaction = $this->symfonyCache->get($key);
+            $transaction = $this->psr16Cache->get($key);
 
             if ($transaction instanceof Transaction) {
                 return $transaction;
@@ -57,7 +54,7 @@ final class SymfonyCache implements Storage
     {
         $key = $this->getKey($serviceUri);
 
-        return $this->symfonyCache->has($key);
+        return $this->psr16Cache->has($key);
     }
 
     /**
@@ -65,7 +62,7 @@ final class SymfonyCache implements Storage
      */
     public function clear(): bool
     {
-        return $this->symfonyCache->clear();
+        return $this->psr16Cache->clear();
     }
 
     /**

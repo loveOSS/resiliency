@@ -11,14 +11,10 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 /**
  * Symfony implementation of client.
  * The possibility of extending this client is intended.
- * /!\ The HttpClient of Symfony is experimental.
  */
 class SymfonyClient extends ClientHelper
 {
-    /**
-     * @var HttpClientInterface the Symfony HTTP client
-     */
-    private $httpClient;
+    private HttpClientInterface $httpClient;
 
     public function __construct(
         HttpClientInterface $httpClient,

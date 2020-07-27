@@ -22,14 +22,8 @@ use Resiliency\States;
  */
 final class HalfOpened extends PlaceHelper
 {
-    /**
-     * @var Client the client
-     */
-    private $client;
+    private Client $client;
 
-    /**
-     * @param int $timeout the Place timeout
-     */
     public function __construct(Client $client, int $timeout)
     {
         $this->client = $client;

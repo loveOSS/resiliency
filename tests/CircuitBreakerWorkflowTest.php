@@ -10,7 +10,7 @@ use Resiliency\MainCircuitBreaker;
 use Resiliency\Places\Closed;
 use Resiliency\Places\Isolated;
 use Resiliency\Places\Opened;
-use Resiliency\Storages\SymfonyCache;
+use Resiliency\Storages\SimpleCache;
 use stdClass;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\Cache\Psr16Cache;
@@ -25,7 +25,7 @@ class CircuitBreakerWorkflowTest extends CircuitBreakerTestCase
     /**
      * @var CircuitBreaker the circuit breaker
      */
-    private $circuitBreaker;
+    private CircuitBreaker $circuitBreaker;
 
     /**
      * When we use the circuit breaker on unreachable service
@@ -160,7 +160,7 @@ class CircuitBreakerWorkflowTest extends CircuitBreakerTestCase
      */
     private function createCircuitBreaker(): MainCircuitBreaker
     {
-        $symfonyCache = new SymfonyCache(new Psr16Cache(new ArrayAdapter()));
+        $symfonyCache = new SimpleCache(new Psr16Cache(new ArrayAdapter()));
         $eventDispatcherS = $this->createMock(EventDispatcherInterface::class);
         $eventDispatcherS->method('dispatch')
             ->willReturn($this->createMock(stdClass::class))
@@ -178,8 +178,6 @@ class CircuitBreakerWorkflowTest extends CircuitBreakerTestCase
      */
     private function createFallbackResponse(): callable
     {
-        return function ($service) {
-            return '{"uri": ' . $service->getUri() . '"}';
-        };
+        return fn ($service) => '{"uri": ' . $service->getUri() . '"}';
     }
 }

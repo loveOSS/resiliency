@@ -3,6 +3,7 @@
 namespace Resiliency\Transactions;
 
 use DateTime;
+use Exception;
 use Resiliency\Contracts\Place;
 use Resiliency\Contracts\Service;
 use Resiliency\Contracts\Transaction;
@@ -14,32 +15,12 @@ use Resiliency\Utils\Assert;
  */
 final class SimpleTransaction implements Transaction
 {
-    /**
-     * @var Service the service
-     */
-    private $service;
+    private Service $service;
+    private int $failures;
+    private string $state;
+    private DateTime $thresholdDateTime;
 
     /**
-     * @var int the failures when we call the service
-     */
-    private $failures;
-
-    /**
-     * @var string the Circuit Breaker state
-     */
-    private $state;
-
-    /**
-     * @var DateTime the Transaction threshold datetime
-     */
-    private $thresholdDateTime;
-
-    /**
-     * @param Service $service the service
-     * @param int $failures the allowed failures
-     * @param string $state the circuit breaker state/place
-     * @param int $threshold the place threshold
-     *
      * @throws InvalidTransaction
      */
     public function __construct(Service $service, int $failures, string $state, int $threshold)
@@ -105,11 +86,6 @@ final class SimpleTransaction implements Transaction
     }
 
     /**
-     * Helper to create a transaction from the Place.
-     *
-     * @param Place $place the Circuit Breaker place
-     * @param Service $service the service URI
-     *
      * @throws InvalidTransaction
      */
     public static function createFromPlace(Place $place, Service $service): self
@@ -127,27 +103,18 @@ final class SimpleTransaction implements Transaction
     /**
      * Set the right DateTime from the threshold value.
      *
-     * @param int $threshold the Transaction threshold (in ms)
-     *
-     * @throws \Exception
+     * @throws Exception
      */
     private function initThresholdDateTime(int $threshold): void
     {
         $thresholdDateTime = new DateTime();
-        $thresholdInSeconds = $threshold / 1000;
+        $thresholdInSeconds = $threshold / 1_000;
         $thresholdDateTime->modify("+$thresholdInSeconds second");
 
         $this->thresholdDateTime = $thresholdDateTime;
     }
 
     /**
-     * Ensure the transaction is valid.
-     *
-     * @param Service $service the service
-     * @param int $failures the failures should be a positive value
-     * @param string $state the Circuit Breaker state
-     * @param int $threshold the threshold should be a positive value (in ms)
-     *
      * @throws InvalidTransaction
      */
     private function validate(Service $service, int $failures, string $state, int $threshold): bool
