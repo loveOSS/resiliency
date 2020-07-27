@@ -74,13 +74,7 @@ $circuitBreaker->call(
 
 ### Clients
 
-Since v2, Resiliency library supports both Guzzle (v6 & v7) and HttpClient Component from Symfony (v4 & v5).
-
-> For the Guzzle implementation, look at the Client options
-> in the [HttpGuzzle documentation](http://docs.guzzlephp.org/en/stable/index.html).
-
-> For the Symfony implementation, look at the Client options
-> in the [HttpClient Component documentation](https://symfony.com/doc/current/components/http_client.html).
+Resiliency library supports both [Guzzle (v6 & v7)](http://docs.guzzlephp.org/en/stable/index.html) and HttpClient Component from [Symfony (v4 & v5)](https://symfony.com/doc/current/components/http_client.html).
 
 ### Monitoring
 
@@ -110,7 +104,7 @@ composer test
 This library has high quality standards:
 
 ```
-composer cs-fix && composer phpstan && composer psalm
+composer cs-fix && composer phpstan && composer psalm && composer rector
 ```
 
 We also use [PHPQA](https://github.com/EdgedesignCZ/phpqa#phpqa) to check the Code quality
