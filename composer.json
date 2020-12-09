@@ -27,7 +27,6 @@
         "phpstan/phpstan": "^0.12",
         "phpstan/phpstan-phpunit": "^0.12",
         "phpunit/phpunit": "^8.0",
-        "rector/rector": "^0.8",
         "sensiolabs/security-checker": "^5.0",
         "symfony/cache": "~4.4|~5.1",
         "symfony/http-client": "^4.4|~5.1",
@@ -55,7 +54,6 @@
         "cs-fix": "@php ./vendor/bin/php-cs-fixer fix",
         "test": "@php ./vendor/bin/phpunit",
         "phpqa": "@php ./vendor/bin/phpqa --report --tools phpcs:0,phpmd:0,phpmetrics,phploc,pdepend,security-checker:0,parallel-lint:0 --ignoredDirs tests,vendor",
-        "rector": "@php ./vendor/bin/rector process src tests --set code-quality",
         "security-checker": "@php ./vendor/bin/security-checker security:check"
     },
     "scripts-descriptions": {
