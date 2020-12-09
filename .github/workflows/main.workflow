@@ -29,5 +29,5 @@ action "PHPQA" {
   needs="PHP-CS-Fixer"
   uses = "docker://mickaelandrieu/phpqa-ga"
   secrets = ["GITHUB_TOKEN"]
-  args = "--report --tools phpcs:0,phpmd:0,phpcpd:0,parallel-lint:0,phpmetrics,phploc,pdepend --ignoredDirs vendor"
+  args = "--report --tools phpcs:0,phpmd:0,parallel-lint:0,phpmetrics,phploc,pdepend --ignoredDirs vendor"
 }
