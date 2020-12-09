@@ -22,7 +22,7 @@ action "Psalm" {
   needs="PHPStan"
   uses = "docker://mickaelandrieu/psalm-ga"
   secrets = ["GITHUB_TOKEN"]
-  args = "--find-dead-code --diff --diff-methods"
+  args = "--find-dead-code --diff"
 }
 
 action "PHPQA" {

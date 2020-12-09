@@ -30,7 +30,7 @@
         "sensiolabs/security-checker": "^5.0",
         "symfony/cache": "~4.4|~5.1",
         "symfony/http-client": "^4.4|~5.1",
-        "vimeo/psalm": "^3.12"
+        "vimeo/psalm": "^4.3"
     },
     "suggest": {
         "symfony/cache": "Allows use of Symfony Cache adapters to store transactions",
@@ -50,7 +50,7 @@
     },
     "scripts": {
         "phpstan": "@php ./vendor/bin/phpstan analyse src --level max -c extension.neon",
-        "psalm": "@php ./vendor/bin/psalm --threads=8 --diff --diff-methods",
+        "psalm": "@php ./vendor/bin/psalm --threads=8 --diff",
         "cs-fix": "@php ./vendor/bin/php-cs-fixer fix",
         "test": "@php ./vendor/bin/phpunit",
         "phpqa": "@php ./vendor/bin/phpqa --report --tools phpcs:0,phpmd:0,phpmetrics,phploc,pdepend,security-checker:0,parallel-lint:0 --ignoredDirs tests,vendor",
