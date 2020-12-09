@@ -50,7 +50,7 @@
         }
     },
     "scripts": {
-        "phpstan": "@php ./vendor/bin/phpstan analyse src tests --level max -c extension.neon",
+        "phpstan": "@php ./vendor/bin/phpstan analyse src --level max -c extension.neon",
         "psalm": "@php ./vendor/bin/psalm --threads=8 --diff --diff-methods",
         "cs-fix": "@php ./vendor/bin/php-cs-fixer fix",
         "test": "@php ./vendor/bin/phpunit",
