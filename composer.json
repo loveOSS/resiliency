@@ -21,7 +21,7 @@
     },
     "require-dev": {
         "edgedesign/phpqa": "^v1.23",
-        "friendsofphp/php-cs-fixer": "^2.16",
+        "friendsofphp/php-cs-fixer": "^2.17.1",
         "guzzlehttp/guzzle": "^6.3|^7.0",
         "php-parallel-lint/php-parallel-lint": "^1.0",
         "phpstan/phpstan": "^0.12",
