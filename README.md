@@ -104,7 +104,7 @@ composer test
 This library has high quality standards:
 
 ```
-composer cs-fix && composer phpstan && composer psalm && composer rector
+composer cs-fix && composer phpstan && composer psalm && composer phpqa
 ```
 
 We also use [PHPQA](https://github.com/EdgedesignCZ/phpqa#phpqa) to check the Code quality
