@@ -1,6 +1,6 @@
 {
     "name": "love-oss/resiliency",
-    "description": "A circuit breaker implementation for PHP 7+",
+    "description": "A circuit breaker implementation for PHP 7.4+",
     "type": "library",
     "license": "MIT",
     "authors": [
