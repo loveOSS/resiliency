@@ -8,7 +8,7 @@ workflow "Code Quality" {
 
 action "PHPStan" {
   uses = "docker://oskarstark/phpstan-ga:with-extensions"
-  args = "analyse src tests --level max --configuration extension.neon"
+  args = "analyse src --level max --configuration extension.neon"
   secrets = ["GITHUB_TOKEN"]
 }
 
@@ -22,12 +22,12 @@ action "Psalm" {
   needs="PHPStan"
   uses = "docker://mickaelandrieu/psalm-ga"
   secrets = ["GITHUB_TOKEN"]
-  args = "--find-dead-code --diff --diff-methods"
+  args = "--find-dead-code --diff"
 }
 
 action "PHPQA" {
   needs="PHP-CS-Fixer"
   uses = "docker://mickaelandrieu/phpqa-ga"
   secrets = ["GITHUB_TOKEN"]
-  args = "--report --tools phpcs:0,phpmd:0,phpcpd:0,parallel-lint:0,phpmetrics,phploc,pdepend --ignoredDirs vendor"
+  args = "--report --tools phpcs:0,phpmd:0,parallel-lint:0,phpmetrics,phploc,pdepend --ignoredDirs vendor"
 }

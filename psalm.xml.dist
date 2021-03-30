@@ -45,7 +45,6 @@
         <MissingReturnType errorLevel="info" />
         <MissingPropertyType errorLevel="info" />
         <InvalidDocblock errorLevel="info" />
-        <MisplacedRequiredParam errorLevel="info" />
 
         <MissingConstructor errorLevel="info" />
         <MissingClosureParamType errorLevel="info" />

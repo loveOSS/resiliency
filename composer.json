@@ -14,24 +14,22 @@
         }
     ],
     "require": {
-        "php": "^7.4",
+        "php": "^7.4|^8.0",
         "ext-json": "*",
         "psr/event-dispatcher": "^1.0",
         "psr/simple-cache": "^1.0"
     },
     "require-dev": {
-        "edgedesign/phpqa": "^v1.23",
-        "friendsofphp/php-cs-fixer": "^2.16",
+        "edgedesign/phpqa": "^v1.24",
+        "friendsofphp/php-cs-fixer": "^2.18",
         "guzzlehttp/guzzle": "^6.3|^7.0",
         "php-parallel-lint/php-parallel-lint": "^1.0",
         "phpstan/phpstan": "^0.12",
         "phpstan/phpstan-phpunit": "^0.12",
         "phpunit/phpunit": "^8.0",
-        "rector/rector": "^0.7.54",
-        "sensiolabs/security-checker": "^5.0",
-        "symfony/cache": "~4.4|~5.1",
-        "symfony/http-client": "^4.4|~5.1",
-        "vimeo/psalm": "^3.12"
+        "symfony/cache": "~4.4|~5.2",
+        "symfony/http-client": "^4.4|~5.2",
+        "vimeo/psalm": "^4.3"
     },
     "suggest": {
         "symfony/cache": "Allows use of Symfony Cache adapters to store transactions",
@@ -50,21 +48,18 @@
         }
     },
     "scripts": {
-        "phpstan": "@php ./vendor/bin/phpstan analyse src tests -l 7 -c extension.neon",
-        "psalm": "@php ./vendor/bin/psalm --threads=8 --diff --diff-methods",
+        "phpstan": "@php ./vendor/bin/phpstan analyse src --level max -c extension.neon",
+        "psalm": "@php ./vendor/bin/psalm --threads=8 --diff",
         "cs-fix": "@php ./vendor/bin/php-cs-fixer fix",
         "test": "@php ./vendor/bin/phpunit",
-        "phpqa": "@php ./vendor/bin/phpqa --report --tools phpcs:0,phpmd:0,phpcpd:0,phpmetrics,phploc,pdepend,security-checker:0,parallel-lint:0 --ignoredDirs tests,vendor",
-        "rector": "@php ./vendor/bin/rector process src tests --set code-quality",
-        "security-checker": "@php ./vendor/bin/security-checker security:check"
+        "phpqa": "@php ./vendor/bin/phpqa --report --tools phpcs:0,phpmd:0,phpmetrics,phploc,pdepend,security-checker:0,parallel-lint:0 --ignoredDirs tests,vendor"
     },
     "scripts-descriptions": {
         "phpstan": "Execute PHPStan analysis",
         "psalm": "Execute Psalm analysis",
         "cs-fix": "Check and fix coding styles using PHP CS Fixer",
         "test": "Launch PHPUnit test suite",
-        "phpqa": "Execute PHQA toolsuite analysis",
-        "security-checker": "Executes Security Checker analysis"
+        "phpqa": "Execute PHQA toolsuite analysis"
     },
     "config": {
         "sort-packages": true
