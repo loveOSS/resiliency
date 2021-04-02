@@ -38,3 +38,6 @@ jobs:
 
       - name: "PHPQA"
         run: composer phpqa
+
+      - name: "Test suite"
+        run: composer test

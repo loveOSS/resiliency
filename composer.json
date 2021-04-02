@@ -32,9 +32,9 @@
         "vimeo/psalm": "^4.3"
     },
     "suggest": {
-        "symfony/cache": "Allows use of Symfony Cache adapters to store transactions",
         "ext-apcu": "Allows use of APCu adapter (performant) to store transactions",
         "guzzlehttp/guzzle": "Allows use of Guzzle 6 HTTP Client",
+        "symfony/cache": "Allows use of Symfony Cache adapters to store transactions",
         "symfony/http-client": "Allows use of any Symfony HTTP Clients"
     },
     "autoload": {
@@ -48,18 +48,18 @@
         }
     },
     "scripts": {
+        "cs-fix": "@php ./vendor/bin/php-cs-fixer fix",
+        "phpqa": "@php ./vendor/bin/phpqa --report --tools phpcs:0,phpmd:0,phpmetrics,phploc,pdepend,security-checker:0,parallel-lint:0 --ignoredDirs tests,vendor",
         "phpstan": "@php ./vendor/bin/phpstan analyse src --level max -c extension.neon",
         "psalm": "@php ./vendor/bin/psalm --threads=8 --diff",
-        "cs-fix": "@php ./vendor/bin/php-cs-fixer fix",
-        "test": "@php ./vendor/bin/phpunit",
-        "phpqa": "@php ./vendor/bin/phpqa --report --tools phpcs:0,phpmd:0,phpmetrics,phploc,pdepend,security-checker:0,parallel-lint:0 --ignoredDirs tests,vendor"
+        "test": "@php ./vendor/bin/phpunit"
     },
     "scripts-descriptions": {
+        "cs-fix": "Check and fix coding styles using PHP CS Fixer",
+        "phpqa": "Execute PHQA toolsuite analysis",
         "phpstan": "Execute PHPStan analysis",
         "psalm": "Execute Psalm analysis",
-        "cs-fix": "Check and fix coding styles using PHP CS Fixer",
-        "test": "Launch PHPUnit test suite",
-        "phpqa": "Execute PHQA toolsuite analysis"
+        "test": "Launch PHPUnit test suite"
     },
     "config": {
         "sort-packages": true
