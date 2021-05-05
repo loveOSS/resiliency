@@ -20,7 +20,7 @@ You need to configure a system for the Circuit Breaker:
 
 * the **failures**: define how many times we try to access the service;
 * the **timeout**: define how long we wait (in ms) before consider the service unreachable;
-* the **striped timeout**: define how long we wait (in ms) before consider the service unreachable, once we're in half open state;
+* the **stripped timeout**: define how long we wait (in ms) before consider the service unreachable, once we're in half open state;
 * the **threshold**: define how long we wait (in ms) before trying to access again the service;
 * the (HTTP|HTTPS) **client** that will be used to reach the services;
 * the **fallback** callback will be used if the distant service is unreachable when the Circuit Breaker is Open (means "is used"). 
