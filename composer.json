@@ -27,8 +27,8 @@
         "phpstan/phpstan": "^0.12",
         "phpstan/phpstan-phpunit": "^0.12",
         "phpunit/phpunit": "^8.0",
-        "symfony/cache": "~4.4|~5.2",
-        "symfony/http-client": "^4.4|~5.2",
+        "symfony/cache": "~4.4|~5.3",
+        "symfony/http-client": "^4.4|~5.3",
         "vimeo/psalm": "^4.3"
     },
     "suggest": {
