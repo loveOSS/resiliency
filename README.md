@@ -113,3 +113,38 @@ during the CI management of the contributions:
 ```
 composer phpqa
 ```
+
+ ## I've heard about the PrestaShop Circuit Breaker library : what library should I chose ?
+ 
+ Welcome, that's an interesting question !
+ 
+ Above all, I must say that I'm the former author of the PrestaShop [Circuit Breaker](https://github.com/PrestaShop/circuit-breaker) library
+ and I have decided to fork my own fork to be able to improve it outside of the constraints of PrestaShop CMS main project.
+ 
+ As of now (June, 2021), the both libraries have a lot in common !
+ 
+Mostly the same API, but PrestaShop Core Team have created their own implementations of [Circuit Breaker interface](https://github.com/PrestaShop/circuit-breaker/blob/develop/src/AdvancedCircuitBreaker.php) and [Factory](https://github.com/PrestaShop/circuit-breaker/blob/develop/src/AdvancedCircuitBreakerFactory.php) :
+
+* SimpleCircuitBreaker
+* AdvancedCircuitBreaker
+* PartialCircuitBreaker
+* SymfonyCircuitBreaker
+
+
+1. They maintain a version compatible with PHP 7.2+ and Symfony 4 but not (yet ?) with PHP 8 and Symfony 5 ;
+2. They have an hard dependency on their own package named [php-dev-tools](https://github.com/PrestaShop/php-dev-tools) ;
+3. They maintain an implementation of [Storage](https://github.com/PrestaShop/circuit-breaker/blob/v4.0.0/src/Storage/DoctrineCache.php) using Doctrine Cache library ;
+4. They don't have a Symfony HttpClient implementation ;
+5. For the events, I'm not sure as their implementation make the list difficult to establish ;
+6. They don't provide a mecanism to reset and restore a Circuit Breaker ;
+7. They don't provide a mecanism to monitor the activity of a Circuit Breaker ;
+8. They have removed [Psalm](https://psalm.dev/) from their CI and they don't use [PHPQA](https://github.com/EdgedesignCZ/phpqa) ;
+9. They have added `declare(strict_types=1);` on all the files (which is useless in Resiliency as there is no situation where PHP could try to cast) ;
+
+> All right ... but this don't tell me what library should I use in my project !
+
+* If you need PHP 5.6, use Circuit Breaker v3
+* If you need PHP 7.2, use Circuit Breaker v4
+* If you need PHP 7.4+, use Resiliency
+* If you need a library to be maintained by a team, use PrestaShop
+* If you trust [me](https://github.com/mickaelandrieu) to maintain this package almost all alone, use Resiliency
