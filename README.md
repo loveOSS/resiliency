@@ -121,9 +121,9 @@ composer phpqa
  Above all, I must say that I'm the former author of the PrestaShop [Circuit Breaker](https://github.com/PrestaShop/circuit-breaker) library
  and I have decided to fork my own library to be able to improve it without the constraints of the PrestaShop CMS main project.
  
- As of now (June, 2021), the both libraries have a lot in common !
+ As of now (June, 2021), these libraries have a lot in common !
  
-The share almost the same API, but the PrestaShop Core Team have created their own implementations of [Circuit Breaker interface](https://github.com/PrestaShop/circuit-breaker/blob/develop/src/AdvancedCircuitBreaker.php) and [Factory](https://github.com/PrestaShop/circuit-breaker/blob/develop/src/AdvancedCircuitBreakerFactory.php) :
+They share almost the same API, and the PrestaShop Core Team have created multiple implementations of [Circuit Breaker interface](https://github.com/PrestaShop/circuit-breaker/blob/develop/src/AdvancedCircuitBreaker.php) and [Factory](https://github.com/PrestaShop/circuit-breaker/blob/develop/src/AdvancedCircuitBreakerFactory.php) :
 
 * SimpleCircuitBreaker
 * AdvancedCircuitBreaker
@@ -139,8 +139,8 @@ The share almost the same API, but the PrestaShop Core Team have created their o
 6. They don't provide a mecanism to reset and restore a Circuit Breaker ;
 7. They don't provide a mecanism to monitor the activity of a Circuit Breaker ;
 8. They have removed [Psalm](https://psalm.dev/) from their CI and they don't use [PHPQA](https://github.com/EdgedesignCZ/phpqa) ;
-9. They have added `declare(strict_types=1);` on all the files (which is useless in Resiliency as there is no situation where PHP could try to cast) ;
-10. They don't declare a `.gitattributes` file, so I guess all tests are downloaded when [we require](https://madewithlove.com/blog/software-engineering/gitattributes/) their library ;
+9. They have added `declare(strict_types=1);` on all the files ;
+10. They don't declare a `.gitattributes` file, this means that all tests are downloaded when [we require](https://madewithlove.com/blog/software-engineering/gitattributes/) their library ;
 
 > All right ... but this don't tell me what library should I use in my project !
 
