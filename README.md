@@ -114,7 +114,7 @@ during the CI management of the contributions:
 composer phpqa
 ```
 
- ## I've heard of the PrestaShop Circuit Breaker library : what library should I use ?
+ ## I've heard of the PrestaShop Circuit Breaker: what library should I use ?
  
  Welcome, that's an interesting question !
  
