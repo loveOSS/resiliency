@@ -8,7 +8,7 @@ namespace Resiliency\Contracts\Monitoring;
 interface Report
 {
     /**
-     * @var ReportEntry the report entry
+     * @param ReportEntry the report entry
      */
     public function add(ReportEntry $reportEntry): self;
 
