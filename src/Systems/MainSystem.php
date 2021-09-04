@@ -97,8 +97,11 @@ final class MainSystem implements System
 
     private static function validateTimeout(int $timeout): bool
     {
+        // @doc https://www.php.net/manual/info.configuration.php the timeout is in seconds
         $maxExecutionTime = ini_get('max_execution_time');
+        
+        $timeoutInSeconds = (int) ($timeout / 1000);
 
-        return (0 === (int) $maxExecutionTime) || ($maxExecutionTime >= $timeout);
+        return (0 === (int) $maxExecutionTime) || ($maxExecutionTime >= $timeoutInSeconds);
     }
 }
