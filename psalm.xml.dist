@@ -3,7 +3,6 @@
     name="Psalm configuration for the Resiliency library"
     totallyTyped="true"
     strictBinaryOperands="true"
-    allowPhpStormGenerics="true"
     allowStringToStandInForClass="false"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
