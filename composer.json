@@ -27,8 +27,8 @@
         "phpstan/phpstan": "^0.12",
         "phpstan/phpstan-phpunit": "^0.12",
         "phpunit/phpunit": "^8.0",
-        "symfony/cache": "~4.4|~5.3",
-        "symfony/http-client": "^4.4|~5.3",
+        "symfony/cache": "~4.4|~5.4|~6.0",
+        "symfony/http-client": "^4.4|~5.4|~6.0",
         "vimeo/psalm": "^4.3"
     },
     "suggest": {
@@ -49,7 +49,7 @@
     },
     "scripts": {
         "cs-fix": "@php ./vendor/bin/php-cs-fixer fix",
-        "phpqa": "@php ./vendor/bin/phpqa --report --tools phpcs:0,phpmd:0,phpmetrics,phploc,pdepend,security-checker:0,parallel-lint:0 --ignoredDirs tests,vendor",
+        "phpqa": "@php ./vendor/bin/phpqa --report --tools phpcs:0,phpmetrics,phploc,pdepend,security-checker:0,parallel-lint:0 --ignoredDirs tests,vendor",
         "phpstan": "@php ./vendor/bin/phpstan analyse src --level max -c extension.neon",
         "psalm": "@php ./vendor/bin/psalm --threads=8 --diff",
         "test": "@php ./vendor/bin/phpunit"
