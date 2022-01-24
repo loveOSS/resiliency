@@ -7,6 +7,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use ReflectionClass;
 use ReflectionException;
 use Resiliency\Contracts\CircuitBreaker;
+use Resiliency\Events\Failed;
 use Resiliency\Events\Initiated;
 use Resiliency\Events\Isolated;
 use Resiliency\Events\Opened;
@@ -54,12 +55,14 @@ class SymfonyCircuitBreakerEventsTest extends CircuitBreakerTestCase
          * then the conditions are met to open the circuit breaker
          */
         $invocations = self::invocations($this->spy);
-        self::assertCount(4, $invocations);
+        self::assertCount(6, $invocations);
 
         self::assertInstanceOf(Initiated::class, $invocations[0]->getParameters()[0]);
         self::assertInstanceOf(Tried::class, $invocations[1]->getParameters()[0]);
-        self::assertInstanceOf(Tried::class, $invocations[2]->getParameters()[0]);
-        self::assertInstanceOf(Opened::class, $invocations[3]->getParameters()[0]);
+        self::assertInstanceOf(Failed::class, $invocations[2]->getParameters()[0]);
+        self::assertInstanceOf(Tried::class, $invocations[3]->getParameters()[0]);
+        self::assertInstanceOf(Failed::class, $invocations[4]->getParameters()[0]);
+        self::assertInstanceOf(Opened::class, $invocations[5]->getParameters()[0]);
     }
 
     public function testCircuitBreakerEventsOnIsolationAndResetActions(): void
@@ -79,8 +82,8 @@ class SymfonyCircuitBreakerEventsTest extends CircuitBreakerTestCase
          * the related event has been dispatched
          */
         $invocations = self::invocations($this->spy);
-        self::assertCount(5, $invocations);
-        self::assertInstanceOf(Isolated::class, $invocations[4]->getParameters()[0]);
+        self::assertCount(7, $invocations);
+        self::assertInstanceOf(Isolated::class, $invocations[6]->getParameters()[0]);
 
         /*
          * And now we reset the circuit breaker!
@@ -88,8 +91,8 @@ class SymfonyCircuitBreakerEventsTest extends CircuitBreakerTestCase
          */
         $circuitBreaker->reset($service);
         $invocations = self::invocations($this->spy);
-        self::assertCount(6, $invocations);
-        self::assertInstanceOf(Reseted::class, $invocations[5]->getParameters()[0]);
+        self::assertCount(8, $invocations);
+        self::assertInstanceOf(Reseted::class, $invocations[7]->getParameters()[0]);
     }
 
     private function createCircuitBreaker(): CircuitBreaker
