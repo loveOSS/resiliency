@@ -4,6 +4,7 @@ namespace Resiliency\Places;
 
 use Resiliency\Contracts\Client;
 use Resiliency\Contracts\Transaction;
+use Resiliency\Events\Failed;
 use Resiliency\Events\Tried;
 use Resiliency\Exceptions\UnavailableService;
 use Resiliency\States;
@@ -55,6 +56,7 @@ final class Closed extends PlaceHelper
 
             return $response;
         } catch (UnavailableService $exception) {
+            $this->dispatch(new Failed($this->circuitBreaker, $service, $exception));
             $transaction->incrementFailures();
             $storage->saveTransaction($service->getUri(), $transaction);
 
