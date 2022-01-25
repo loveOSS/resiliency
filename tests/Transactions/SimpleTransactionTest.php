@@ -136,7 +136,7 @@ class SimpleTransactionTest extends CircuitBreakerTestCase
      * Returns an instance of Place with State equals to "FAKE_STATE"
      * and threshold equals to 2.
      *
-     * @return Place&\PHPUnit\Framework\MockObject\MockObject
+     * @return Place|\PHPUnit\Framework\MockObject\MockObject
      */
     private function createPlaceStub()
     {

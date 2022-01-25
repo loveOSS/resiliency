@@ -13,7 +13,7 @@ interface Client
     /**
      * @var string by default, calls are sent using GET method
      */
-    const DEFAULT_METHOD = 'GET';
+    public const DEFAULT_METHOD = 'GET';
 
     /**
      * @param Service $service the Service
