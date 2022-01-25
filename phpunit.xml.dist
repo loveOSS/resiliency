@@ -1,20 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<phpunit
-    executionOrder="random"
-    resolveDependencies="true"
-    colors="true"
-    bootstrap="./vendor/autoload.php"
->
-    <testsuites>
-        <testsuite name="Resiliency test suite">
-            <directory>./tests/</directory>
-        </testsuite>
-    </testsuites>
-
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">src</directory>
-        </whitelist>
-    </filter>
-
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" executionOrder="random" resolveDependencies="true" colors="true" bootstrap="./vendor/autoload.php" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+  <coverage processUncoveredFiles="true">
+    <include>
+      <directory suffix=".php">src</directory>
+    </include>
+  </coverage>
+  <testsuites>
+    <testsuite name="Resiliency test suite">
+      <directory>./tests/</directory>
+    </testsuite>
+  </testsuites>
 </phpunit>
